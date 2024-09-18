@@ -3,14 +3,20 @@ import { Button } from "@/components/ui/button";
 import { Moon, Sun, User, Menu } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Outlet } from "react-router-dom";
-import navigationBackground from "../assets/navigation.svg"; // Adjust the path as needed
+import navigationBackground from "../assets/navigation.svg";
+import { LoginRegisterModal } from "@/components/LoginRegisterModal";
 
 export default function Component() {
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const toggleDarkMode = () => {
     setIsDarkMode(!isDarkMode);
+  };
+
+  const handleLoginClick = () => {
+    setIsModalOpen(true);
   };
 
   return (
@@ -35,7 +41,7 @@ export default function Component() {
                 <Moon className="h-5 w-5" />
               )}
             </Button>
-            <Button variant="outline">
+            <Button variant="outline" onClick={handleLoginClick}>
               <User className="mr-2 h-4 w-4" /> Kirjaudu
             </Button>
           </div>
@@ -55,7 +61,7 @@ export default function Component() {
                   )}
                   {isDarkMode ? "Light Mode" : "Dark Mode"}
                 </Button>
-                <Button variant="outline" size="lg">
+                <Button variant="outline" size="lg" onClick={handleLoginClick}>
                   <User className="mr-2 h-4 w-4" /> Kirjaudu
                 </Button>
               </div>
@@ -87,6 +93,12 @@ export default function Component() {
           </p>
         </footer>
       </div>
+      {isModalOpen && (
+        <LoginRegisterModal
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+        />
+      )}
     </div>
   );
 }
