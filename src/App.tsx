@@ -4,7 +4,6 @@ import { UserProvider } from "./contexts/UserContext";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Layout from "./views/Layout";
 import Home from "./views/Home";
-import Login from "./views/Login";
 import Secret from "./views/Secret";
 import Logout from "./views/Logout";
 import Quiz from "./views/Quiz";
@@ -18,7 +17,6 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/quiz" element={<Quiz />} />
             <Route path="/quiz/:date" element={<Quiz />} />
-            <Route path="/login" element={<Login />} />
             <Route path="/logout" element={<Logout />} />
             <Route
               path="/secret"

@@ -1,49 +1,55 @@
-import { Button } from "@/components/ui/button";
-import { CardContent, CardFooter, CardHeader } from "@/components/ui/card";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
+import { useState } from "react";
+import { Button } from "./ui/button";
+import { Input } from "./ui/input";
+import { Label } from "./ui/label";
 import { useUserContext } from "@/hooks/contextHooks";
-import { useForm } from "@/hooks/formHooks";
 
-const LoginForm = () => {
-  const { handleLogin } = useUserContext();
+interface LoginFormProps {
+  onClose: () => void;
+}
 
-  const initValues = { email: "" };
+export function LoginForm({ onClose }: LoginFormProps) {
+  const { handleLogin, authLoading, authError } = useUserContext();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-  const doLogin = async () => {
-    handleLogin(inputs.email);
+  const onLoginSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (email && password) {
+      await handleLogin(email, password);
+      onClose(); // Close the modal after successful login
+    }
   };
 
-  const { handleSubmit, handleInputChange, inputs } = useForm(
-    doLogin,
-    initValues
-  );
-
   return (
-    <form onSubmit={handleSubmit}>
-      <CardHeader className="text-center">
-        <h2 className="text-2xl font-bold">Login</h2>
-      </CardHeader>
-      <CardContent className="space-y-4 px-6 py-8">
-        <div className="space-y-2">
-          <Label htmlFor="email">email</Label>
+    <form onSubmit={onLoginSubmit}>
+      <div className="grid gap-4 py-4">
+        <div className="grid gap-2">
+          <Label htmlFor="email-login">Sähköposti</Label>
           <Input
-            id="email"
-            name="email"
+            id="email-login"
             type="email"
-            placeholder="Your email"
-            onChange={handleInputChange}
+            placeholder="m@example.com"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             required
           />
         </div>
-      </CardContent>
-      <CardFooter className="px-6 pb-6">
-        <div className="w-full flex justify-center">
-          <Button type="submit">Login</Button>
+        <div className="grid gap-2">
+          <Label htmlFor="password-login">Salasana</Label>
+          <Input
+            id="password-login"
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
         </div>
-      </CardFooter>
+      </div>
+      <Button type="submit" className="w-full" disabled={authLoading}>
+        {authLoading ? "Loading..." : "Kirjaudu"}
+      </Button>
+      {authError && <p className="text-red-500 mt-2">{authError}</p>}
     </form>
   );
-};
-
-export default LoginForm;
+}

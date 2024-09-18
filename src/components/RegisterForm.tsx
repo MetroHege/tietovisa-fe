@@ -1,108 +1,74 @@
-import { Button } from '@/components/ui/button';
-import { CardContent, CardFooter, CardHeader } from '@/components/ui/card';
-import { Label } from '@/components/ui/label';
-import { Input } from '@/components/ui/input';
-import { usePasskey, useUser } from '@/hooks/apiHooks';
-import { useState } from 'react';
-import { useForm } from '@/hooks/formHooks';
-import { useUserContext } from '@/hooks/contextHooks';
+import { useState } from "react";
+import { Button } from "./ui/button";
+import { Input } from "./ui/input";
+import { Label } from "./ui/label";
+import { useUserContext } from "@/hooks/contextHooks";
 
-const RegisterForm = (props: { switchForm: () => void }) => {
-  const { postUser } = usePasskey();
-  const [usernameAvailable, setUsernameAvailable] = useState<boolean>(true);
-  const [emailAvailable, setEmailAvailable] = useState<boolean>(true);
-  const { handleRegister } = useUserContext();
+interface RegisterFormProps {
+  onClose: () => void;
+}
 
-  const initValues = { username: '', password: '', email: '' };
+export function RegisterForm({ onClose }: RegisterFormProps) {
+  const { handleRegister, authLoading, authError } = useUserContext();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
 
-  const doRegister = async () => {
-    try {
-      if (!usernameAvailable || !emailAvailable) {
-        return;
-      }
-      const registerResponse = await postUser(inputs);
-      handleRegister(registerResponse.user);
-      props.switchForm();
-    } catch (error) {
-      console.log((error as Error).message);
+  const onRegisterSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (password !== confirmPassword) {
+      alert("Passwords do not match");
+      return;
+    }
+    if (email && password) {
+      await handleRegister({
+        username: email.split("@")[0], // Extracting username from email for simplicity
+        email: email,
+        password: password,
+      });
+      onClose(); // Close the modal after successful registration
     }
   };
 
-  const { handleSubmit, handleInputChange, inputs } = useForm(
-    doRegister,
-    initValues,
-  );
-  const { getUsernameAvailable, getEmailAvailable } = useUser();
-
-  const handleUsernameBlur = async (
-    event: React.SyntheticEvent<HTMLInputElement>,
-  ) => {
-    const result = await getUsernameAvailable(event.currentTarget.value);
-    setUsernameAvailable(result.available);
-  };
-
-  const handleEmailBlur = async () => {
-    const result = await getEmailAvailable(inputs.email); // voidaan käyttää myös inputs objektia
-    setEmailAvailable(result.available);
-  };
-
-  console.log(usernameAvailable, emailAvailable);
   return (
-    <>
-      <form onSubmit={handleSubmit}>
-        <CardHeader className="text-center">
-          <h2 className="text-2xl font-bold">Register</h2>
-        </CardHeader>
-        <CardContent className="space-y-4 px-6 py-8">
-          <div className="space-y-2">
-            <Label htmlFor="username">Full Name</Label>
-            <Input
-              id="username"
-              name="username"
-              type="text"
-              placeholder="Username"
-              required
-              onChange={handleInputChange}
-              onBlur={handleUsernameBlur}
-            />
-            {!usernameAvailable && (
-              <p className="text-red-500">Username not available</p>
-            )}
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="email">Email</Label>
-            <Input
-              id="email"
-              name="email"
-              type="email"
-              placeholder="m@example.com"
-              required
-              onChange={handleInputChange}
-              onBlur={handleEmailBlur}
-            />
-            {!emailAvailable && (
-              <p className="text-red-500">Email not available</p>
-            )}
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="password">Password</Label>
-            <Input
-              onChange={handleInputChange}
-              id="password"
-              name="password"
-              type="password"
-              required
-            />
-          </div>
-        </CardContent>
-        <CardFooter className="px-6 pb-6">
-          <div className="w-full flex justify-center">
-            <Button>Register</Button>
-          </div>
-        </CardFooter>
-      </form>
-    </>
+    <form onSubmit={onRegisterSubmit}>
+      <div className="grid gap-4 py-4">
+        <div className="grid gap-2">
+          <Label htmlFor="email-register">Sähköposti</Label>
+          <Input
+            id="email-register"
+            type="email"
+            placeholder="m@example.com"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+        </div>
+        <div className="grid gap-2">
+          <Label htmlFor="password-register">Salasana</Label>
+          <Input
+            id="password-register"
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+        </div>
+        <div className="grid gap-2">
+          <Label htmlFor="confirm-password">Vahvista salasana</Label>
+          <Input
+            id="confirm-password"
+            type="password"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            required
+          />
+        </div>
+      </div>
+      <Button type="submit" className="w-full" disabled={authLoading}>
+        {authLoading ? "Loading..." : "Rekisteröidy"}
+      </Button>
+      {authError && <p className="text-red-500 mt-2">{authError}</p>}
+    </form>
   );
-};
-
-export default RegisterForm;
+}

@@ -1,10 +1,8 @@
-"use client";
-
 import { Button } from "./ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "./ui/dialog";
-import { Input } from "./ui/input";
-import { Label } from "./ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
+import { LoginForm } from "./LoginForm"; // Import the LoginForm
+import { RegisterForm } from "./RegisterForm"; // Import the RegisterForm
 
 interface LoginRegisterModalProps {
   isOpen: boolean;
@@ -47,53 +45,15 @@ export function LoginRegisterModal({
             <TabsTrigger value="login">Kirjaudu</TabsTrigger>
             <TabsTrigger value="register">Rekisteröidy</TabsTrigger>
           </TabsList>
+
+          {/* Pass onClose to LoginForm */}
           <TabsContent value="login">
-            <form onSubmit={(e) => e.preventDefault()}>
-              <div className="grid gap-4 py-4">
-                <div className="grid gap-2">
-                  <Label htmlFor="email-login">Sähköposti</Label>
-                  <Input
-                    id="email-login"
-                    type="email"
-                    placeholder="m@example.com"
-                    required
-                  />
-                </div>
-                <div className="grid gap-2">
-                  <Label htmlFor="password-login">Salasana</Label>
-                  <Input id="password-login" type="password" required />
-                </div>
-              </div>
-              <Button type="submit" className="w-full">
-                Kirjaudu
-              </Button>
-            </form>
+            <LoginForm onClose={onClose} /> {/* Pass onClose prop */}
           </TabsContent>
+
+          {/* Pass onClose to RegisterForm */}
           <TabsContent value="register">
-            <form onSubmit={(e) => e.preventDefault()}>
-              <div className="grid gap-4 py-4">
-                <div className="grid gap-2">
-                  <Label htmlFor="email-register">Sähköposti</Label>
-                  <Input
-                    id="email-register"
-                    type="email"
-                    placeholder="m@example.com"
-                    required
-                  />
-                </div>
-                <div className="grid gap-2">
-                  <Label htmlFor="password-register">Salasana</Label>
-                  <Input id="password-register" type="password" required />
-                </div>
-                <div className="grid gap-2">
-                  <Label htmlFor="confirm-password">Vahvista salasana</Label>
-                  <Input id="confirm-password" type="password" required />
-                </div>
-              </div>
-              <Button type="submit" className="w-full">
-                Rekisteröidy
-              </Button>
-            </form>
+            <RegisterForm onClose={onClose} /> {/* Pass onClose prop */}
           </TabsContent>
         </Tabs>
       </DialogContent>

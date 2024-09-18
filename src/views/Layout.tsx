@@ -1,15 +1,19 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Moon, Sun, User, Menu } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Outlet } from "react-router-dom";
 import navigationBackground from "../assets/navigation.svg";
 import { LoginRegisterModal } from "@/components/LoginRegisterModal";
+import { useUserContext } from "@/hooks/contextHooks";
+
 
 export default function Component() {
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const { user, handleLogout, handleAutoLogin } = useUserContext();
 
   const toggleDarkMode = () => {
     setIsDarkMode(!isDarkMode);
@@ -18,6 +22,15 @@ export default function Component() {
   const handleLoginClick = () => {
     setIsModalOpen(true);
   };
+
+  const autoLogin = async () => {
+    await handleAutoLogin()
+  }
+
+  useEffect(() => {
+    autoLogin()
+  }, [])
+
 
   return (
     <div className={`min-h-screen ${isDarkMode ? "dark" : ""}`}>
@@ -41,9 +54,18 @@ export default function Component() {
                 <Moon className="h-5 w-5" />
               )}
             </Button>
-            <Button variant="outline" onClick={handleLoginClick}>
-              <User className="mr-2 h-4 w-4" /> Kirjaudu
-            </Button>
+            {user ? (
+              <>
+                <Button variant="ghost" size="lg" onClick={handleLogout}>
+                  Logout
+                </Button>
+                <span className="text-white">{user.username}</span>
+              </>
+            ) : (
+              <Button variant="outline" size="lg" onClick={handleLoginClick}>
+                <User className="mr-2 h-4 w-4" /> Kirjaudu
+              </Button>
+            )}
           </div>
           <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen}>
             <SheetTrigger asChild>
@@ -61,9 +83,18 @@ export default function Component() {
                   )}
                   {isDarkMode ? "Light Mode" : "Dark Mode"}
                 </Button>
-                <Button variant="outline" size="lg" onClick={handleLoginClick}>
-                  <User className="mr-2 h-4 w-4" /> Kirjaudu
-                </Button>
+                {user ? (
+                  <>
+                    <Button variant="ghost" size="lg" onClick={handleLogout}>
+                      Logout
+                    </Button>
+
+                  </>
+                ) : (
+                  <Button variant="outline" size="lg" onClick={handleLoginClick}>
+                    <User className="mr-2 h-4 w-4" /> Kirjaudu
+                  </Button>
+                )}
               </div>
             </SheetContent>
           </Sheet>

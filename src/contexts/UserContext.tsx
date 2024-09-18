@@ -1,66 +1,73 @@
-// UserContext.tsx
-import { usePasskey, useUser } from "@/hooks/apiHooks";
-import { AuthContextType } from "@/types/LocalTypes";
-import { UserWithNoPassword } from "@sharedTypes/DBTypes";
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { createContext, useCallback, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { useUser } from "@/hooks/apiHooks"; // Assuming `useUser` is imported from your hooks
+import { AuthContextType } from "@/types/LocalTypes";
+import { RegisterUserRequest, UserWithNoPassword } from "@/types/userTypes";
 
+// Create UserContext
 const UserContext = createContext<AuthContextType | null>(null);
 
 const UserProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<UserWithNoPassword | null>(null);
-  const [registerResult, setRegisterResult] =
-    useState<UserWithNoPassword | null>(null);
-  const { postLogin } = usePasskey();
-  const { getUserByToken } = useUser();
-  const navigate = useNavigate();
-  const location = useLocation();
+  const [registerResult, setRegisterResult] = useState<UserWithNoPassword | null>(null);
 
-  // login, logout and autologin functions are here instead of components
-  const handleLogin = async (email: string) => {
+  const {
+    loginUser,
+    registerUser,
+    authLoading,
+    authError,
+    getUserByToken,
+    tokenLoading,
+    tokenError
+  } = useUser();
+
+  const navigate = useNavigate();
+
+  const handleLogin = async (email: string, password: string) => {
     try {
-      const loginResult = await postLogin(email);
+      const loginResult = await loginUser({ email, password });
       if (loginResult) {
         localStorage.setItem("token", loginResult.token);
-        setUser(loginResult.user);
-        navigate("/secret");
+        const { password, ...userWithoutPassword } = loginResult.user;
+        setUser(userWithoutPassword);
+        navigate("/");
       }
     } catch (e) {
       alert((e as Error).message);
     }
   };
 
-  const handleRegister = async (user: UserWithNoPassword) => {
-    // implement register function
-    setRegisterResult(user);
+  const handleRegister = async (userData: RegisterUserRequest) => {
+    try {
+      const registerResponse = await registerUser(userData);
+      if (registerResponse) {
+        const { password, ...userWithoutPassword } = registerResponse.user;
+        setRegisterResult(userWithoutPassword);
+        navigate("/login");
+      }
+    } catch (e) {
+      alert((e as Error).message);
+    }
   };
 
   const handleLogout = useCallback(() => {
     try {
-      // remove token from local storage
       localStorage.removeItem("token");
-      // set user to null
       setUser(null);
-      // navigate to home
       navigate("/");
     } catch (e) {
       console.log((e as Error).message);
     }
   }, [navigate]);
 
-  // handleAutoLogin is used when the app is loaded to check if there is a valid token in local storage
   const handleAutoLogin = async () => {
     try {
-      // get token from local storage
       const token = localStorage.getItem("token");
       if (token) {
-        // if token exists, get user data from API
         const userResponse = await getUserByToken(token);
-        // set user to state
-        setUser(userResponse.user);
-        // when page is refreshed, the user is redirected to origin (see ProtectedRoute.tsx)
-        const origin = location.state.from.pathname || "/";
-        navigate(origin);
+        console.log('userresponse: ', userResponse)
+        setUser(userResponse);
       }
     } catch (e) {
       console.log((e as Error).message);
@@ -76,10 +83,15 @@ const UserProvider = ({ children }: { children: React.ReactNode }) => {
         handleLogout,
         handleAutoLogin,
         handleRegister,
+        authLoading,
+        authError,
+        tokenLoading,
+        tokenError
       }}
     >
       {children}
     </UserContext.Provider>
   );
 };
+
 export { UserProvider, UserContext };

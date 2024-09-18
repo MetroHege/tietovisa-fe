@@ -1,4 +1,4 @@
-import LoginForm from '@/components/LoginForm';
+/*import LoginForm from '@/components/LoginForm';
 import RegisterForm from '@/components/RegisterForm';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -25,3 +25,4 @@ const Login = () => {
 };
 
 export default Login;
+*/
