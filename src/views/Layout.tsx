@@ -7,7 +7,6 @@ import navigationBackground from "../assets/navigation.svg";
 import { LoginRegisterModal } from "@/components/LoginRegisterModal";
 import { useUserContext } from "@/hooks/contextHooks";
 
-
 export default function Component() {
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -24,13 +23,12 @@ export default function Component() {
   };
 
   const autoLogin = async () => {
-    await handleAutoLogin()
-  }
+    await handleAutoLogin();
+  };
 
   useEffect(() => {
-    autoLogin()
-  }, [])
-
+    autoLogin();
+  }, []);
 
   return (
     <div className={`min-h-screen ${isDarkMode ? "dark" : ""}`}>
@@ -46,30 +44,9 @@ export default function Component() {
           }}
         >
           <div className="text-2xl font-bold text-white">Tietovisasaitti</div>
-          <div className="hidden md:flex items-center space-x-4">
-            <Button variant="ghost" size="icon" onClick={toggleDarkMode}>
-              {isDarkMode ? (
-                <Sun className="h-5 w-5" />
-              ) : (
-                <Moon className="h-5 w-5" />
-              )}
-            </Button>
-            {user ? (
-              <>
-                <Button variant="ghost" size="lg" onClick={handleLogout}>
-                  Logout
-                </Button>
-                <span className="text-white">{user.username}</span>
-              </>
-            ) : (
-              <Button variant="outline" size="lg" onClick={handleLoginClick}>
-                <User className="mr-2 h-4 w-4" /> Kirjaudu
-              </Button>
-            )}
-          </div>
           <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen}>
             <SheetTrigger asChild>
-              <Button variant="ghost" size="icon" className="md:hidden">
+              <Button variant="ghost" size="icon">
                 <Menu className="h-6 w-6" />
               </Button>
             </SheetTrigger>
@@ -88,10 +65,14 @@ export default function Component() {
                     <Button variant="ghost" size="lg" onClick={handleLogout}>
                       Logout
                     </Button>
-
+                    <span className="text-white">{user.username}</span>
                   </>
                 ) : (
-                  <Button variant="outline" size="lg" onClick={handleLoginClick}>
+                  <Button
+                    variant="outline"
+                    size="lg"
+                    onClick={handleLoginClick}
+                  >
                     <User className="mr-2 h-4 w-4" /> Kirjaudu
                   </Button>
                 )}
