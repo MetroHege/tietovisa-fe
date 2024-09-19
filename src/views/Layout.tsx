@@ -22,13 +22,9 @@ export default function Component() {
     setIsModalOpen(true);
   };
 
-  const autoLogin = async () => {
-    await handleAutoLogin();
-  };
-
   useEffect(() => {
-    autoLogin();
-  }, []);
+    handleAutoLogin();
+  }, []); // Ensure this effect runs only once on mount
 
   return (
     <div className={`min-h-screen ${isDarkMode ? "dark" : ""}`}>
@@ -62,10 +58,13 @@ export default function Component() {
                 </Button>
                 {user ? (
                   <>
+                    <div className="text-white">
+                      <p>Username: {user.username}</p>
+                      <p>Email: {user.email}</p>
+                    </div>
                     <Button variant="ghost" size="lg" onClick={handleLogout}>
                       Logout
                     </Button>
-                    <span className="text-white">{user.username}</span>
                   </>
                 ) : (
                   <Button
