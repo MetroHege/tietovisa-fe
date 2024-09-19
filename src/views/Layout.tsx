@@ -58,7 +58,7 @@ export default function Component() {
                 </Button>
                 {user ? (
                   <>
-                    <div className="text-white">
+                    <div className="text-black">
                       <p>Username: {user.username}</p>
                       <p>Email: {user.email}</p>
                     </div>
