@@ -7,29 +7,32 @@ import Home from "./views/Home";
 import Secret from "./views/Secret";
 import Logout from "./views/Logout";
 import Quiz from "./views/Quiz";
+import { ThemeProvider } from "./contexts/ThemeContext";
 
 function App() {
   return (
-    <Router>
-      <UserProvider>
-        <Routes>
-          <Route element={<Layout />}>
-            <Route path="/" element={<Home />} />
-            <Route path="/quiz" element={<Quiz />} />
-            <Route path="/quiz/:date" element={<Quiz />} />
-            <Route path="/logout" element={<Logout />} />
-            <Route
-              path="/secret"
-              element={
-                <ProtectedRoute>
-                  <Secret />
-                </ProtectedRoute>
-              }
-            />
-          </Route>
-        </Routes>
-      </UserProvider>
-    </Router>
+    <ThemeProvider>
+      <Router>
+        <UserProvider>
+          <Routes>
+            <Route element={<Layout />}>
+              <Route path="/" element={<Home />} />
+              <Route path="/quiz" element={<Quiz />} />
+              <Route path="/quiz/:date" element={<Quiz />} />
+              <Route path="/logout" element={<Logout />} />
+              <Route
+                path="/secret"
+                element={
+                  <ProtectedRoute>
+                    <Secret />
+                  </ProtectedRoute>
+                }
+              />
+            </Route>
+          </Routes>
+        </UserProvider>
+      </Router>
+    </ThemeProvider>
   );
 }
 

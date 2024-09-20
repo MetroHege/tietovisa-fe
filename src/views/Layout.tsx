@@ -5,17 +5,14 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Link, Outlet } from "react-router-dom";
 import { LoginRegisterModal } from "@/components/LoginRegisterModal";
 import { useUserContext } from "@/hooks/contextHooks";
+import { useTheme } from "@/contexts/ThemeContext"; // Adjust the import path as needed
 
 export default function Component() {
-  const [isDarkMode, setIsDarkMode] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const { user, handleLogout, handleAutoLogin } = useUserContext();
-
-  const toggleDarkMode = () => {
-    setIsDarkMode(!isDarkMode);
-  };
+  const { theme, toggleTheme } = useTheme(); // Access the theme context
 
   const handleLoginClick = () => {
     setIsModalOpen(true);
@@ -26,7 +23,7 @@ export default function Component() {
   }, []); // Ensure this effect runs only once on mount
 
   return (
-    <div className={`min-h-screen ${isDarkMode ? "dark" : ""}`}>
+    <div className={`min-h-screen ${theme}`}>
       <div className="flex flex-col min-h-screen">
         <nav className="relative flex justify-between items-center p-8 bg-white dark:bg-gray-900 min-h-[80px]">
           <div className="absolute inset-0 w-full h-full z-0">
@@ -69,27 +66,34 @@ export default function Component() {
             </svg>
           </div>
           <Link to={"/"} className="relative z-10">
-            <div className="text-2xl font-bold text-black">Tietovisasaitti</div>
+            <div className="text-2xl font-bold text-black dark:text-white">
+              Tietovisasaitti
+            </div>
           </Link>
           <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen}>
             <SheetTrigger asChild>
               <Button variant="ghost" size="icon" className="relative z-10">
-                <Menu className="h-6 w-6 text-black" />
+                <Menu className="h-6 w-6 text-black dark:text-white" />
               </Button>
             </SheetTrigger>
-            <SheetContent side="right" className="w-[250px] sm:w-[300px]">
+            <SheetContent
+              side="right"
+              className={`w-[250px] sm:w-[300px] ${
+                theme === "dark" ? "dark:bg-gray-900" : "bg-white"
+              }`}
+            >
               <div className="flex flex-col space-y-4 mt-4">
-                <Button variant="ghost" size="lg" onClick={toggleDarkMode}>
-                  {isDarkMode ? (
+                <Button variant="ghost" size="lg" onClick={toggleTheme}>
+                  {theme === "dark" ? (
                     <Sun className="mr-2 h-5 w-5" />
                   ) : (
                     <Moon className="mr-2 h-5 w-5" />
                   )}
-                  {isDarkMode ? "Light Mode" : "Dark Mode"}
+                  {theme === "dark" ? "Light Mode" : "Dark Mode"}
                 </Button>
                 {user ? (
                   <>
-                    <div className="text-black">
+                    <div className="text-black dark:text-white">
                       <p>Username: {user.username}</p>
                       <p>Email: {user.email}</p>
                     </div>
@@ -110,9 +114,9 @@ export default function Component() {
             </SheetContent>
           </Sheet>
         </nav>
-        <div className="flex-grow flex flex-col lg:flex-row">
+        <div className="flex-grow flex flex-col lg:flex-row bg-white dark:bg-gray-900">
           <aside className="w-full lg:w-1/6 p-4">
-            <div className="h-full border-2 border-dashed border-gray-400 dark:border-gray-500 rounded-lg flex items-center justify-center">
+            <div className="h-full border-2 border-dashed border-gray-400 dark:border-gray-500 rounded-lg flex items-center justify-center bg-white dark:bg-gray-900">
               <p className="text-gray-500 dark:text-gray-400 text-center">
                 Ad Space
               </p>
@@ -122,7 +126,7 @@ export default function Component() {
             <Outlet />
           </main>
           <aside className="w-full lg:w-1/6 p-4">
-            <div className="h-full border-2 border-dashed border-gray-400 dark:border-gray-500 rounded-lg flex items-center justify-center">
+            <div className="h-full border-2 border-dashed border-gray-400 dark:border-gray-500 rounded-lg flex items-center justify-center bg-white dark:bg-gray-900">
               <p className="text-gray-500 dark:text-gray-400 text-center">
                 Ad Space
               </p>

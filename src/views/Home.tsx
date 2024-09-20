@@ -32,7 +32,7 @@ const Home = () => {
   return (
     <div className="flex flex-col md:flex-row">
       <div className="w-full md:w-1/2 p-4">
-        <h1 className="text-2xl font-bold mb-4">
+        <h1 className="text-2xl font-bold mb-4 dark:text-white">
           Vastaa kymmeneen päivittäin vaihtuvaan kutkuttavaan kysymykseen!
         </h1>
         <hr className="border-t-2 border-gray-300 w-full max-w-[calc(100% - 2rem)] mx-auto mb-4" />
@@ -44,7 +44,7 @@ const Home = () => {
         </button>
       </div>
       <div className="w-full md:w-1/2 p-4">
-        <h2 className="text-xl font-bold mb-4">
+        <h2 className="text-xl font-bold mb-4 dark:text-white">
           Aiempien päivien kysymyssarjat
         </h2>
         <hr className="border-t-2 border-gray-300 w-full max-w-[calc(100% - 2rem)] mx-auto mb-4" />
