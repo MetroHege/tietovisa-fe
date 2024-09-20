@@ -4,6 +4,8 @@ import {
   RegisterUserRequest,
   LoginUserRequest,
   getUserByTokenResponse,
+  ModifyUserRequest,
+  ModifyUserResponse,
 } from "@/types/userTypes";
 import { useCallback, useState } from "react";
 
@@ -37,7 +39,6 @@ const useApiState = <T>() => {
 };
 
 const useUser = () => {
-  // For register and login
   const {
     loading: authLoading,
     error: authError,
@@ -45,13 +46,19 @@ const useUser = () => {
     handleApiRequest: handleAuthApiRequest,
   } = useApiState<RegisterAndLoginUserResponse>();
 
-  // For getting user by token
   const {
     loading: tokenLoading,
     error: tokenError,
     data: tokenData,
     handleApiRequest: handleTokenApiRequest,
   } = useApiState<getUserByTokenResponse>();
+
+  const {
+    loading: modifyLoading,
+    error: modifyError,
+    data: modifyData,
+    handleApiRequest: handleModifyApiRequest,
+  } = useApiState<ModifyUserResponse>();
 
   const registerUser = (
     credentials: RegisterUserRequest
@@ -96,9 +103,29 @@ const useUser = () => {
         },
       };
 
-      // Fetch user by token
       return await fetchData<getUserByTokenResponse>(
         `${import.meta.env.VITE_TIETOVISA_API}/auth/me`,
+        options
+      );
+    });
+  };
+
+  const modifyUser = (
+    userId: string,
+    token: string,
+    updates: ModifyUserRequest
+  ): Promise<ModifyUserResponse> => {
+    return handleModifyApiRequest(async () => {
+      const options = {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(updates),
+      };
+      return await fetchData<ModifyUserResponse>(
+        import.meta.env.VITE_TIETOVISA_API + '/user/' + userId,
         options
       );
     });
@@ -107,13 +134,17 @@ const useUser = () => {
   return {
     registerUser,
     loginUser,
-    getUserByToken,
     authLoading,
     authError,
     authData,
+    getUserByToken,
     tokenLoading,
     tokenError,
     tokenData,
+    modifyUser,
+    modifyLoading,
+    modifyError,
+    modifyData,
   };
 };
 

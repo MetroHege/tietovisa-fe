@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Moon, Sun, User, Menu } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Outlet } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
 import navigationBackground from "../assets/navigation.svg";
 import { LoginRegisterModal } from "@/components/LoginRegisterModal";
 import { useUserContext } from "@/hooks/contextHooks";
@@ -39,7 +39,9 @@ export default function Component() {
             height: "auto",
           }}
         >
+          <Link to={'/'}>
           <div className="text-2xl font-bold text-white">Tietovisasaitti</div>
+          </Link>
           <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen}>
             <SheetTrigger asChild>
               <Button variant="ghost" size="icon">

@@ -48,12 +48,12 @@ export function LoginRegisterModal({
 
           {/* Pass onClose to LoginForm */}
           <TabsContent value="login">
-            <LoginForm onClose={onClose} /> {/* Pass onClose prop */}
+            <LoginForm onClose={onClose} />
           </TabsContent>
 
           {/* Pass onClose to RegisterForm */}
           <TabsContent value="register">
-            <RegisterForm onClose={onClose} /> {/* Pass onClose prop */}
+            <RegisterForm onClose={onClose} /> 
           </TabsContent>
         </Tabs>
       </DialogContent>

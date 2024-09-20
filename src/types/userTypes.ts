@@ -41,6 +41,15 @@ export interface RegisterAndLoginUserResponse {
   token: string;
 }
 
+export interface ModifyUserRequest {
+  email: string;
+  password: string
+}
+
+export interface ModifyUserResponse {
+  message: string;
+}
+
 export interface getUserByTokenResponse {
   _id: string;
   username: string;

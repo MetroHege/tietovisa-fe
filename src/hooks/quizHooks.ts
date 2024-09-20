@@ -1,120 +1,92 @@
-import { useState } from "react";
-import { Quiz, PopulatedQuiz } from "../types/quizTypes";
-import { LeanDocument } from "mongoose";
+import fetchData from "@/lib/fetchData";
+import { Quiz, PopulatedQuiz, deleteQuizResponse } from "../types/quizTypes";
+import { useApiState } from "./apiHooks";
 
 const useQuiz = () => {
-  const [quizzes, setQuizzes] = useState<LeanDocument<PopulatedQuiz>[]>([]);
-  const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string | null>(null);
+  // For handling quizzes data
+  const {
+    loading: quizzesLoading,
+    error: quizzesError,
+    data: quizzesData,
+    handleApiRequest: handleQuizzesApiRequest,
+  } = useApiState<PopulatedQuiz[]>();
 
-  const apiUrl = import.meta.env.VITE_API_URL + "/quizzes";
+  // For handling a single quiz
+  const {
+    loading: quizLoading,
+    error: quizError,
+    data: quizData,
+    handleApiRequest: handleQuizApiRequest,
+  } = useApiState<PopulatedQuiz>();
 
-  // Fetch all quizzes
-  const getQuizzes = async () => {
-    setLoading(true);
-    try {
-      const response = await fetch(apiUrl);
-      const data = await response.json();
-      setQuizzes(data);
-    } catch (err) {
-      setError("Failed to fetch quizzes");
-    } finally {
-      setLoading(false);
-    }
+  // For handling delete quiz response
+  const {
+    loading: deleteLoading,
+    error: deleteError,
+    handleApiRequest: handleDeleteApiRequest,
+  } = useApiState<deleteQuizResponse>();
+
+  const getQuizzes = (): Promise<PopulatedQuiz[]> => {
+    return handleQuizzesApiRequest(async () => {
+      return await fetchData<PopulatedQuiz[]>(import.meta.env.VITE_TIETOVISA_API + '/quiz');
+    });
   };
 
-  // Fetch quiz by ID
-  const getQuizById = async (id: string) => {
-    setLoading(true);
-    try {
-      const response = await fetch(`${apiUrl}/${id}`);
-      const data = await response.json();
-      return data;
-    } catch (err) {
-      setError("Failed to fetch quiz by ID");
-    } finally {
-      setLoading(false);
-    }
+  const getQuizById = (id: string): Promise<PopulatedQuiz> => {
+    return handleQuizApiRequest(async () => {
+      return await fetchData<PopulatedQuiz>(import.meta.env.VITE_TIETOVISA_API + '/quiz/' + id);
+    });
   };
 
-  // Fetch quizzes by date
-  const getQuizzesByDate = async (date: string) => {
-    setLoading(true);
-    try {
-      const response = await fetch(`${apiUrl}?date=${date}`);
-      const data = await response.json();
-      setQuizzes(data);
-    } catch (err) {
-      setError("Failed to fetch quizzes by date");
-    } finally {
-      setLoading(false);
-    }
+  const getQuizzesByDate = (date: string): Promise<PopulatedQuiz> => {
+    return handleQuizApiRequest(async () => {
+      return await fetchData<PopulatedQuiz>(import.meta.env.VITE_TIETOVISA_API + '/quiz/date?date=' + date);
+    });
   };
 
-  // Create a new quiz
-  const postQuiz = async (quiz: Quiz) => {
-    setLoading(true);
-    try {
-      const options: RequestInit = {
+  const postQuiz = (quiz: Quiz): Promise<PopulatedQuiz> => {
+    return handleQuizApiRequest(async () => {
+      const options = {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(quiz),
       };
-      const response = await fetch(apiUrl, options);
-      const data = await response.json();
-      setQuizzes((prev) => [...prev, data]);
-    } catch (err) {
-      setError("Failed to create quiz");
-    } finally {
-      setLoading(false);
-    }
+      return await fetchData<PopulatedQuiz>(import.meta.env.VITE_TIETOVISA_API + '/quiz', options);
+    });
   };
 
-  // Update an existing quiz
-  const putQuiz = async (id: string, quiz: Partial<Quiz>) => {
-    setLoading(true);
-    try {
-      const options: RequestInit = {
+  const putQuiz = (id: string, quiz: Partial<Quiz>): Promise<PopulatedQuiz> => {
+    return handleQuizApiRequest(async () => {
+      const options = {
         method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(quiz),
       };
-      const response = await fetch(`${apiUrl}/${id}`, options);
-      const data = await response.json();
-      setQuizzes((prev) =>
-        prev.map((q) => (q._id === id ? { ...q, ...data } : q))
-      );
-    } catch (err) {
-      setError("Failed to update quiz");
-    } finally {
-      setLoading(false);
-    }
+      return await fetchData<PopulatedQuiz>(import.meta.env.VITE_TIETOVISA_API + '/quiz/' + id, options);
+    });
   };
 
-  // Delete a quiz
-  const deleteQuiz = async (id: string) => {
-    setLoading(true);
-    try {
-      const options: RequestInit = {
+  const deleteQuiz = (id: string): Promise<deleteQuizResponse> => {
+    return handleDeleteApiRequest(async () => {
+      const options = {
         method: "DELETE",
       };
-      await fetch(`${apiUrl}/${id}`, options);
-      setQuizzes((prev) => prev.filter((q) => q._id !== id));
-    } catch (err) {
-      setError("Failed to delete quiz");
-    } finally {
-      setLoading(false);
-    }
+      return await fetchData<deleteQuizResponse>(
+        import.meta.env.VITE_TIETOVISA_API + '/quiz/' + id,
+        options
+      );
+    });
   };
 
   return {
-    quizzes,
-    loading,
-    error,
+    quizzesData,
+    quizData,
+    quizzesLoading,
+    quizLoading,
+    deleteLoading,
+    quizzesError,
+    quizError,
+    deleteError,
     getQuizzes,
     getQuizById,
     getQuizzesByDate,

@@ -1,6 +1,8 @@
 export interface Question {
+  _id: string;
   questionText: string;
   answers: { text: string; isCorrect: boolean }[];
-  difficulty?: number;
   date: Date;
+  difficulty: number;
+
 }

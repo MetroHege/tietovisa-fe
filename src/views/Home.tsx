@@ -5,6 +5,15 @@ const Home = () => {
   const navigate = useNavigate();
   const [previousQuizzes, setPreviousQuizzes] = useState<string[]>([]);
 
+  // Get today's date in YYYY-MM-DD format
+  const getTodayDate = () => {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, '0');
+    const day = String(today.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  };
+
   useEffect(() => {
     // Fetch previous quizzes data
     // For now, we'll use mock data
@@ -29,9 +38,7 @@ const Home = () => {
         <hr className="border-t-2 border-gray-300 w-full max-w-[calc(100% - 2rem)] mx-auto mb-4" />
         <button
           className="block w-full p-2 mt-2 bg-blue-500 text-white rounded font-bold"
-          onClick={() =>
-            navigate("/quiz", { state: { startImmediately: true } })
-          }
+          onClick={() => handleQuizSelection(getTodayDate())} // Navigate with today's date
         >
           Aloita vastaaminen!
         </button>
