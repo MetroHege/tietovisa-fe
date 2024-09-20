@@ -12,6 +12,7 @@ type AuthContextType = {
   authError: string | null; // error state for login/register
   tokenLoading: boolean; // loading state for auto-login
   tokenError: string | null; // error state for auto-login
+  autoLoginLoading: boolean;
 };
 
 export type { AuthContextType };

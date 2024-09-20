@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { createContext, useCallback, useState } from "react";
+import React, { createContext, useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "@/hooks/apiHooks"; // Assuming `useUser` is imported from your hooks
 import { AuthContextType } from "@/types/LocalTypes";
@@ -11,6 +11,7 @@ const UserContext = createContext<AuthContextType | null>(null);
 const UserProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<UserWithNoPassword | null>(null);
   const [registerResult, setRegisterResult] = useState<UserWithNoPassword | null>(null);
+  const [autoLoginLoading, setAutoLoginLoading] = useState(true);
 
   const {
     loginUser,
@@ -62,17 +63,31 @@ const UserProvider = ({ children }: { children: React.ReactNode }) => {
   }, [navigate]);
 
   const handleAutoLogin = async () => {
+    setAutoLoginLoading(true);
     try {
       const token = localStorage.getItem("token");
       if (token) {
         const userResponse = await getUserByToken(token);
-        console.log('userresponse: ', userResponse)
-        setUser(userResponse);
+        if (userResponse) {
+          setUser(userResponse); // Sets user state
+        } else {
+          console.log("Failed to fetch user data.");
+        }
+      } else {
+        console.log("No token found in localStorage.");
       }
     } catch (e) {
-      console.log((e as Error).message);
+      console.error("Error during auto-login:", e);
+    } finally {
+      setAutoLoginLoading(false);
     }
   };
+
+
+  // Initiate auto-login on mount
+  useEffect(() => {
+    handleAutoLogin();
+  }, []);
 
   return (
     <UserContext.Provider
@@ -83,6 +98,7 @@ const UserProvider = ({ children }: { children: React.ReactNode }) => {
         handleLogout,
         handleAutoLogin,
         handleRegister,
+        autoLoginLoading,
         authLoading,
         authError,
         tokenLoading,

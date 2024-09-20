@@ -8,6 +8,10 @@ import Secret from "./views/Secret";
 import Logout from "./views/Logout";
 import Quiz from "./views/Quiz";
 import { ThemeProvider } from "./contexts/ThemeContext";
+import AdminProtectedRoute from "./components/AdminProtectedRoute";
+import Dashboard from "./components/Dashboard";
+import CsvUploadComponent from "./components/CsvUploadComponent";
+import AdminSearchComponent from "./components/AdminSearchComponent";
 
 function App() {
   return (
@@ -28,6 +32,17 @@ function App() {
                   </ProtectedRoute>
                 }
               />
+              <Route
+                path="/dashboard/*"
+                element={
+                  <AdminProtectedRoute>
+                    <Dashboard />
+                  </AdminProtectedRoute>
+                }
+              >
+                <Route path="search" element={<AdminSearchComponent />} />
+                <Route path="upload-csv" element={<CsvUploadComponent />} />
+              </Route>
             </Route>
           </Routes>
         </UserProvider>

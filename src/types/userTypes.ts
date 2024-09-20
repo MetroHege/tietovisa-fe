@@ -51,13 +51,5 @@ export interface ModifyUserResponse {
 }
 
 export interface getUserByTokenResponse {
-  _id: string;
-  username: string;
-  role: string;
-  email: string;
-  scores: {
-    quizId: string;
-    score: number;
-    completedAt: Date;
-  }[];
+  user: UserWithNoPassword;
 }

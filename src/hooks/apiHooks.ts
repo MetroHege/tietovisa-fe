@@ -6,6 +6,7 @@ import {
   getUserByTokenResponse,
   ModifyUserRequest,
   ModifyUserResponse,
+  UserWithNoPassword,
 } from "@/types/userTypes";
 import { useCallback, useState } from "react";
 
@@ -51,7 +52,7 @@ const useUser = () => {
     error: tokenError,
     data: tokenData,
     handleApiRequest: handleTokenApiRequest,
-  } = useApiState<getUserByTokenResponse>();
+  } = useApiState<UserWithNoPassword>();
 
   const {
     loading: modifyLoading,
@@ -94,7 +95,7 @@ const useUser = () => {
     });
   };
 
-  const getUserByToken = (token: string): Promise<getUserByTokenResponse> => {
+  const getUserByToken = (token: string): Promise<UserWithNoPassword> => {
     return handleTokenApiRequest(async () => {
       const options = {
         method: "GET",
@@ -103,10 +104,12 @@ const useUser = () => {
         },
       };
 
-      return await fetchData<getUserByTokenResponse>(
+      const response = await fetchData<getUserByTokenResponse>(
         `${import.meta.env.VITE_TIETOVISA_API}/auth/me`,
         options
       );
+
+      return response.user; // Return the user object directly
     });
   };
 

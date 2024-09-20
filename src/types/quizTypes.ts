@@ -19,3 +19,13 @@ export interface PopulatedQuiz {
 export interface deleteQuizResponse {
   message: string;
 }
+
+export interface CsvUploadResponse {
+  message: string;
+  _id: string;
+  title: string;
+  questions: Question[];
+  publishedAt: string;
+  isPublished: boolean;
+  __v: number;
+}
