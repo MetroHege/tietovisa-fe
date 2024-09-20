@@ -9,8 +9,8 @@ const Home = () => {
   const getTodayDate = () => {
     const today = new Date();
     const year = today.getFullYear();
-    const month = String(today.getMonth() + 1).padStart(2, '0');
-    const day = String(today.getDate()).padStart(2, '0');
+    const month = String(today.getMonth() + 1).padStart(2, "0");
+    const day = String(today.getDate()).padStart(2, "0");
     return `${year}-${month}-${day}`;
   };
 
@@ -30,8 +30,8 @@ const Home = () => {
   };
 
   return (
-    <div className="flex">
-      <div className="w-1/2 p-4">
+    <div className="flex flex-col md:flex-row">
+      <div className="w-full md:w-1/2 p-4">
         <h1 className="text-2xl font-bold mb-4">
           Vastaa kymmeneen päivittäin vaihtuvaan kutkuttavaan kysymykseen!
         </h1>
@@ -43,7 +43,7 @@ const Home = () => {
           Aloita vastaaminen!
         </button>
       </div>
-      <div className="w-1/2 p-4">
+      <div className="w-full md:w-1/2 p-4">
         <h2 className="text-xl font-bold mb-4">
           Aiempien päivien kysymyssarjat
         </h2>
