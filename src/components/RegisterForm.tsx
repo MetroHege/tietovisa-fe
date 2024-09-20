@@ -66,7 +66,7 @@ export function RegisterForm({ onClose }: RegisterFormProps) {
         </div>
       </div>
       <Button type="submit" className="w-full" disabled={authLoading}>
-        {authLoading ? "Loading..." : "Rekisteröidy"}
+        {authLoading ? "Ladataan..." : "Rekisteröidy"}
       </Button>
       {authError && <p className="text-red-500 mt-2">{authError}</p>}
     </form>

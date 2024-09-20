@@ -8,8 +8,12 @@ import { useParams } from "react-router-dom";
 const Quiz = () => {
   const [questions, setQuestions] = useState<Question[]>([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [quizState, setQuizState] = useState<"inProgress" | "completed">("inProgress");
-  const [userAnswers, setUserAnswers] = useState<{ text: string; isCorrect: boolean }[]>([]);
+  const [quizState, setQuizState] = useState<"inProgress" | "completed">(
+    "inProgress"
+  );
+  const [userAnswers, setUserAnswers] = useState<
+    { text: string; isCorrect: boolean }[]
+  >([]);
   const [correctAnswers, setCorrectAnswers] = useState(0);
   const [loading, setLoading] = useState(true);
   const { getQuizzesByDate, quizzesLoading, quizzesError } = useQuiz();
@@ -43,7 +47,10 @@ const Quiz = () => {
     fetchQuiz();
   }, []);
 
-  const handleAnswer = (selectedAnswer: { text: string; isCorrect: boolean }) => {
+  const handleAnswer = (selectedAnswer: {
+    text: string;
+    isCorrect: boolean;
+  }) => {
     setUserAnswers([...userAnswers, selectedAnswer]);
 
     if (selectedAnswer.isCorrect) {
@@ -58,7 +65,7 @@ const Quiz = () => {
   };
 
   if (loading || quizzesLoading) {
-    return <div>Loading...</div>;
+    return <div>Ladataan...</div>;
   }
 
   if (quizzesError) {
@@ -74,8 +81,14 @@ const Quiz = () => {
               {questions.map((_, index) => {
                 const isAnswered = index < currentQuestionIndex;
                 const status = userAnswers[index]?.isCorrect;
-                const bgColor = status === true ? "bg-green-500" : status === false ? "bg-red-500" : "bg-gray-300";
-                const icon = status === true ? "✓" : status === false ? "X" : "";
+                const bgColor =
+                  status === true
+                    ? "bg-green-500"
+                    : status === false
+                    ? "bg-red-500"
+                    : "bg-gray-300";
+                const icon =
+                  status === true ? "✓" : status === false ? "X" : "";
 
                 return (
                   <div
@@ -90,7 +103,9 @@ const Quiz = () => {
           </div>
           <hr className="border-t-2 border-gray-300 w-full max-w-[calc(100% - 2rem)] mx-auto mb-4" />
           <div className="mb-4">
-            <p className="text-lg">{questions[currentQuestionIndex].questionText}</p>
+            <p className="text-lg">
+              {questions[currentQuestionIndex].questionText}
+            </p>
             <div className="mt-2">
               {questions[currentQuestionIndex].answers.map((answer, index) => (
                 <button
@@ -110,8 +125,12 @@ const Quiz = () => {
         <div className="p-4">
           <h1 className="text-2xl font-bold mb-4">
             {correctAnswers <= 3 && "Better luck next time, try again!"}
-            {correctAnswers > 3 && correctAnswers <= 6 && "Good effort, keep it up!"}
-            {correctAnswers > 6 && correctAnswers <= 9 && "Great job, you're almost a master!"}
+            {correctAnswers > 3 &&
+              correctAnswers <= 6 &&
+              "Good effort, keep it up!"}
+            {correctAnswers > 6 &&
+              correctAnswers <= 9 &&
+              "Great job, you're almost a master!"}
             {correctAnswers === 10 && "Perfect score! Excellent work!"}
           </h1>
           <p className="text-4xl font-bold text-center mb-4">
@@ -122,13 +141,17 @@ const Quiz = () => {
             onClick={() => setShowAnswers(!showAnswers)}
           >
             {showAnswers ? "Hide Correct Answers" : "Show Correct Answers"}{" "}
-            <span className="ml-2">{showAnswers ? <FaArrowUp /> : <FaArrowDown />}</span>
+            <span className="ml-2">
+              {showAnswers ? <FaArrowUp /> : <FaArrowDown />}
+            </span>
           </button>
           {showAnswers && (
             <div className="mt-4">
               {questions.map((question, index) => {
                 const userAnswer = userAnswers[index];
-                const correctAnswer = question.answers.find((answer) => answer.isCorrect);
+                const correctAnswer = question.answers.find(
+                  (answer) => answer.isCorrect
+                );
 
                 return (
                   <div

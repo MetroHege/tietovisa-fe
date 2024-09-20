@@ -47,7 +47,7 @@ export function LoginForm({ onClose }: LoginFormProps) {
         </div>
       </div>
       <Button type="submit" className="w-full" disabled={authLoading}>
-        {authLoading ? "Loading..." : "Kirjaudu"}
+        {authLoading ? "Ladataan..." : "Kirjaudu"}
       </Button>
       {authError && <p className="text-red-500 mt-2">{authError}</p>}
     </form>
