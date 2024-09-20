@@ -18,10 +18,11 @@ const Quiz = () => {
 
   const fetchQuiz = async () => {
     if (!date) return;
+    console.log(date)
     setLoading(true);
-    const today = "2024-09-16"; // Hardcoded date for testing
+    // const today = "2024-09-02"; // Hardcoded date for testing
     try {
-      const quizData: PopulatedQuiz = await getQuizzesByDate(today); // replace with date later...
+      const quizData: PopulatedQuiz = await getQuizzesByDate(date);
       const questionsFromQuiz = quizData.questions.map((question) => ({
         _id: question._id,
         questionText: question.questionText,

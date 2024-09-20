@@ -28,7 +28,7 @@ export default function Component() {
 
   return (
     <div className={`min-h-screen ${isDarkMode ? "dark" : ""}`}>
-      <div className="flex flex-col min-h-screen">
+      <div className="flex flex-col min-h-screen w-full">
         <nav
           className="flex justify-between items-center p-4 bg-gray-100 dark:bg-gray-800"
           style={{
@@ -89,7 +89,7 @@ export default function Component() {
               </p>
             </div>
           </aside>
-          <main className="flex-grow p-8">
+          <main className="flex-grow">
             <Outlet />
           </main>
           <aside className="w-full lg:w-1/6 p-4">
