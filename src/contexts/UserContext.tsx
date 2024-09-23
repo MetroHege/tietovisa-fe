@@ -1,7 +1,7 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
+// src/contexts/UserContext.tsx
 import React, { createContext, useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useUser } from "@/hooks/apiHooks"; // Assuming `useUser` is imported from your hooks
+import { useUser } from "@/hooks/apiHooks";
 import { AuthContextType } from "@/types/LocalTypes";
 import { RegisterUserRequest, UserWithNoPassword } from "@/types/userTypes";
 
@@ -10,7 +10,8 @@ const UserContext = createContext<AuthContextType | null>(null);
 
 const UserProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<UserWithNoPassword | null>(null);
-  const [registerResult, setRegisterResult] = useState<UserWithNoPassword | null>(null);
+  const [registerResult, setRegisterResult] =
+    useState<UserWithNoPassword | null>(null);
   const [autoLoginLoading, setAutoLoginLoading] = useState(true);
 
   const {
@@ -20,7 +21,8 @@ const UserProvider = ({ children }: { children: React.ReactNode }) => {
     authError,
     getUserByToken,
     tokenLoading,
-    tokenError
+    tokenError,
+    modifyUser, // Assuming modifyUser is a function in useUser hook
   } = useUser();
 
   const navigate = useNavigate();
@@ -83,6 +85,19 @@ const UserProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
+  const handleModifyUser = async (
+    userId: string,
+    token: string,
+    updates: { username: string; email: string; password: string }
+  ) => {
+    try {
+      await modifyUser(userId, token, updates);
+      const updatedUser = { ...user, ...updates };
+      setUser(updatedUser as UserWithNoPassword);
+    } catch (e) {
+      throw new Error("Failed to update user details");
+    }
+  };
 
   // Initiate auto-login on mount
   useEffect(() => {
@@ -98,11 +113,12 @@ const UserProvider = ({ children }: { children: React.ReactNode }) => {
         handleLogout,
         handleAutoLogin,
         handleRegister,
+        modifyUser: handleModifyUser, // Use the renamed function here
         autoLoginLoading,
         authLoading,
         authError,
         tokenLoading,
-        tokenError
+        tokenError,
       }}
     >
       {children}

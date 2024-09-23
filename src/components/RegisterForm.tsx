@@ -3,6 +3,7 @@ import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { useUserContext } from "@/hooks/contextHooks";
+import { EyeIcon, EyeOffIcon } from "lucide-react"; // Import eye icons
 
 interface RegisterFormProps {
   onClose: () => void;
@@ -13,11 +14,13 @@ export function RegisterForm({ onClose }: RegisterFormProps) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false); // State for password visibility
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false); // State for confirm password visibility
 
   const onRegisterSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (password !== confirmPassword) {
-      alert("Passwords do not match");
+      alert("Salasanat eivät täsmää");
       return;
     }
     if (email && password) {
@@ -44,25 +47,53 @@ export function RegisterForm({ onClose }: RegisterFormProps) {
             required
           />
         </div>
-        <div className="grid gap-2">
+        <div className="grid gap-2 relative">
           <Label htmlFor="password-register">Salasana</Label>
-          <Input
-            id="password-register"
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
+          <div className="relative">
+            <Input
+              id="password-register"
+              type={showPassword ? "text" : "password"} // Toggle input type
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              className="pr-10" // Add padding to the right to make space for the icon
+            />
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute inset-y-0 right-0 pr-3 flex items-center justify-center h-full"
+            >
+              {showPassword ? (
+                <EyeOffIcon className="h-5 w-5 text-gray-500" />
+              ) : (
+                <EyeIcon className="h-5 w-5 text-gray-500" />
+              )}
+            </button>
+          </div>
         </div>
-        <div className="grid gap-2">
+        <div className="grid gap-2 relative">
           <Label htmlFor="confirm-password">Vahvista salasana</Label>
-          <Input
-            id="confirm-password"
-            type="password"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            required
-          />
+          <div className="relative">
+            <Input
+              id="confirm-password"
+              type={showConfirmPassword ? "text" : "password"} // Toggle input type
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              required
+              className="pr-10" // Add padding to the right to make space for the icon
+            />
+            <button
+              type="button"
+              onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+              className="absolute inset-y-0 right-0 pr-3 flex items-center justify-center h-full"
+            >
+              {showConfirmPassword ? (
+                <EyeOffIcon className="h-5 w-5 text-gray-500" />
+              ) : (
+                <EyeIcon className="h-5 w-5 text-gray-500" />
+              )}
+            </button>
+          </div>
         </div>
       </div>
       <Button type="submit" className="w-full" disabled={authLoading}>
