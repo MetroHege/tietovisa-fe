@@ -118,11 +118,16 @@ const Navbar = () => {
               </Button>
               {user ? (
                 <>
-                  <div className="text-black dark:text-white">
-                    <p>Username: {user.username}</p>
-                    <p>Email: {user.email}</p>
+                  <div className="bg-gray-100 dark:bg-gray-800 p-4 rounded-lg shadow-md">
+                    <div className="text-black dark:text-white">
+                      <p className="text-lg font-semibold">
+                        Käyttäjänimi: {user.username}
+                      </p>
+                      <p className="text-sm text-gray-600 dark:text-gray-400">
+                        Sähköposti: {user.email}
+                      </p>
+                    </div>
                   </div>
-
                   {user.role === "admin" && (
                     <Link className="w-full" to="/dashboard">
                       <Button size="lg" className="w-full">
