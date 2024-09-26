@@ -7,6 +7,20 @@ import { useState } from "react";
 import { useUserContext } from "@/hooks/contextHooks";
 import { LoginRegisterModal } from "./LoginRegisterModal";
 import ModifyUserModal from "./ModifyUserModal"; // Import the ModifyUserModal component
+import { useSwipeable } from "react-swipeable";
+
+const swipeOpenMenuStyles: React.CSSProperties = {
+  position: "fixed",
+  right: 0,
+  width: "33%",
+  height: "100%",
+  zIndex: 10,
+};
+
+const swipeCloseMenuStyles: React.CSSProperties = {
+  width: "100%",
+  height: "100%",
+};
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -23,8 +37,19 @@ const Navbar = () => {
     setIsModifyUserModalOpen(true);
   };
 
+  const openHandlers = useSwipeable({
+    trackMouse: true,
+    onSwipedLeft: () => setIsMenuOpen(true),
+  });
+
+  const closeHandlers = useSwipeable({
+    trackMouse: true,
+    onSwipedRight: () => setIsMenuOpen(false),
+  });
+
   return (
     <nav className="relative flex justify-between items-center p-8 bg-white dark:bg-gray-900 min-h-[80px]">
+      <div {...openHandlers} style={swipeOpenMenuStyles} />
       <div className="absolute inset-0 w-full h-full z-0">
         <svg
           width="100%"
@@ -72,7 +97,7 @@ const Navbar = () => {
       <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen}>
         <SheetTrigger asChild>
           <Button variant="ghost" size="icon" className="relative z-10">
-            <Menu className="h-6 w-6 text-black dark:text-white" />
+            <Menu className="h-8 w-8 text-black dark:text-white" />
           </Button>
         </SheetTrigger>
         <SheetContent
@@ -81,41 +106,43 @@ const Navbar = () => {
             theme === "dark" ? "dark:bg-gray-900" : "bg-white"
           }`}
         >
-          <div className="flex flex-col space-y-4 mt-4">
-            <Button variant="ghost" size="lg" onClick={toggleTheme}>
-              {theme === "dark" ? (
-                <Sun className="mr-2 h-5 w-5" />
-              ) : (
-                <Moon className="mr-2 h-5 w-5" />
-              )}
-              {theme === "dark" ? "Light Mode" : "Dark Mode"}
-            </Button>
-            {user ? (
-              <>
-                <div className="text-black dark:text-white">
-                  <p>Username: {user.username}</p>
-                  <p>Email: {user.email}</p>
-                </div>
-
-                {user.role === "admin" && (
-                  <Link className="w-full" to="/dashboard">
-                    <Button size="lg" className="w-full">
-                      Dashboard
-                    </Button>
-                  </Link>
+          <div {...closeHandlers} style={swipeCloseMenuStyles}>
+            <div className="flex flex-col space-y-4 mt-4">
+              <Button variant="ghost" size="lg" onClick={toggleTheme}>
+                {theme === "dark" ? (
+                  <Sun className="mr-2 h-5 w-5" />
+                ) : (
+                  <Moon className="mr-2 h-5 w-5" />
                 )}
-                <Button size="lg" onClick={handleModifyUserClick}>
-                  Muokkaa käyttäjää
-                </Button>
-                <Button size="lg" onClick={handleLogout}>
-                  Logout
-                </Button>
-              </>
-            ) : (
-              <Button variant="outline" size="lg" onClick={handleLoginClick}>
-                <User className="mr-2 h-4 w-4" /> Kirjaudu
+                {theme === "dark" ? "Light Mode" : "Dark Mode"}
               </Button>
-            )}
+              {user ? (
+                <>
+                  <div className="text-black dark:text-white">
+                    <p>Username: {user.username}</p>
+                    <p>Email: {user.email}</p>
+                  </div>
+
+                  {user.role === "admin" && (
+                    <Link className="w-full" to="/dashboard">
+                      <Button size="lg" className="w-full">
+                        Dashboard
+                      </Button>
+                    </Link>
+                  )}
+                  <Button size="lg" onClick={handleModifyUserClick}>
+                    Muokkaa käyttäjää
+                  </Button>
+                  <Button size="lg" onClick={handleLogout}>
+                    Logout
+                  </Button>
+                </>
+              ) : (
+                <Button variant="outline" size="lg" onClick={handleLoginClick}>
+                  <User className="mr-2 h-4 w-4" /> Kirjaudu
+                </Button>
+              )}
+            </div>
           </div>
         </SheetContent>
       </Sheet>
