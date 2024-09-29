@@ -38,28 +38,28 @@ const Home = () => {
   };
 
   return (
-    <div className="flex flex-col md:flex-row">
+    <div className="flex flex-col md:flex-row gap-4">
       <div className="w-full md:w-1/2 p-4">
-        <h1 className="text-2xl font-bold mb-4 dark:text-white">
+        <h1 className="text-xl md:text-2xl font-bold mb-4 dark:text-white">
           Vastaa kymmeneen päivittäin vaihtuvaan kutkuttavaan kysymykseen!
         </h1>
         <hr className="border-t-2 border-gray-300 w-full max-w-[calc(100% - 2rem)] mx-auto mb-4" />
         <button
-          className="block w-full p-2 mt-2 bg-blue-500 text-white rounded font-bold"
+          className="block w-full p-3 mt-4 bg-blue-500 text-white rounded font-bold text-lg hover:bg-blue-600 transition-all"
           onClick={() => handleQuizSelection(getTodayDate())}
         >
           Aloita vastaaminen!
         </button>
       </div>
-      <div className="w-full md:w-1/2 p-4">
-        <h2 className="text-xl font-bold mb-4 dark:text-white">
+      <div className="relative z-10 w-full md:w-1/2 p-4">
+        <h2 className="text-lg md:text-xl font-bold mb-4 dark:text-white">
           Aiempien päivien kysymyssarjat
         </h2>
         <hr className="border-t-2 border-gray-300 w-full max-w-[calc(100% - 2rem)] mx-auto mb-4" />
         {previousQuizzes.map((date) => (
           <button
             key={date}
-            className="block w-full p-2 mt-2 bg-blue-500 text-white rounded font-bold text-center"
+            className="block w-full p-3 mt-4 bg-blue-500 text-white rounded font-bold text-center text-lg hover:bg-blue-600 hover:shadow-xl transition duration-300"
             onClick={() => handleQuizSelection(date)}
           >
             {date}

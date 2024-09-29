@@ -73,10 +73,10 @@ const Quiz = () => {
   }
 
   return (
-    <div className="relative p-4">
+    <div className="relative p-4 max-w-3xl mx-auto">
       {quizState === "inProgress" && (
         <div className="question-section">
-          <div className="flex justify-center mb-4">
+          <div className="flex justify-center mb-6">
             <div className="flex flex-wrap justify-center space-x-2">
               {questions.map((_, index) => {
                 const isAnswered = index < currentQuestionIndex;
@@ -87,30 +87,39 @@ const Quiz = () => {
                     : status === false
                     ? "bg-red-500"
                     : "bg-gray-300";
+                    
                 const icon =
                   status === true ? "✓" : status === false ? "X" : "";
 
                 return (
                   <div
                     key={index}
-                    className={`flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 mx-1 text-white rounded-full ${bgColor}`}
+                    className={`flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 mx-1 text-black rounded-full ${bgColor}`}
                   >
-                    {isAnswered && icon}
+                    {isAnswered && (
+                      <span
+                        className={`text-xl font-bold ${
+                          status === true ? "text-black" : status === false ? "text-black" : "text-black"
+                        }`}
+                      >
+                        {icon}
+                      </span>
+                    )}
                   </div>
                 );
               })}
             </div>
           </div>
-          <hr className="border-t-2 border-gray-300 w-full max-w-[calc(100% - 2rem)] mx-auto mb-4" />
-          <div className="mb-4">
-            <p className="text-lg">
+          <hr className="border-t-2 border-gray-300 w-full max-w-[calc(100% - 2rem)] mx-auto mb-6" />
+          <div className="mb-6">
+            <p className="text-lg sm:text-xl dark:text-white text-center">
               {questions[currentQuestionIndex].questionText}
             </p>
             <div className="mt-2">
               {questions[currentQuestionIndex].answers.map((answer, index) => (
                 <button
                   key={index}
-                  className="block w-full p-2 mt-2 bg-blue-500 text-white rounded"
+                  className="block w-full p-3 mt-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-all"
                   onClick={() => handleAnswer(answer)}
                 >
                   {answer.text}
@@ -123,7 +132,7 @@ const Quiz = () => {
 
       {quizState === "completed" && (
         <div className="p-4">
-          <h1 className="text-2xl font-bold mb-4">
+          <h1 className="text-2xl font-bold mb-6 text-center dark:text-white">
             {correctAnswers <= 3 && "Better luck next time, try again!"}
             {correctAnswers > 3 &&
               correctAnswers <= 6 &&
@@ -133,11 +142,11 @@ const Quiz = () => {
               "Great job, you're almost a master!"}
             {correctAnswers === 10 && "Perfect score! Excellent work!"}
           </h1>
-          <p className="text-4xl font-bold text-center mb-4">
+          <p className="text-4xl font-bold text-center mb-6 dark:text-white">
             {correctAnswers}/{questions.length}
           </p>
           <button
-            className="w-full p-2 mt-2 bg-blue-500 text-black rounded font-bold flex justify-center items-center"
+            className="w-full p-3 mt-3 bg-blue-500 text-white rounded-lg font-bold flex justify-center items-center hover:bg-blue-600 transition-all"
             onClick={() => setShowAnswers(!showAnswers)}
           >
             {showAnswers ? "Hide Correct Answers" : "Show Correct Answers"}{" "}
@@ -146,7 +155,7 @@ const Quiz = () => {
             </span>
           </button>
           {showAnswers && (
-            <div className="mt-4">
+            <div className="mt-6">
               {questions.map((question, index) => {
                 const userAnswer = userAnswers[index];
                 const correctAnswer = question.answers.find(
@@ -156,19 +165,19 @@ const Quiz = () => {
                 return (
                   <div
                     key={index}
-                    className={`mb-4 p-4 rounded ${
-                      userAnswer?.isCorrect ? "bg-green-100" : "bg-red-100"
+                    className={`mb-4 p-4 rounded-lg ${
+                      userAnswer?.isCorrect ? "bg-green-200" : "bg-red-200"
                     }`}
                   >
-                    <p className="text-lg font-bold">{question.questionText}</p>
-                    <div className="mt-2">
+                    <p className="text- sm:text-lg lg:text-xl font-bold">{question.questionText}</p>
+                    <div className="mt-2 space-y-2">
                       {question.answers.map((option, optionIndex) => {
                         const isCorrect = option.isCorrect;
                         const isSelected = option.text === userAnswer?.text;
                         const bgColor = isCorrect
-                          ? "bg-green-500"
+                          ? "bg-green-700"
                           : isSelected
-                          ? "bg-red-500"
+                          ? "bg-red-900"
                           : "bg-gray-600"; // muuta
                         return (
                           <div
@@ -181,7 +190,7 @@ const Quiz = () => {
                       })}
                     </div>
                     {!userAnswer?.isCorrect && correctAnswer && (
-                      <p className="mt-2 text-sm text-gray-700 font-bold">
+                      <p className="mt-2 text-base text-gray-800 font-bold">
                         Correct Answer: {correctAnswer.text}
                       </p>
                     )}
