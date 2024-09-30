@@ -48,7 +48,7 @@ const Navbar = () => {
   });
 
   return (
-    <nav className="relative flex justify-between items-center p-8 bg-white dark:bg-gray-900 min-h-[80px]">
+    <nav className="relative flex justify-between items-center p-8 bg-gray-100 dark:bg-gray-900 min-h-[80px]">
       <div {...openHandlers} style={swipeOpenMenuStyles} />
       <div className="absolute inset-0 w-full h-full z-0">
         <svg
@@ -90,7 +90,7 @@ const Navbar = () => {
         </svg>
       </div>
       <Link to={"/"} className="relative z-10">
-      <div className="text-2xl font-bold text-black dark:text-white transition duration-300 hover:text-blue-500 hover:scale-105 dark:hover:text-gray-200">
+      <div className="text-2xl font-bold text-black dark:text-white transition duration-300 hover:text-gray-800 hover:scale-105 dark:hover:text-gray-200">
   Tietovisasaitti
 </div>
 

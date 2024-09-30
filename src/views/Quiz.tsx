@@ -166,18 +166,18 @@ const Quiz = () => {
                   <div
                     key={index}
                     className={`mb-4 p-4 rounded-lg ${
-                      userAnswer?.isCorrect ? "bg-green-200" : "bg-red-200"
+                      userAnswer?.isCorrect ? "bg-green-200 shadow-2xl" : "bg-red-200 shadow-2xl"
                     }`}
                   >
-                    <p className="text- sm:text-lg lg:text-xl font-bold">{question.questionText}</p>
+                    <p className="sm:text-lg lg:text-xl font-bold">{question.questionText}</p>
                     <div className="mt-2 space-y-2">
                       {question.answers.map((option, optionIndex) => {
                         const isCorrect = option.isCorrect;
                         const isSelected = option.text === userAnswer?.text;
                         const bgColor = isCorrect
-                          ? "bg-green-700"
+                          ? "bg-green-800 shadow-2xl font-semibold"
                           : isSelected
-                          ? "bg-red-900"
+                          ? "bg-red-900 shadow-2xl font-semibold"
                           : "bg-gray-600"; // muuta
                         return (
                           <div
