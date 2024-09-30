@@ -2,7 +2,6 @@ import useQuiz from "@/hooks/quizHooks";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-// Helper function to format date to YYYY-MM-DD
 const formatDate = (date: Date) => {
   const year = date.getFullYear();
   const month = String(date.getMonth() + 1).padStart(2, "0");
@@ -10,12 +9,18 @@ const formatDate = (date: Date) => {
   return `${year}-${month}-${day}`;
 };
 
+const formatDateToDDMMYYYY = (date: Date) => {
+  const year = date.getFullYear();
+  const month = date.getMonth() + 1;
+  const day = date.getDate();
+  return `${day}.${month}.${year}`;
+};
+
 const Home = () => {
   const navigate = useNavigate();
   const [previousQuizzes, setPreviousQuizzes] = useState<string[]>([]);
   const { getQuizzes } = useQuiz();
 
-  // Get today's date in YYYY-MM-DD format
   const getTodayDate = () => {
     const today = new Date();
     return formatDate(today);
@@ -62,7 +67,7 @@ const Home = () => {
             className="block w-full p-3 mt-4 bg-blue-500 text-white rounded font-bold text-center text-lg hover:bg-blue-600 hover:shadow-xl transition duration-300"
             onClick={() => handleQuizSelection(date)}
           >
-            {date}
+            {formatDateToDDMMYYYY(new Date(date))}
           </button>
         ))}
       </div>
