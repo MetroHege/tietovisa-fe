@@ -80,7 +80,7 @@ const Quiz = () => {
           {questions.map((question, questionIndex) => (
             <div key={questionIndex} className="mb-6">
               <p className="text-lg sm:text-xl dark:text-white text-center">
-                {question.questionText}
+                {questionIndex + 1}. {question.questionText}
               </p>
               <div className="mt-2">
                 {question.answers.map((answer, answerIndex) => (
@@ -153,7 +153,7 @@ const Quiz = () => {
                     }`}
                   >
                     <p className="sm:text-lg lg:text-xl font-bold">
-                      {question.questionText}
+                      {index + 1}. {question.questionText}
                     </p>
                     <div className="mt-2 space-y-2">
                       {question.answers.map((option, optionIndex) => {
