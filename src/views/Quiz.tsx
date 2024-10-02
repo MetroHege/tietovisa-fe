@@ -7,7 +7,6 @@ import { useParams } from "react-router-dom";
 
 const Quiz = () => {
   const [questions, setQuestions] = useState<Question[]>([]);
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [quizState, setQuizState] = useState<"inProgress" | "completed">(
     "inProgress"
   );
@@ -22,9 +21,8 @@ const Quiz = () => {
 
   const fetchQuiz = async () => {
     if (!date) return;
-    console.log(date)
+    console.log(date);
     setLoading(true);
-    // const today = "2024-09-02"; // Hardcoded date for testing
     try {
       const quizData: PopulatedQuiz = await getQuizzesByDate(date);
       const questionsFromQuiz = quizData.questions.map((question) => ({
@@ -47,21 +45,24 @@ const Quiz = () => {
     fetchQuiz();
   }, []);
 
-  const handleAnswer = (selectedAnswer: {
-    text: string;
-    isCorrect: boolean;
-  }) => {
-    setUserAnswers([...userAnswers, selectedAnswer]);
+  const handleAnswer = (
+    questionIndex: number,
+    selectedAnswer: { text: string; isCorrect: boolean }
+  ) => {
+    const newUserAnswers = [...userAnswers];
+    newUserAnswers[questionIndex] = selectedAnswer;
+    setUserAnswers(newUserAnswers);
+  };
 
-    if (selectedAnswer.isCorrect) {
-      setCorrectAnswers((prev) => prev + 1);
-    }
-
-    if (currentQuestionIndex + 1 >= questions.length) {
-      setQuizState("completed");
-    } else {
-      setCurrentQuestionIndex((prev) => prev + 1);
-    }
+  const handleSubmit = () => {
+    let correctCount = 0;
+    userAnswers.forEach((answer) => {
+      if (answer?.isCorrect) {
+        correctCount++;
+      }
+    });
+    setCorrectAnswers(correctCount);
+    setQuizState("completed");
   };
 
   if (loading || quizzesLoading) {
@@ -76,57 +77,35 @@ const Quiz = () => {
     <div className="relative p-4 max-w-3xl mx-auto">
       {quizState === "inProgress" && (
         <div className="question-section">
-          <div className="flex justify-center mb-6">
-            <div className="flex flex-wrap justify-center space-x-2">
-              {questions.map((_, index) => {
-                const isAnswered = index < currentQuestionIndex;
-                const status = userAnswers[index]?.isCorrect;
-                const bgColor =
-                  status === true
-                    ? "bg-green-500"
-                    : status === false
-                    ? "bg-red-500"
-                    : "bg-gray-300";
-                    
-                const icon =
-                  status === true ? "✓" : status === false ? "X" : "";
-
-                return (
-                  <div
-                    key={index}
-                    className={`flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 mx-1 text-black rounded-full ${bgColor}`}
+          {questions.map((question, questionIndex) => (
+            <div key={questionIndex} className="mb-6">
+              <p className="text-lg sm:text-xl dark:text-white text-center">
+                {question.questionText}
+              </p>
+              <div className="mt-2">
+                {question.answers.map((answer, answerIndex) => (
+                  <button
+                    key={answerIndex}
+                    className={`block w-full p-3 mt-3 rounded-lg transition-all ${
+                      userAnswers[questionIndex]?.text === answer.text
+                        ? "bg-blue-700 text-white"
+                        : "bg-blue-500 text-white hover:bg-blue-600"
+                    }`}
+                    onClick={() => handleAnswer(questionIndex, answer)}
                   >
-                    {isAnswered && (
-                      <span
-                        className={`text-xl font-bold ${
-                          status === true ? "text-black" : status === false ? "text-black" : "text-black"
-                        }`}
-                      >
-                        {icon}
-                      </span>
-                    )}
-                  </div>
-                );
-              })}
+                    {answer.text}
+                  </button>
+                ))}
+              </div>
             </div>
-          </div>
-          <hr className="border-t-2 border-gray-300 w-full max-w-[calc(100% - 2rem)] mx-auto mb-6" />
-          <div className="mb-6">
-            <p className="text-lg sm:text-xl dark:text-white text-center">
-              {questions[currentQuestionIndex].questionText}
-            </p>
-            <div className="mt-2">
-              {questions[currentQuestionIndex].answers.map((answer, index) => (
-                <button
-                  key={index}
-                  className="block w-full p-3 mt-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-all"
-                  onClick={() => handleAnswer(answer)}
-                >
-                  {answer.text}
-                </button>
-              ))}
-            </div>
-          </div>
+          ))}
+          <button
+            className="block w-full p-3 mt-6 bg-green-500 text-white rounded-lg font-bold hover:bg-green-600 transition-all"
+            onClick={handleSubmit}
+            disabled={userAnswers.length !== questions.length}
+          >
+            Submit Answers
+          </button>
         </div>
       )}
 
@@ -166,10 +145,14 @@ const Quiz = () => {
                   <div
                     key={index}
                     className={`mb-4 p-4 rounded-lg ${
-                      userAnswer?.isCorrect ? "bg-green-200 shadow-2xl" : "bg-red-200 shadow-2xl"
+                      userAnswer?.isCorrect
+                        ? "bg-green-200 shadow-2xl"
+                        : "bg-red-200 shadow-2xl"
                     }`}
                   >
-                    <p className="sm:text-lg lg:text-xl font-bold">{question.questionText}</p>
+                    <p className="sm:text-lg lg:text-xl font-bold">
+                      {question.questionText}
+                    </p>
                     <div className="mt-2 space-y-2">
                       {question.answers.map((option, optionIndex) => {
                         const isCorrect = option.isCorrect;
@@ -178,7 +161,7 @@ const Quiz = () => {
                           ? "bg-green-800 shadow-2xl font-semibold"
                           : isSelected
                           ? "bg-red-900 shadow-2xl font-semibold"
-                          : "bg-gray-600"; // muuta
+                          : "bg-gray-600";
                         return (
                           <div
                             key={optionIndex}
