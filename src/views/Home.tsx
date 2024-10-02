@@ -42,6 +42,15 @@ const Home = () => {
     navigate(`/quiz/${date}`);
   };
 
+  const handleViewAllQuizzes = () => {
+    navigate("/all-quizzes");
+  };
+
+  // Sort quizzes by date in descending order and take the latest seven
+  const latestQuizzes = previousQuizzes
+    .sort((a, b) => new Date(b).getTime() - new Date(a).getTime())
+    .slice(0, 7);
+
   return (
     <div className="flex flex-col md:flex-row gap-4">
       <div className="w-full md:w-1/2 p-4">
@@ -61,7 +70,7 @@ const Home = () => {
           Aiempien päivien kysymyssarjat
         </h2>
         <hr className="border-t-2 border-gray-300 w-full max-w-[calc(100% - 2rem)] mx-auto mb-4" />
-        {previousQuizzes.map((date) => (
+        {latestQuizzes.map((date) => (
           <button
             key={date}
             className="block w-full p-3 mt-4 bg-blue-500 text-white rounded font-bold text-center text-lg hover:bg-blue-600 hover:shadow-xl transition duration-300"
@@ -70,6 +79,12 @@ const Home = () => {
             {formatDateToDDMMYYYY(new Date(date))}
           </button>
         ))}
+        <button
+          className="block w-full p-3 mt-4 bg-green-500 text-white rounded font-bold text-center text-lg hover:bg-green-600 hover:shadow-xl transition duration-300"
+          onClick={handleViewAllQuizzes}
+        >
+          Lisää kysymyssarjoja
+        </button>
       </div>
     </div>
   );

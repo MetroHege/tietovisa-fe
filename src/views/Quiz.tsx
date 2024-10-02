@@ -104,7 +104,7 @@ const Quiz = () => {
             onClick={handleSubmit}
             disabled={userAnswers.length !== questions.length}
           >
-            Submit Answers
+            Jätä vastaukset
           </button>
         </div>
       )}
@@ -128,7 +128,9 @@ const Quiz = () => {
             className="w-full p-3 mt-3 bg-blue-500 text-white rounded-lg font-bold flex justify-center items-center hover:bg-blue-600 transition-all"
             onClick={() => setShowAnswers(!showAnswers)}
           >
-            {showAnswers ? "Hide Correct Answers" : "Show Correct Answers"}{" "}
+            {showAnswers
+              ? "Piilota oikeat vastaukset"
+              : "Näytä oikeat vastaukset"}{" "}
             <span className="ml-2">
               {showAnswers ? <FaArrowUp /> : <FaArrowDown />}
             </span>
@@ -174,7 +176,7 @@ const Quiz = () => {
                     </div>
                     {!userAnswer?.isCorrect && correctAnswer && (
                       <p className="mt-2 text-base text-gray-800 font-bold">
-                        Correct Answer: {correctAnswer.text}
+                        Oikea vastaus: {correctAnswer.text}
                       </p>
                     )}
                   </div>

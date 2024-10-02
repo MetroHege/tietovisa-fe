@@ -12,6 +12,7 @@ import AdminProtectedRoute from "./components/AdminProtectedRoute";
 import Dashboard from "./components/Dashboard";
 import CsvUploadComponent from "./components/CsvUploadComponent";
 import AdminSearchComponent from "./components/AdminSearchComponent";
+import AllQuizzes from "./views/AllQuizzes";
 
 function App() {
   return (
@@ -24,6 +25,8 @@ function App() {
               <Route path="/quiz" element={<Quiz />} />
               <Route path="/quiz/:date" element={<Quiz />} />
               <Route path="/logout" element={<Logout />} />
+              <Route path="/all-quizzes" element={<AllQuizzes />} />{" "}
+              {/* Add the new route */}
               <Route
                 path="/secret"
                 element={
