@@ -12,7 +12,21 @@ const formatDateToDDMMYYYY = (date: Date) => {
 
 const formatMonthYear = (date: Date) => {
   const year = date.getFullYear();
-  const month = date.toLocaleString("default", { month: "long" });
+  const monthNames = [
+    "Tammikuu",
+    "Helmikuu",
+    "Maaliskuu",
+    "Huhtikuu",
+    "Toukokuu",
+    "Kesäkuu",
+    "Heinäkuu",
+    "Elokuu",
+    "Syyskuu",
+    "Lokakuu",
+    "Marraskuu",
+    "Joulukuu",
+  ];
+  const month = monthNames[date.getMonth()];
   return `${month} ${year}`;
 };
 
@@ -29,6 +43,10 @@ const AllQuizzes = () => {
   const fetchQuizzes = async () => {
     const quizzes = await getQuizzes();
     const publishedDates = quizzes.map((quiz) => new Date(quiz.publishedAt));
+
+    // Sort dates in descending order
+    publishedDates.sort((a, b) => b.getTime() - a.getTime());
+
     const groupedByMonth: { [key: string]: string[] } = {};
 
     publishedDates.forEach((date) => {
@@ -60,7 +78,7 @@ const AllQuizzes = () => {
   return (
     <div className="p-4 max-w-3xl mx-auto">
       <h1 className="text-2xl font-bold mb-4 dark:text-white">
-        All Previous Quizzes
+        Aiempien kuukausien kysymyssarjat
       </h1>
       <hr className="border-t-2 border-gray-300 w-full max-w-[calc(100% - 2rem)] mx-auto mb-4" />
       {Object.keys(previousQuizzes).map((month) => (

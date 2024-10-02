@@ -12,7 +12,7 @@ import { useSwipeable } from "react-swipeable";
 const swipeOpenMenuStyles: React.CSSProperties = {
   position: "fixed",
   right: 0,
-  width: "33%",
+  width: "10%",
   height: "100%",
   zIndex: 10,
 };
@@ -90,10 +90,9 @@ const Navbar = () => {
         </svg>
       </div>
       <Link to={"/"} className="relative z-10">
-      <div className="text-2xl font-bold text-black dark:text-white transition duration-300 hover:text-gray-800 hover:scale-105 dark:hover:text-gray-200">
-  Tietovisasaitti
-</div>
-
+        <div className="text-2xl font-bold text-black dark:text-white transition duration-300 hover:text-gray-800 hover:scale-105 dark:hover:text-gray-200">
+          Tietovisasaitti
+        </div>
       </Link>
       <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen}>
         <SheetTrigger asChild>
@@ -139,8 +138,12 @@ const Navbar = () => {
                   <Button size="lg" onClick={handleModifyUserClick}>
                     Muokkaa käyttäjää
                   </Button>
-                  <Button size="lg" onClick={handleLogout}>
-                    Logout
+                  <Button
+                    size="lg"
+                    className="bg-red-500 text-white hover:bg-red-700"
+                    onClick={handleLogout}
+                  >
+                    Kirjaudu ulos
                   </Button>
                 </>
               ) : (
@@ -148,6 +151,11 @@ const Navbar = () => {
                   <User className="mr-2 h-4 w-4" /> Kirjaudu
                 </Button>
               )}
+              <Link className="w-full mt-auto" to="/all-quizzes">
+                <Button size="lg" className="w-full">
+                  Kaikki visat
+                </Button>
+              </Link>
             </div>
           </div>
         </SheetContent>

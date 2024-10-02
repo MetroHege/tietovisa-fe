@@ -15,6 +15,7 @@ const Quiz = () => {
   >([]);
   const [correctAnswers, setCorrectAnswers] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const { getQuizzesByDate, quizzesLoading, quizzesError } = useQuiz();
   const [showAnswers, setShowAnswers] = useState(false);
   const { date } = useParams<{ date: string }>();
@@ -52,9 +53,15 @@ const Quiz = () => {
     const newUserAnswers = [...userAnswers];
     newUserAnswers[questionIndex] = selectedAnswer;
     setUserAnswers(newUserAnswers);
+    setErrorMessage(null); // Clear error message on answer selection
   };
 
   const handleSubmit = () => {
+    if (userAnswers.length !== questions.length) {
+      setErrorMessage("Vastaatathan kaikkiin kysymyksiin!");
+      return;
+    }
+
     let correctCount = 0;
     userAnswers.forEach((answer) => {
       if (answer?.isCorrect) {
@@ -70,16 +77,19 @@ const Quiz = () => {
   }
 
   if (quizzesError) {
-    return <div>Error loading quiz: {quizzesError}</div>;
+    return <div>Virhe kysymysten lataamisessa: {quizzesError}</div>;
   }
 
   return (
     <div className="relative p-4 max-w-3xl mx-auto">
       {quizState === "inProgress" && (
         <div className="question-section">
+          <h2 className="text-2xl font-bold mb-4 text-center dark:text-white">
+            Päivän {date} kysymyssarja
+          </h2>
           {questions.map((question, questionIndex) => (
             <div key={questionIndex} className="mb-6">
-              <p className="text-lg sm:text-xl dark:text-white text-center">
+              <p className="text-lg sm:text-xl dark:text-white text-center font-bold">
                 {questionIndex + 1}. {question.questionText}
               </p>
               <div className="mt-2">
@@ -99,10 +109,12 @@ const Quiz = () => {
               </div>
             </div>
           ))}
+          {errorMessage && (
+            <p className="text-red-500 text-center mb-2">{errorMessage}</p>
+          )}
           <button
             className="block w-full p-3 mt-6 bg-green-500 text-white rounded-lg font-bold hover:bg-green-600 transition-all"
             onClick={handleSubmit}
-            disabled={userAnswers.length !== questions.length}
           >
             Jätä vastaukset
           </button>
@@ -112,14 +124,15 @@ const Quiz = () => {
       {quizState === "completed" && (
         <div className="p-4">
           <h1 className="text-2xl font-bold mb-6 text-center dark:text-white">
-            {correctAnswers <= 3 && "Better luck next time, try again!"}
+            {correctAnswers <= 3 &&
+              "Parempi onni ensi kerralla, yritä uudelleen!"}
             {correctAnswers > 3 &&
               correctAnswers <= 6 &&
-              "Good effort, keep it up!"}
+              "Hyvä yritys, jatka samaan malliin!"}
             {correctAnswers > 6 &&
               correctAnswers <= 9 &&
-              "Great job, you're almost a master!"}
-            {correctAnswers === 10 && "Perfect score! Excellent work!"}
+              "Hienoa työtä, olet melkein mestari!"}
+            {correctAnswers === 10 && "Täydellinen tulos! Erinomaista työtä!"}
           </h1>
           <p className="text-4xl font-bold text-center mb-6 dark:text-white">
             {correctAnswers}/{questions.length}
