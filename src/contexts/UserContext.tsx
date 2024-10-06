@@ -5,7 +5,6 @@ import { useUser } from "@/hooks/apiHooks";
 import { AuthContextType } from "@/types/LocalTypes";
 import { RegisterUserRequest, UserWithNoPassword } from "@/types/userTypes";
 
-// Create UserContext
 const UserContext = createContext<AuthContextType | null>(null);
 
 const UserProvider = ({ children }: { children: React.ReactNode }) => {
@@ -47,7 +46,7 @@ const UserProvider = ({ children }: { children: React.ReactNode }) => {
       if (registerResponse) {
         const { password, ...userWithoutPassword } = registerResponse.user;
         setRegisterResult(userWithoutPassword);
-        navigate("/login");
+        navigate("/");
       }
     } catch (e) {
       alert((e as Error).message);
@@ -71,7 +70,7 @@ const UserProvider = ({ children }: { children: React.ReactNode }) => {
       if (token) {
         const userResponse = await getUserByToken(token);
         if (userResponse) {
-          setUser(userResponse); // Sets user state
+          setUser(userResponse);
         } else {
           console.log("Failed to fetch user data.");
         }
@@ -99,7 +98,6 @@ const UserProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
-  // Initiate auto-login on mount
   useEffect(() => {
     handleAutoLogin();
   }, []);

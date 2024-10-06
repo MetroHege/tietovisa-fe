@@ -8,7 +8,8 @@ const Footer = () => {
         <p className="text-sm text-gray-600 dark:text-gray-400 mt-4">
           &copy; 2024 Tietovisasaitti. All rights reserved.
         </p>
-        <div className="flex justify-center items-center space-x-4 mt-4">
+        {/* Flex layout on larger screens, stack vertically on smaller screens */}
+        <div className="flex flex-col md:flex-row justify-center items-center space-y-4 md:space-y-0 md:space-x-4 mt-4">
           <Link
             to="/"
             className="flex items-center text-sm text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-200 transition-colors duration-300"

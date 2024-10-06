@@ -42,8 +42,10 @@ export interface RegisterAndLoginUserResponse {
 }
 
 export interface ModifyUserRequest {
+  username: string;
   email: string;
-  password: string
+  password: string;
+  role: string;
 }
 
 export interface ModifyUserResponse {
@@ -52,4 +54,10 @@ export interface ModifyUserResponse {
 
 export interface getUserByTokenResponse {
   user: UserWithNoPassword;
+}
+
+export type UsersResponse = User[];
+
+export interface UsersCountResponse {
+  totalUsers: number
 }

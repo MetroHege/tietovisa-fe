@@ -7,6 +7,9 @@ import {
   ModifyUserRequest,
   ModifyUserResponse,
   UserWithNoPassword,
+  UsersResponse,
+  UsersCountResponse,
+  User,
 } from "@/types/userTypes";
 import { useCallback, useState } from "react";
 
@@ -61,6 +64,29 @@ const useUser = () => {
     handleApiRequest: handleModifyApiRequest,
   } = useApiState<ModifyUserResponse>();
 
+  const {
+    loading: usersLoading,
+    error: usersError,
+    data: usersData,
+    handleApiRequest: handleUsersApiRequest,
+  } = useApiState<UsersResponse>();
+
+  const {
+    loading: usersCountLoading,
+    error: usersCountError,
+    data: usersCountData,
+    handleApiRequest: handleUsersCountApiRequest,
+  } = useApiState<UsersCountResponse>();
+
+  const {
+    loading: userLoading,
+    error: userError,
+    data: userData,
+    handleApiRequest: handleUserApiRequest,
+  } = useApiState<User>();
+
+
+
   const registerUser = (
     credentials: RegisterUserRequest
   ): Promise<RegisterAndLoginUserResponse> => {
@@ -109,16 +135,20 @@ const useUser = () => {
         options
       );
 
-      return response.user; // Return the user object directly
+      return response.user;
     });
   };
 
   const modifyUser = (
     userId: string,
-    token: string,
     updates: ModifyUserRequest
   ): Promise<ModifyUserResponse> => {
     return handleModifyApiRequest(async () => {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        throw new Error("No token found");
+      }
+
       const options = {
         method: "PUT",
         headers: {
@@ -127,12 +157,89 @@ const useUser = () => {
         },
         body: JSON.stringify(updates),
       };
+
       return await fetchData<ModifyUserResponse>(
-        import.meta.env.VITE_TIETOVISA_API + '/user/' + userId,
+        `${import.meta.env.VITE_TIETOVISA_API}/auth/user/${userId}`,
         options
       );
     });
   };
+
+  const getUsers = (): Promise<UsersResponse> => {
+    return handleUsersApiRequest(async () => {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        throw new Error("No token found");
+      }
+      const options = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      return await fetchData<UsersResponse>(
+        import.meta.env.VITE_TIETOVISA_API + "/auth",
+        options
+      );
+    });
+  };
+
+  const getUsersCount = (): Promise<UsersCountResponse> => {
+    return handleUsersCountApiRequest(async () => {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        throw new Error("No token found");
+      }
+      const options = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      return await fetchData<UsersCountResponse>(
+        import.meta.env.VITE_TIETOVISA_API + "/auth/count",
+        options
+      );
+    });
+  };
+
+  const getUserById = (userId: string): Promise<User> => {
+    return handleUserApiRequest(async () => {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        throw new Error("No token found");
+      }
+      const options = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      return await fetchData<User>(
+        import.meta.env.VITE_TIETOVISA_API + "/auth/user/" + userId,
+        options
+      );
+    });
+  };
+
+  const deleteUserById = (userId: string): Promise<User> => {
+    return handleUserApiRequest(async () => {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        throw new Error("No token found")
+      }
+      const options = {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+      return await fetchData<User>(import.meta.env.VITE_TIETOVISA_API +  '/auth/user/' + userId,
+        options
+      )
+    })
+  }
 
   return {
     registerUser,
@@ -148,6 +255,19 @@ const useUser = () => {
     modifyLoading,
     modifyError,
     modifyData,
+    getUsers,
+    usersError,
+    usersLoading,
+    usersData,
+    getUsersCount,
+    usersCountLoading,
+    usersCountError,
+    usersCountData,
+    getUserById,
+    userLoading,
+    userError,
+    userData,
+    deleteUserById
   };
 };
 

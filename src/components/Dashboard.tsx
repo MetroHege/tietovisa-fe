@@ -1,58 +1,101 @@
+// Dashboard.js
+import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { Outlet } from "react-router-dom";
-import { Button } from "./ui/button";
-import CsvUploadComponent from "./CsvUploadComponent";
-import AdminSearchComponent from "./AdminSearchComponent";
-
 
 const Dashboard = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const navigate = useNavigate();
+  const [selectedRoute, setSelectedRoute] = useState("/dashboard");
 
-  const handleUploadClick = () => {
-    setIsModalOpen(true);
-  };
-
-  const handleModalClose = () => {
-    setIsModalOpen(false);
+  const handleDropdownChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectedPath = e.target.value;
+    setSelectedRoute(selectedPath);
+    navigate(selectedPath);
   };
 
   return (
-    <div className="relative bg-white dark:bg-gray-900 h-screen">
-      <h1 className="text-3xl font-bold text-center pt-10 text-black dark:text-white">Dashboard</h1>
-      <nav className="flex justify-center space-x-4 mt-4">
-        <Button onClick={handleUploadClick}>Lataa CSV tiedosto</Button>
-      </nav>
+    <div className="flex min-h-screen bg-white dark:bg-gray-900">
+      {/* Sidebar for desktop */}
+      <aside className="hidden md:block w-1/5 bg-gray-200 dark:bg-gray-800 p-4 space-y-4">
+        <nav className="flex flex-col space-y-2">
+          <NavLink
+            to="/dashboard"
+            className={({ isActive }) =>
+              isActive
+                ? "p-2 bg-blue-500 text-white rounded-md"
+                : "p-2 text-black dark:text-white hover:bg-blue-500 hover:text-white rounded-md"
+            }
+          >
+            Koti
+          </NavLink>
+          <NavLink
+            to="/dashboard/quiz"
+            className={({ isActive }) =>
+              isActive
+                ? "p-2 bg-blue-500 text-white rounded-md"
+                : "p-2 text-black dark:text-white hover:bg-blue-500 hover:text-white rounded-md"
+            }
+          >
+            Tietovisat
+          </NavLink>
+          <NavLink
+            to="/dashboard/question"
+            className={({ isActive }) =>
+              isActive
+                ? "p-2 bg-blue-500 text-white rounded-md"
+                : "p-2 text-black dark:text-white hover:bg-blue-500 hover:text-white rounded-md"
+            }
+          >
+            Kysymykset
+          </NavLink>
+          <NavLink
+            to="/dashboard/upload-csv"
+            className={({ isActive }) =>
+              isActive
+                ? "p-2 bg-blue-500 text-white rounded-md"
+                : "p-2 text-black dark:text-white hover:bg-blue-500 hover:text-white rounded-md"
+            }
+          >
+            Lataa CSV
+          </NavLink>
+          <NavLink
+            to="/dashboard/users"
+            className={({ isActive }) =>
+              isActive
+                ? "p-2 bg-blue-500 text-white rounded-md"
+                : "p-2 text-black dark:text-white hover:bg-blue-500 hover:text-white rounded-md"
+            }
+          >
+            Käyttäjät
+          </NavLink>
+        </nav>
+      </aside>
 
-      {/* Modal */}
-      {isModalOpen && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center"
-          aria-labelledby="modal-title"
-          role="dialog"
-          aria-modal="true"
-        >
-          <div
-            className="fixed inset-0 bg-black opacity-50"
-            onClick={handleModalClose}
-          ></div>
+      {/* Main content area */}
+      <div className="flex flex-col flex-1 w-full">
+        {/* Header */}
+        <header className="flex items-center justify-between p-4 bg-gray-200 dark:bg-gray-800 md:hidden">
+          <h1 className="text-xl font-bold text-gray-800 dark:text-white">
+            Admin Dashboard
+          </h1>
+          {/* Dropdown Menu */}
+          <select
+            value={selectedRoute}
+            onChange={handleDropdownChange}
+            className="p-2 bg-white dark:bg-gray-700 text-black dark:text-white rounded-md"
+          >
+            <option value="/dashboard">Koti</option>
+            <option value="/dashboard/quiz">Tietovisat</option>
+            <option value="/dashboard/question">Kysymykset</option>
+            <option value="/dashboard/upload-csv">Lataa CSV</option>
+            <option value="/dashboard/users">Käyttäjät</option>
+          </select>
+        </header>
 
-          <div className="relative bg-white dark:bg-gray-800 rounded-lg shadow-lg max-w-md mx-auto p-6 z-50">
-            <button
-              className="absolute top-2 right-2 text-gray-500 dark:text-white hover:text-gray-700"
-              onClick={handleModalClose}
-            >
-              ✕
-            </button>
-            <h2 className="text-xl font-bold mb-4 text-center text-black dark:text-white">
-              Upload CSV File
-            </h2>
-
-            <CsvUploadComponent onUploadComplete={handleModalClose} />
-          </div>
-        </div>
-      )}
-      <AdminSearchComponent />
-      <Outlet />
+        {/* Main content */}
+        <main className="flex-grow p-6">
+          <Outlet />
+        </main>
+      </div>
     </div>
   );
 };

@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-
 import { Question } from "@/types/questionTypes";
 import { Link } from "react-router-dom";
 import { useQuestion } from "@/hooks/questionHooks";
@@ -15,9 +14,7 @@ const AdminSearchComponent: React.FC = () => {
   };
 
   useEffect(() => {
-    if (searchTerm.trim()) {
-      searchQuestions(searchTerm, page);
-    }
+    searchQuestions(searchTerm, page);
   }, [searchTerm, page]);
 
   const handlePageChange = (newPage: number) => {
@@ -25,14 +22,16 @@ const AdminSearchComponent: React.FC = () => {
   };
 
   return (
-    <div className="p-4 dark:bg-gray-900 my-10">
-      <h2 className="text-2xl font-bold mb-4 text-black dark:text-white">Search Questions</h2>
+    <div className="max-w-full md:max-w-screen-md mx-auto p-4 md:p-6 dark:bg-gray-900 my-10">
+      <h2 className="text-2xl font-bold mb-4 text-black dark:text-white">
+        Search Questions
+      </h2>
       <input
         type="text"
         placeholder="Search for questions or answers..."
         value={searchTerm}
         onChange={handleSearchChange}
-        className="w-full p-2 border border-blue-500 rounded mb-4 dark:bg-gray-700 text-dark dark:text-white font-medium"
+        className="w-full p-2 border border-blue-500 rounded mb-4 dark:bg-gray-700 text-black dark:text-white font-medium"
       />
 
       {searchLoading && <p className="text-black dark:text-white">Loading...</p>}
@@ -41,40 +40,41 @@ const AdminSearchComponent: React.FC = () => {
 
       {searchData && searchData.questions.length > 0 && (
         <>
-          <table className="min-w-full bg-white dark:bg-gray-600 text-black dark:text-white font-medium">
-            <thead>
-              <tr>
-                <th className="py-2 px-4 border-b">Question Text</th>
-                <th className="py-2 px-4 border-b">Date Added</th>
-                <th className="py-2 px-4 border-b">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {searchData.questions.map((question: Question) => (
-                <tr key={question._id}>
-                  <td className="py-2 px-4 border-b">{question.questionText}</td>
-                  <td className="py-2 px-4 border-b">
-                    {new Date(question.date).toLocaleDateString()}
-                  </td>
-                  <td className="py-2 px-4 border-b">
-                    <Link
-                      to={`/dashboard/edit-question/${question._id}`}
-                      className="text-blue-500 hover:underline"
-                    >
-                      Edit
-                    </Link>
-                  </td>
+          <div className="overflow-x-auto">
+            <table className="min-w-full bg-white dark:bg-gray-600 text-black dark:text-white font-medium">
+              <thead>
+                <tr>
+                  <th className="py-2 px-4 border-b">Question Text</th>
+                  <th className="py-2 px-4 border-b">Date Added</th>
+                  <th className="py-2 px-4 border-b">Actions</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {searchData.questions.map((question: Question) => (
+                  <tr key={question._id}>
+                    <td className="py-2 px-4 border-b">{question.questionText}</td>
+                    <td className="py-2 px-4 border-b">
+                      {new Date(question.date).toLocaleDateString()}
+                    </td>
+                    <td className="py-2 px-4 border-b">
+                      <Link
+                        to={`/dashboard/edit-question/${question._id}`}
+                        className="text-blue-500 hover:underline"
+                      >
+                        Edit
+                      </Link>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
 
-          {/* Pagination Controls */}
-          <div className="flex justify-center mt-4 space-x-2">
+          <div className="flex flex-col items-center mt-4 space-y-2 md:flex-row md:justify-center md:space-y-0 md:space-x-2">
             <button
               onClick={() => handlePageChange(page - 1)}
               disabled={page <= 1 || searchLoading}
-              className="px-3 py-1 bg-gray-600 text-white rounded"
+              className="px-3 py-1 bg-gray-600 text-white rounded w-full md:w-auto"
             >
               Previous
             </button>
@@ -84,7 +84,7 @@ const AdminSearchComponent: React.FC = () => {
             <button
               onClick={() => handlePageChange(page + 1)}
               disabled={page >= searchData.totalPages || searchLoading}
-              className="px-3 py-1 bg-gray-600 text-white rounded"
+              className="px-3 py-1 bg-gray-600 text-white rounded w-full md:w-auto"
             >
               Next
             </button>
@@ -92,8 +92,10 @@ const AdminSearchComponent: React.FC = () => {
         </>
       )}
 
-      {!searchLoading && searchData && searchData.questions.length === 0 && searchTerm && (
-        <p className="text-black dark:text-gray-300">No questions found for "{searchTerm}".</p>
+      {!searchLoading && searchData && searchData.questions.length === 0 && (
+        <p className="text-black dark:text-gray-300">
+          No questions found{searchTerm && ` for "${searchTerm}"`}.
+        </p>
       )}
     </div>
   );

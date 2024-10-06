@@ -1,6 +1,7 @@
 import fetchData from "@/lib/fetchData";
 import { Quiz, PopulatedQuiz, deleteQuizResponse } from "../types/quizTypes";
 import { useApiState } from "./apiHooks";
+import { CountResponse } from "@/types/questionTypes";
 
 const useQuiz = () => {
   // For handling quizzes data
@@ -25,6 +26,13 @@ const useQuiz = () => {
     error: deleteError,
     handleApiRequest: handleDeleteApiRequest,
   } = useApiState<deleteQuizResponse>();
+
+  const {
+    loading: countLoading,
+    error: countError,
+    data: countData,
+    handleApiRequest: handleCountApiRequest,
+  } = useApiState<CountResponse>();
 
   const getQuizzes = (): Promise<PopulatedQuiz[]> => {
     return handleQuizzesApiRequest(async () => {
@@ -78,21 +86,53 @@ const useQuiz = () => {
     });
   };
 
+  const getQuizCount = (): Promise<CountResponse> => {
+    return handleCountApiRequest(async () => {
+      const token = localStorage.getItem("token");
+      return await fetchData<CountResponse>(
+        `${import.meta.env.VITE_TIETOVISA_API}/quiz/count`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+    });
+  };
+
+  const getQuizzesByDateRange = (startDate: string, endDate: string): Promise<PopulatedQuiz[]> => {
+    return handleQuizzesApiRequest(async () => {
+      const token = localStorage.getItem('token')
+      const url = `${import.meta.env.VITE_TIETOVISA_API}/quiz/date-range?startDate=${startDate}&endDate=${endDate}`;
+      const options = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+      return await fetchData<PopulatedQuiz[]>(url, options);
+    });
+  };
+
   return {
     quizzesData,
     quizData,
     quizzesLoading,
     quizLoading,
     deleteLoading,
+    countLoading,
     quizzesError,
     quizError,
     deleteError,
+    countError,
     getQuizzes,
     getQuizById,
     getQuizzesByDate,
     postQuiz,
     putQuiz,
     deleteQuiz,
+    getQuizCount,
+    countData,
+    getQuizzesByDateRange,
   };
 };
 
