@@ -19,6 +19,7 @@ const Dashboard = () => {
         <nav className="flex flex-col space-y-2">
           <NavLink
             to="/dashboard"
+            end
             className={({ isActive }) =>
               isActive
                 ? "p-2 bg-blue-500 text-white rounded-md"

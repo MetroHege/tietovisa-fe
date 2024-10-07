@@ -86,11 +86,10 @@ const UserProvider = ({ children }: { children: React.ReactNode }) => {
 
   const handleModifyUser = async (
     userId: string,
-    token: string,
-    updates: { username: string; email: string; password: string }
+    updates: { username: string; email: string; password: string, role: string }
   ) => {
     try {
-      await modifyUser(userId, token, updates);
+      await modifyUser(userId, updates);
       const updatedUser = { ...user, ...updates };
       setUser(updatedUser as UserWithNoPassword);
     } catch (e) {
@@ -111,7 +110,7 @@ const UserProvider = ({ children }: { children: React.ReactNode }) => {
         handleLogout,
         handleAutoLogin,
         handleRegister,
-        modifyUser: handleModifyUser, // Use the renamed function here
+        handleModifyUser,
         autoLoginLoading,
         authLoading,
         authError,

@@ -18,7 +18,7 @@ interface ModifyUserModalProps {
 }
 
 const ModifyUserModal = ({ isOpen, onClose }: ModifyUserModalProps) => {
-  const { user, modifyUser } = useUserContext();
+  const { user, handleModifyUser } = useUserContext();
   const [username, setUsername] = useState(user?.username || "");
   const [email, setEmail] = useState(user?.email || "");
   const [password, setPassword] = useState("");
@@ -36,14 +36,9 @@ const ModifyUserModal = ({ isOpen, onClose }: ModifyUserModalProps) => {
     if (!user) return;
 
     try {
-      const token = localStorage.getItem("token"); // Retrieve token from local storage
-      if (!token) {
-        setError("No token found");
-        return;
-      }
-      const updates = { username, email, password };
+      const updates = { username, email, password, role: user.role };
       console.log("Updating user with payload:", updates); // Log the payload
-      await modifyUser(user._id, token, updates);
+      await handleModifyUser(user._id, updates);
       onClose();
     } catch (err) {
       console.error("Error updating user:", err); // Log the error

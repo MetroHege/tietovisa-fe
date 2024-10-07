@@ -59,7 +59,7 @@ const AdminSearchComponent: React.FC = () => {
                     <td className="py-2 px-4 border-b">
                       <Link
                         to={`/dashboard/edit-question/${question._id}`}
-                        className="text-blue-500 hover:underline"
+                        className="text-blue-500 hover:underline z-30"
                       >
                         Edit
                       </Link>

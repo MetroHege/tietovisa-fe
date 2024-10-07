@@ -7,15 +7,14 @@ type AuthContextType = {
   handleLogout: () => void;
   handleAutoLogin: () => Promise<void>;
   handleRegister: (user: RegisterUserRequest) => Promise<void>;
-  modifyUser: (
+  handleModifyUser: (
     userId: string,
-    token: string,
-    updates: { username: string; email: string; password: string }
+    updates: { username: string; email: string; password: string, role: string }
   ) => Promise<void>;
-  authLoading: boolean; // loading state for login/register
-  authError: string | null; // error state for login/register
-  tokenLoading: boolean; // loading state for auto-login
-  tokenError: string | null; // error state for auto-login
+  authLoading: boolean;
+  authError: string | null;
+  tokenLoading: boolean;
+  tokenError: string | null;
   autoLoginLoading: boolean;
 };
 

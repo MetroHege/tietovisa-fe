@@ -11,7 +11,7 @@ const AdminUserPage: React.FC = () => {
   }, []);
 
   return (
-    <div className="p-4 dark:bg-gray-900 my-10">
+    <div className="p-4 dark:bg-gray-900 my-10 z-50">
       <h2 className="text-2xl font-bold mb-4 text-black dark:text-white">Manage Users</h2>
 
       {usersLoading && <p className="text-black dark:text-white">Loading...</p>}
