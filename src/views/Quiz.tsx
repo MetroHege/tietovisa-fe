@@ -15,25 +15,27 @@ const formatDateToDDMMYYYY = (date: string) => {
 
 const Quiz = () => {
   const [questions, setQuestions] = useState<Question[]>([]);
+  const [quizId, setQuizId] = useState<string>("");
   const [quizState, setQuizState] = useState<"inProgress" | "completed">(
     "inProgress"
   );
   const [userAnswers, setUserAnswers] = useState<
-    { text: string; isCorrect: boolean }[]
+    { questionId: string; answerId: string }[]
   >([]);
   const [correctAnswers, setCorrectAnswers] = useState(0);
   const [loading, setLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const { getQuizzesByDate, quizzesLoading, quizzesError } = useQuiz();
+  const { getQuizzesByDate, submitQuizResult, quizzesLoading, quizzesError } = useQuiz();
   const [showAnswers, setShowAnswers] = useState(false);
   const { date } = useParams<{ date: string }>();
 
+
   const fetchQuiz = async () => {
     if (!date) return;
-    console.log(date);
     setLoading(true);
     try {
       const quizData: PopulatedQuiz = await getQuizzesByDate(date);
+      setQuizId(quizData._id)
       const questionsFromQuiz = quizData.questions.map((question) => ({
         _id: question._id,
         questionText: question.questionText,
@@ -52,32 +54,47 @@ const Quiz = () => {
 
   useEffect(() => {
     fetchQuiz();
-  }, []);
+  }, [date]);
 
   const handleAnswer = (
     questionIndex: number,
-    selectedAnswer: { text: string; isCorrect: boolean }
+    selectedAnswer: { _id: string; text: string; isCorrect: boolean }
   ) => {
     const newUserAnswers = [...userAnswers];
-    newUserAnswers[questionIndex] = selectedAnswer;
+    newUserAnswers[questionIndex] = {
+      questionId: questions[questionIndex]._id,
+      answerId: selectedAnswer._id,
+    };
     setUserAnswers(newUserAnswers);
-    setErrorMessage(null); // Clear error message on answer selection
+    setErrorMessage(null);
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (userAnswers.length !== questions.length) {
       setErrorMessage("Vastaatathan kaikkiin kysymyksiin!");
       return;
     }
 
     let correctCount = 0;
-    userAnswers.forEach((answer) => {
-      if (answer?.isCorrect) {
+
+    userAnswers.forEach((userAnswer, index) => {
+      const question = questions[index];
+      const correctAnswer = question.answers.find((a) => a.isCorrect);
+      if (correctAnswer && correctAnswer._id === userAnswer.answerId) {
         correctCount++;
       }
     });
+
     setCorrectAnswers(correctCount);
     setQuizState("completed");
+
+    try {
+      const result = await submitQuizResult(quizId, userAnswers);
+      setCorrectAnswers(result.correctAnswers);
+    } catch (error) {
+      setErrorMessage("Virhe vastausten lähettämisessä.");
+      console.error("Error submitting quiz results:", error);
+    }
   };
 
   if (loading || quizzesLoading) {
@@ -105,7 +122,7 @@ const Quiz = () => {
                   <button
                     key={answerIndex}
                     className={`block w-full p-3 mt-3 rounded-lg transition-all ${
-                      userAnswers[questionIndex]?.text === answer.text
+                      userAnswers[questionIndex]?.answerId === answer._id
                         ? "bg-blue-700 text-white"
                         : "bg-blue-500 text-white hover:bg-blue-600"
                     }`}
@@ -178,7 +195,7 @@ const Quiz = () => {
                   <div
                     key={index}
                     className={`mb-4 p-4 rounded-lg ${
-                      userAnswer?.isCorrect
+                      correctAnswer && correctAnswer._id === userAnswer.answerId
                         ? "bg-green-200 shadow-2xl"
                         : "bg-red-200 shadow-2xl"
                     }`}
@@ -187,9 +204,10 @@ const Quiz = () => {
                       {index + 1}. {question.questionText}
                     </p>
                     <div className="mt-2 space-y-2">
-                      {question.answers.map((option, optionIndex) => {
+                      {
+                        question.answers.map((option, optionIndex) => {
                         const isCorrect = option.isCorrect;
-                        const isSelected = option.text === userAnswer?.text;
+                        const isSelected = option._id === userAnswer?.answerId;
                         const bgColor = isCorrect
                           ? "bg-green-800 shadow-2xl font-semibold"
                           : isSelected
@@ -205,7 +223,7 @@ const Quiz = () => {
                         );
                       })}
                     </div>
-                    {!userAnswer?.isCorrect && correctAnswer && (
+                    {!userAnswer && correctAnswer && (
                       <p className="mt-2 text-base text-gray-800 font-bold">
                         Oikea vastaus: {correctAnswer.text}
                       </p>

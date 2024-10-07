@@ -29,3 +29,11 @@ export interface CsvUploadResponse {
   isPublished: boolean;
   __v: number;
 }
+
+export interface SubmitQuizResponse {
+  correctAnswers: number;
+  totalQuestions: number;
+  quizId: string;
+  userId: string;
+  completedAt: string;
+}

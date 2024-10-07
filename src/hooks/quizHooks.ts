@@ -1,5 +1,5 @@
 import fetchData from "@/lib/fetchData";
-import { Quiz, PopulatedQuiz, deleteQuizResponse } from "../types/quizTypes";
+import { Quiz, PopulatedQuiz, deleteQuizResponse, SubmitQuizResponse } from "../types/quizTypes";
 import { useApiState } from "./apiHooks";
 import { CountResponse } from "@/types/questionTypes";
 
@@ -33,6 +33,13 @@ const useQuiz = () => {
     data: countData,
     handleApiRequest: handleCountApiRequest,
   } = useApiState<CountResponse>();
+
+  const {
+    loading: submitLoading,
+    error: submitError,
+    data: submitData,
+    handleApiRequest: handleSubmitApiRequest,
+  } = useApiState<SubmitQuizResponse>();
 
   const getQuizzes = (): Promise<PopulatedQuiz[]> => {
     return handleQuizzesApiRequest(async () => {
@@ -113,6 +120,24 @@ const useQuiz = () => {
     });
   };
 
+  const submitQuizResult = (
+    quizId: string,
+    answers: { questionId: string; answerId: string }[]
+  ): Promise<SubmitQuizResponse> => {
+    return handleSubmitApiRequest(async () => {
+      const token = localStorage.getItem("token");
+      const options = {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ quizId, answers }),
+      };
+      return await fetchData<SubmitQuizResponse>(`${import.meta.env.VITE_TIETOVISA_API}/result/submit-quiz`, options);
+    });
+  };
+
   return {
     quizzesData,
     quizData,
@@ -120,10 +145,12 @@ const useQuiz = () => {
     quizLoading,
     deleteLoading,
     countLoading,
+    submitLoading,
     quizzesError,
     quizError,
     deleteError,
     countError,
+    submitError,
     getQuizzes,
     getQuizById,
     getQuizzesByDate,
@@ -133,6 +160,8 @@ const useQuiz = () => {
     getQuizCount,
     countData,
     getQuizzesByDateRange,
+    submitQuizResult,
+    submitData,
   };
 };
 
