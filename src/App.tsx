@@ -17,6 +17,7 @@ import AdminUserEditPage from "./components/AdminUserEditPage";
 import AdminHome from "./components/AdminHome";
 import AdminQuestion from "./components/AdminQuestion";
 import AdminQuiz from "./components/AdminQuiz";
+import AllQuizzes from "./views/AllQuizzes";
 
 function App() {
   return (
@@ -29,7 +30,7 @@ function App() {
               <Route path="/quiz" element={<Quiz />} />
               <Route path="/quiz/:date" element={<Quiz />} />
               <Route path="/logout" element={<Logout />} />
-              {/* <Route path="/all-quizzes" element={<AllQuizzes />} />{" "} */}
+              <Route path="/all-quizzes" element={<AllQuizzes />} />{" "}
               <Route
                 path="/secret"
                 element={
@@ -53,7 +54,10 @@ function App() {
                 <Route path="quiz" element={<AdminQuiz />} />
                 <Route path="question" element={<AdminQuestion />} />
                 <Route path="upload-csv" element={<CsvUploadComponent />} />
-                <Route path="edit-question/:id" element={<AdminEditQuestionPage />} />
+                <Route
+                  path="edit-question/:id"
+                  element={<AdminEditQuestionPage />}
+                />
                 <Route path="users" element={<AdminUserPage />} />
                 <Route path="edit-user/:id" element={<AdminUserEditPage />} />
               </Route>
