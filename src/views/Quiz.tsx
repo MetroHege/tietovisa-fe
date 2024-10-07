@@ -5,6 +5,14 @@ import { Question } from "@/types/questionTypes";
 import { PopulatedQuiz } from "@/types/quizTypes";
 import { useParams } from "react-router-dom";
 
+const formatDateToDDMMYYYY = (date: string) => {
+  const d = new Date(date);
+  const day = d.getDate();
+  const month = d.getMonth() + 1;
+  const year = d.getFullYear();
+  return `${day}.${month}.${year}`;
+};
+
 const Quiz = () => {
   const [questions, setQuestions] = useState<Question[]>([]);
   const [quizState, setQuizState] = useState<"inProgress" | "completed">(
@@ -85,7 +93,7 @@ const Quiz = () => {
       {quizState === "inProgress" && (
         <div className="question-section">
           <h2 className="text-2xl font-bold mb-4 text-center dark:text-white">
-            Päivän {date} kysymyssarja
+            Päivän {formatDateToDDMMYYYY(date!)} kysymyssarja
           </h2>
           {questions.map((question, questionIndex) => (
             <div key={questionIndex} className="mb-6">
