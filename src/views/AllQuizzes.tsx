@@ -35,16 +35,13 @@ const AllQuizzes = () => {
   const [previousQuizzes, setPreviousQuizzes] = useState<{
     [key: string]: string[];
   }>({});
-  const [expandedMonths, setExpandedMonths] = useState<{
-    [key: string]: boolean;
-  }>({});
+  const [expandedMonth, setExpandedMonth] = useState<string | null>(null);
   const { getQuizzes } = useQuiz();
 
   const fetchQuizzes = async () => {
     const quizzes = await getQuizzes();
     const publishedDates = quizzes.map((quiz) => new Date(quiz.publishedAt));
 
-    // Sort dates in descending order
     publishedDates.sort((a, b) => b.getTime() - a.getTime());
 
     const groupedByMonth: { [key: string]: string[] } = {};
@@ -69,10 +66,7 @@ const AllQuizzes = () => {
   };
 
   const toggleMonth = (month: string) => {
-    setExpandedMonths((prev) => ({
-      ...prev,
-      [month]: !prev[month],
-    }));
+    setExpandedMonth((prev) => (prev === month ? null : month));
   };
 
   return (
@@ -89,10 +83,10 @@ const AllQuizzes = () => {
           >
             {month}
             <span>
-              {expandedMonths[month] ? <FaChevronUp /> : <FaChevronDown />}
+              {expandedMonth === month ? <FaChevronUp /> : <FaChevronDown />}
             </span>
           </button>
-          {expandedMonths[month] && (
+          {expandedMonth === month && (
             <div className="mt-2">
               {previousQuizzes[month].map((date) => (
                 <button
