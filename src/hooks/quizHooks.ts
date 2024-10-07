@@ -1,10 +1,9 @@
 import fetchData from "@/lib/fetchData";
-import { Quiz, PopulatedQuiz, deleteQuizResponse, SubmitQuizResponse } from "../types/quizTypes";
+import { Quiz, PopulatedQuiz, deleteQuizResponse, SubmitQuizResponse, CompareQuizResponse } from "../types/quizTypes";
 import { useApiState } from "./apiHooks";
 import { CountResponse } from "@/types/questionTypes";
 
 const useQuiz = () => {
-  // For handling quizzes data
   const {
     loading: quizzesLoading,
     error: quizzesError,
@@ -12,7 +11,6 @@ const useQuiz = () => {
     handleApiRequest: handleQuizzesApiRequest,
   } = useApiState<PopulatedQuiz[]>();
 
-  // For handling a single quiz
   const {
     loading: quizLoading,
     error: quizError,
@@ -20,7 +18,6 @@ const useQuiz = () => {
     handleApiRequest: handleQuizApiRequest,
   } = useApiState<PopulatedQuiz>();
 
-  // For handling delete quiz response
   const {
     loading: deleteLoading,
     error: deleteError,
@@ -40,6 +37,13 @@ const useQuiz = () => {
     data: submitData,
     handleApiRequest: handleSubmitApiRequest,
   } = useApiState<SubmitQuizResponse>();
+
+  const {
+    loading: compareLoading,
+    error: compareError,
+    data: compareData,
+    handleApiRequest: handleCompareApiRequest,
+  } = useApiState<CompareQuizResponse>();
 
   const getQuizzes = (): Promise<PopulatedQuiz[]> => {
     return handleQuizzesApiRequest(async () => {
@@ -138,6 +142,19 @@ const useQuiz = () => {
     });
   };
 
+  const compareQuizResult = (quizId: string): Promise<CompareQuizResponse> => {
+    return handleCompareApiRequest(async () => {
+      const token = localStorage.getItem("token");
+      const options = {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      return await fetchData<CompareQuizResponse>(`${import.meta.env.VITE_TIETOVISA_API}/result/compare/${quizId}`, options);
+    });
+  };
+
   return {
     quizzesData,
     quizData,
@@ -146,11 +163,13 @@ const useQuiz = () => {
     deleteLoading,
     countLoading,
     submitLoading,
+    compareLoading,
     quizzesError,
     quizError,
     deleteError,
     countError,
     submitError,
+    compareError,
     getQuizzes,
     getQuizById,
     getQuizzesByDate,
@@ -161,7 +180,9 @@ const useQuiz = () => {
     countData,
     getQuizzesByDateRange,
     submitQuizResult,
+    compareQuizResult,
     submitData,
+    compareData,
   };
 };
 

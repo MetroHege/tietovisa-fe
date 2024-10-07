@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { FaArrowUp, FaArrowDown } from "react-icons/fa";
 import useQuiz from "@/hooks/quizHooks";
 import { Question } from "@/types/questionTypes";
-import { PopulatedQuiz } from "@/types/quizTypes";
+import { CompareQuizResponse, PopulatedQuiz } from "@/types/quizTypes";
 import { useParams } from "react-router-dom";
 
 const formatDateToDDMMYYYY = (date: string) => {
@@ -25,10 +25,10 @@ const Quiz = () => {
   const [correctAnswers, setCorrectAnswers] = useState(0);
   const [loading, setLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const { getQuizzesByDate, submitQuizResult, quizzesLoading, quizzesError } = useQuiz();
+  const { getQuizzesByDate, submitQuizResult, quizzesLoading, quizzesError, compareQuizResult } = useQuiz();
   const [showAnswers, setShowAnswers] = useState(false);
   const { date } = useParams<{ date: string }>();
-
+  const [comparisonStats, setComparisonStats] = useState<CompareQuizResponse | null>(null);
 
   const fetchQuiz = async () => {
     if (!date) return;
@@ -91,6 +91,9 @@ const Quiz = () => {
     try {
       const result = await submitQuizResult(quizId, userAnswers);
       setCorrectAnswers(result.correctAnswers);
+
+      const comparison = await compareQuizResult(quizId);
+      setComparisonStats(comparison);
     } catch (error) {
       setErrorMessage("Virhe vastausten lähettämisessä.");
       console.error("Error submitting quiz results:", error);
@@ -172,6 +175,20 @@ const Quiz = () => {
           <p className="text-4xl font-bold text-center mb-6 dark:text-white">
             {correctAnswers}/{questions.length}
           </p>
+
+                  {comparisonStats && (
+          <div className="mb-6 text-center dark:text-white">
+            {comparisonStats.totalUsers === 1 ? (
+              <p>Olet ensimmäinen osallistuja tässä visassa!</p>
+
+            ) : (
+              <>
+                <p>{`Olet parempi kuin ${comparisonStats.percentage}% muista osallistujista`}</p>
+                <p>{`Osallistujia yhteensä: ${comparisonStats.totalUsers}`}</p>
+              </>
+            )}
+          </div>
+          )}
           <button
             className="w-full p-3 mt-3 bg-blue-500 text-white rounded-lg font-bold flex justify-center items-center hover:bg-blue-600 transition-all"
             onClick={() => setShowAnswers(!showAnswers)}

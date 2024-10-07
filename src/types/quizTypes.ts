@@ -37,3 +37,11 @@ export interface SubmitQuizResponse {
   userId: string;
   completedAt: string;
 }
+
+export interface CompareQuizResponse {
+  correctAnswers: number;
+  totalQuestions: number;
+  betterThanCount: number;
+  totalUsers: number;
+  percentage: number;
+}
