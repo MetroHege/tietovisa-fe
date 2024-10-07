@@ -55,19 +55,19 @@ const Home = () => {
     <div className="flex flex-col md:flex-row gap-4">
       <div className="w-full md:w-1/2 p-4">
         <h1 className="text-xl md:text-2xl font-bold mb-4 dark:text-white">
-          Vastaa kymmeneen päivittäin vaihtuvaan kutkuttavaan kysymykseen!
+          Joka päivä 10 uutta kysymystä!
         </h1>
         <hr className="border-t-2 border-gray-300 w-full max-w-[calc(100% - 2rem)] mx-auto mb-4" />
         <button
           className="block w-full p-3 mt-4 bg-blue-500 text-white rounded font-bold text-lg hover:bg-blue-600 transition-all"
           onClick={() => handleQuizSelection(getTodayDate())}
         >
-          Aloita vastaaminen!
+          Aloita tästä!
         </button>
       </div>
       <div className="relative z-10 w-full md:w-1/2 p-4">
-        <h2 className="text-lg md:text-xl font-bold mb-4 dark:text-white">
-          Aiempien päivien kysymyssarjat
+        <h2 className="text-lg md:text-2xl font-bold mb-4 dark:text-white">
+          Aiempia kysymyksiä
         </h2>
         <hr className="border-t-2 border-gray-300 w-full max-w-[calc(100% - 2rem)] mx-auto mb-4" />
         {latestQuizzes.map((date) => (

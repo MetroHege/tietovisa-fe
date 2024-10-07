@@ -124,15 +124,25 @@ const Quiz = () => {
       {quizState === "completed" && (
         <div className="p-4">
           <h1 className="text-2xl font-bold mb-6 text-center dark:text-white">
-            {correctAnswers <= 3 &&
-              "Parempi onni ensi kerralla, yritä uudelleen!"}
-            {correctAnswers > 3 &&
-              correctAnswers <= 6 &&
-              "Hyvä yritys, jatka samaan malliin!"}
-            {correctAnswers > 6 &&
-              correctAnswers <= 9 &&
-              "Hienoa työtä, olet melkein mestari!"}
-            {correctAnswers === 10 && "Täydellinen tulos! Erinomaista työtä!"}
+            {correctAnswers === 0 &&
+              "Ou nou, nyt taisi olla mukana myös huonoa säkää! Ehkä ei kannata lotota tänään..."}
+            {correctAnswers === 1 && "Ai ai, eikun au au, nyt sattuu!"}
+            {correctAnswers === 2 && "Ai ai ai, aina ei mene hyvin!"}
+            {correctAnswers === 3 &&
+              "Seuraavassa visassa mietitään ehkä hieman kauemmin!"}
+            {correctAnswers === 4 &&
+              "Ehkä luetaan uutisia hieman enemmän ja tarkemmin jatkossa!"}
+            {correctAnswers === 5 &&
+              "Ei huono tulos, kysymykset eivät ole helppoja!"}
+            {correctAnswers === 6 &&
+              "Ei huono tulos, kysymykset eivät ole helppoja!"}
+            {correctAnswers === 7 &&
+              "Ihan ok tulos, kysymykset eivät ole helppoja!"}
+            {correctAnswers === 8 && "Hyvä tulos, olet hyvin perillä asioista!"}
+            {correctAnswers === 9 &&
+              "Hieno saavutus, olet hyvin perillä asioista!"}
+            {correctAnswers === 10 &&
+              "Todella upeaa, olet erittäin hyvin perillä asioista!"}
           </h1>
           <p className="text-4xl font-bold text-center mb-6 dark:text-white">
             {correctAnswers}/{questions.length}
