@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Moon, Sun, User, Menu } from "lucide-react";
+import { Moon, Sun, User, Menu, LogOut, Edit, List } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { useTheme } from "@/contexts/ThemeContext";
 import { useState } from "react";
@@ -131,11 +131,13 @@ const Navbar = () => {
                   {user.role === "admin" && (
                     <Link className="w-full" to="/dashboard">
                       <Button size="lg" className="w-full">
+                        <List className="mr-2 h-5 w-5" />
                         Dashboard
                       </Button>
                     </Link>
                   )}
                   <Button size="lg" onClick={handleModifyUserClick}>
+                    <Edit className="mr-2 h-5 w-5" />
                     Muokkaa käyttäjää
                   </Button>
                   <Button
@@ -143,6 +145,7 @@ const Navbar = () => {
                     className="bg-red-500 text-white hover:bg-red-700"
                     onClick={handleLogout}
                   >
+                    <LogOut className="mr-2 h-5 w-5" />
                     Kirjaudu ulos
                   </Button>
                 </>
@@ -153,6 +156,7 @@ const Navbar = () => {
               )}
               <Link className="w-full mt-auto" to="/all-quizzes">
                 <Button size="lg" className="w-full">
+                  <List className="mr-2 h-5 w-5" />
                   Kaikki visat
                 </Button>
               </Link>
