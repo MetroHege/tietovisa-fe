@@ -4,6 +4,17 @@ import { useUserContext } from "@/hooks/contextHooks";
 import { useTheme } from "@/contexts/ThemeContext";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import {
+  LeaderboardAd,
+  FullBannerAd,
+  MobileLeaderboardAd,
+  MediumRectangleAd,
+  LargeRectangleAd,
+  SquareAd,
+  WideSkyscraperAd,
+  SkyscraperAd,
+  LargeMobileBannerAd,
+} from "@/components/Ads";
 
 export default function Layout() {
   const { handleAutoLogin, autoLoginLoading } = useUserContext();
@@ -28,13 +39,12 @@ export default function Layout() {
     <div className={`min-h-screen ${theme}`}>
       <div className="flex flex-col min-h-screen">
         <Navbar />
+        <LeaderboardAd />
         <div className="flex-grow flex flex-col lg:flex-row bg-gray-100 dark:bg-gray-900">
           {!adminRoute && (
             <aside className="w-full lg:w-1/6 p-4">
               <div className="h-full border-2 border-dashed border-gray-400 dark:border-gray-500 rounded-lg flex items-center justify-center bg-white dark:bg-gray-900">
-                <p className="text-gray-500 dark:text-gray-400 text-center">
-                  Ad Space
-                </p>
+                <MediumRectangleAd />
               </div>
             </aside>
           )}
@@ -44,9 +54,7 @@ export default function Layout() {
           {!adminRoute && (
             <aside className="w-full lg:w-1/6 p-4">
               <div className="h-full border-2 border-dashed border-gray-400 dark:border-gray-500 rounded-lg flex items-center justify-center bg-white dark:bg-gray-900">
-                <p className="text-gray-500 dark:text-gray-400 text-center">
-                  Ad Space
-                </p>
+                <LargeRectangleAd />
               </div>
             </aside>
           )}

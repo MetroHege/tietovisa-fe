@@ -12,7 +12,7 @@ import { useSwipeable } from "react-swipeable";
 const swipeOpenMenuStyles: React.CSSProperties = {
   position: "fixed",
   right: 0,
-  width: "10%",
+  width: "5%",
   height: "100%",
   zIndex: 10,
 };

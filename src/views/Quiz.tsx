@@ -4,6 +4,7 @@ import useQuiz from "@/hooks/quizHooks";
 import { Question } from "@/types/questionTypes";
 import { CompareQuizResponse, PopulatedQuiz } from "@/types/quizTypes";
 import { useParams } from "react-router-dom";
+import { MediumRectangleAd, MobileLeaderboardAd } from "@/components/Ads"; // Import ad components
 
 const formatDateToDDMMYYYY = (date: string) => {
   const d = new Date(date);
@@ -25,17 +26,24 @@ const Quiz = () => {
   const [correctAnswers, setCorrectAnswers] = useState(0);
   const [loading, setLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const { getQuizzesByDate, submitQuizResult, quizzesLoading, quizzesError, compareQuizResult } = useQuiz();
+  const {
+    getQuizzesByDate,
+    submitQuizResult,
+    quizzesLoading,
+    quizzesError,
+    compareQuizResult,
+  } = useQuiz();
   const [showAnswers, setShowAnswers] = useState(false);
   const { date } = useParams<{ date: string }>();
-  const [comparisonStats, setComparisonStats] = useState<CompareQuizResponse | null>(null);
+  const [comparisonStats, setComparisonStats] =
+    useState<CompareQuizResponse | null>(null);
 
   const fetchQuiz = async () => {
     if (!date) return;
     setLoading(true);
     try {
       const quizData: PopulatedQuiz = await getQuizzesByDate(date);
-      setQuizId(quizData._id)
+      setQuizId(quizData._id);
       const questionsFromQuiz = quizData.questions.map((question) => ({
         _id: question._id,
         questionText: question.questionText,
@@ -116,25 +124,39 @@ const Quiz = () => {
             Päivän {formatDateToDDMMYYYY(date!)} kysymyssarja
           </h2>
           {questions.map((question, questionIndex) => (
-            <div key={questionIndex} className="mb-6">
-              <p className="text-lg sm:text-xl dark:text-white text-center font-bold">
-                {questionIndex + 1}. {question.questionText}
-              </p>
-              <div className="mt-2">
-                {question.answers.map((answer, answerIndex) => (
-                  <button
-                    key={answerIndex}
-                    className={`block w-full p-3 mt-3 rounded-lg transition-all ${
-                      userAnswers[questionIndex]?.answerId === answer._id
-                        ? "bg-blue-700 text-white"
-                        : "bg-blue-500 text-white hover:bg-blue-600"
-                    }`}
-                    onClick={() => handleAnswer(questionIndex, answer)}
-                  >
-                    {answer.text}
-                  </button>
-                ))}
+            <div key={questionIndex}>
+              <div className="mb-6 p-4 rounded-lg bg-white dark:bg-gray-800 shadow-md">
+                <p className="text-lg sm:text-xl dark:text-white text-center font-bold">
+                  {questionIndex + 1}. {question.questionText}
+                </p>
+                <div className="mt-2">
+                  {question.answers.map((answer, answerIndex) => {
+                    const isSelected =
+                      userAnswers[questionIndex]?.answerId === answer._id;
+                    return (
+                      <div key={answerIndex}>
+                        <button
+                          className={`block w-full p-3 mt-3 rounded-lg transition-all ${
+                            isSelected
+                              ? "bg-blue-700 text-white"
+                              : "bg-blue-500 text-white hover:bg-blue-600"
+                          }`}
+                          onClick={() => handleAnswer(questionIndex, answer)}
+                        >
+                          {answer.text}
+                        </button>
+                      </div>
+                    );
+                  })}
+                </div>
               </div>
+              {/* Insert ad after every 3 questions */}
+              {(questionIndex + 1) % 3 === 0 &&
+                questionIndex !== questions.length - 1 && (
+                  <div className="my-6 flex justify-center">
+                    <MediumRectangleAd />
+                  </div>
+                )}
             </div>
           ))}
           {errorMessage && (
@@ -176,18 +198,17 @@ const Quiz = () => {
             {correctAnswers}/{questions.length}
           </p>
 
-                  {comparisonStats && (
-          <div className="mb-6 text-center dark:text-white">
-            {comparisonStats.totalUsers === 1 ? (
-              <p>Olet ensimmäinen osallistuja tässä visassa!</p>
-
-            ) : (
-              <>
-                <p>{`Olet parempi kuin ${comparisonStats.percentage}% muista osallistujista`}</p>
-                <p>{`Osallistujia yhteensä: ${comparisonStats.totalUsers}`}</p>
-              </>
-            )}
-          </div>
+          {comparisonStats && (
+            <div className="mb-6 text-center dark:text-white">
+              {comparisonStats.totalUsers === 1 ? (
+                <p>Olet ensimmäinen osallistuja tässä visassa!</p>
+              ) : (
+                <>
+                  <p>{`Olet parempi kuin ${comparisonStats.percentage}% muista osallistujista`}</p>
+                  <p>{`Osallistujia yhteensä: ${comparisonStats.totalUsers}`}</p>
+                </>
+              )}
+            </div>
           )}
           <button
             className="w-full p-3 mt-3 bg-blue-500 text-white rounded-lg font-bold flex justify-center items-center hover:bg-blue-600 transition-all"
@@ -213,38 +234,39 @@ const Quiz = () => {
                     key={index}
                     className={`mb-4 p-4 rounded-lg ${
                       correctAnswer && correctAnswer._id === userAnswer.answerId
-                        ? "bg-green-200 shadow-2xl"
-                        : "bg-red-200 shadow-2xl"
+                        ? "bg-green-100 dark:bg-green-900 border border-green-500"
+                        : "bg-red-100 dark:bg-red-900 border border-red-500"
                     }`}
                   >
-                    <p className="sm:text-lg lg:text-xl font-bold">
+                    <p className="sm:text-lg lg:text-xl font-bold dark:text-white">
                       {index + 1}. {question.questionText}
                     </p>
                     <div className="mt-2 space-y-2">
-                      {
-                        question.answers.map((option, optionIndex) => {
+                      {question.answers.map((option, optionIndex) => {
                         const isCorrect = option.isCorrect;
                         const isSelected = option._id === userAnswer?.answerId;
                         const bgColor = isCorrect
-                          ? "bg-green-800 shadow-2xl font-semibold"
+                          ? "bg-green-500 text-white dark:bg-green-700"
                           : isSelected
-                          ? "bg-red-900 shadow-2xl font-semibold"
-                          : "bg-gray-600";
+                          ? "bg-red-500 text-white dark:bg-red-700"
+                          : "bg-gray-200 text-gray-800 dark:bg-gray-700 dark:text-gray-200";
                         return (
                           <div
                             key={optionIndex}
-                            className={`block w-full p-2 mt-2 text-white rounded ${bgColor}`}
+                            className={`block w-full p-2 mt-2 rounded ${bgColor}`}
                           >
                             {option.text}
                           </div>
                         );
                       })}
                     </div>
-                    {!userAnswer && correctAnswer && (
-                      <p className="mt-2 text-base text-gray-800 font-bold">
-                        Oikea vastaus: {correctAnswer.text}
-                      </p>
-                    )}
+                    {userAnswer &&
+                      correctAnswer &&
+                      correctAnswer._id !== userAnswer.answerId && (
+                        <p className="mt-2 text-base text-gray-800 dark:text-gray-200 font-bold">
+                          Oikea vastaus: {correctAnswer.text}
+                        </p>
+                      )}
                   </div>
                 );
               })}
