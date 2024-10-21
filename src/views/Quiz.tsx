@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
-import { FaArrowUp, FaArrowDown } from "react-icons/fa";
+import { FaArrowUp, FaArrowDown, FaArrowLeft } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 import useQuiz from "@/hooks/quizHooks";
 import { Question } from "@/types/questionTypes";
 import { CompareQuizResponse, PopulatedQuiz } from "@/types/quizTypes";
@@ -37,6 +38,7 @@ const Quiz = () => {
   const { date } = useParams<{ date: string }>();
   const [comparisonStats, setComparisonStats] =
     useState<CompareQuizResponse | null>(null);
+  const navigate = useNavigate();
 
   const fetchQuiz = async () => {
     if (!date) return;
@@ -272,6 +274,12 @@ const Quiz = () => {
               })}
             </div>
           )}
+          <button
+            className="w-1/2 p-3 mt-6 bg-blue-500 text-white rounded-lg font-bold flex justify-center items-center hover:bg-blue-600 transition-all"
+            onClick={() => navigate("/")}
+          >
+            <FaArrowLeft className="mr-2" /> Etusivulle
+          </button>
         </div>
       )}
     </div>
