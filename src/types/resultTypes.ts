@@ -24,3 +24,11 @@ export interface AllResultsResponse {
     completedAt: Date;
   }[];
 }
+
+export interface LeaderboardResponse {
+  leaderboard: {
+    userId: mongoose.Schema.Types.ObjectId;
+    username: string;
+    totalPoints: number;
+  }[];
+}
