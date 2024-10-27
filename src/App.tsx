@@ -18,6 +18,7 @@ import AdminHome from "./components/AdminHome";
 import AdminQuestion from "./components/AdminQuestion";
 import AdminQuiz from "./components/AdminQuiz";
 import AllQuizzes from "./views/AllQuizzes";
+import Profile from "./views/Profile";
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
           <Routes>
             <Route element={<Layout />}>
               <Route path="/" element={<Home />} />
+              <Route path="/profile" element={<Profile />} />
               <Route path="/quiz" element={<Quiz />} />
               <Route path="/quiz/:date" element={<Quiz />} />
               <Route path="/logout" element={<Logout />} />

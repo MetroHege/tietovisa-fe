@@ -7,3 +7,20 @@ export interface Result {
   totalQuestions: number;
   completedAt: Date;
 }
+
+export interface QuizResultResponse {
+  correctAnswers: number;
+  totalQuestions: number;
+  completedAt: Date;
+}
+
+
+export interface AllResultsResponse {
+  results: {
+    quizId: mongoose.Schema.Types.ObjectId;
+    quizTitle: string;
+    correctAnswers: number;
+    totalQuestions: number;
+    completedAt: Date;
+  }[];
+}
