@@ -142,14 +142,6 @@ const Navbar = () => {
                     <Edit className="mr-2 h-5 w-5" />
                     Muokkaa käyttäjää
                   </Button>
-                  <Button
-                    size="lg"
-                    className="bg-red-500 text-white hover:bg-red-700"
-                    onClick={handleLogout}
-                  >
-                    <LogOut className="mr-2 h-5 w-5" />
-                    Kirjaudu ulos
-                  </Button>
                 </>
               ) : (
                 <Button variant="outline" size="lg" onClick={handleLoginClick}>
@@ -162,6 +154,16 @@ const Navbar = () => {
                   Kaikki visat
                 </Button>
               </Link>
+              {user && (
+                <Button
+                  size="lg"
+                  className="bg-red-500 text-white hover:bg-red-700 mt-4"
+                  onClick={handleLogout}
+                >
+                  <LogOut className="mr-2 h-5 w-5" />
+                  Kirjaudu ulos
+                </Button>
+              )}
             </div>
           </div>
         </SheetContent>
