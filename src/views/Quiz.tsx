@@ -38,6 +38,7 @@ const Quiz = () => {
   const [correctAnswers, setCorrectAnswers] = useState(0);
   const [loading, setLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [nextQuizError, setNextQuizError] = useState<string | null>(null); // State for next quiz error
   const {
     getQuizzesByDate,
     submitQuizResult,
@@ -71,6 +72,15 @@ const Quiz = () => {
       console.error("Error fetching quiz:", error);
     }
     setLoading(false);
+  };
+
+  const checkNextQuizExists = async (nextDate: string) => {
+    try {
+      const nextQuiz: PopulatedQuiz = await getQuizzesByDate(nextDate);
+      return !!nextQuiz;
+    } catch (error) {
+      return false;
+    }
   };
 
   useEffect(() => {
@@ -118,6 +128,16 @@ const Quiz = () => {
     } catch (error) {
       setErrorMessage("Virhe vastausten lähettämisessä.");
       console.error("Error submitting quiz results:", error);
+    }
+  };
+
+  const handleNextQuiz = async () => {
+    const nextDate = getNextDate(date!);
+    const exists = await checkNextQuizExists(nextDate);
+    if (exists) {
+      navigate(`/quiz/${nextDate}`);
+    } else {
+      setNextQuizError("Seuraavaa visaa ei ole saatavilla.");
     }
   };
 
@@ -294,11 +314,14 @@ const Quiz = () => {
             </button>
             <button
               className="w-1/2 p-3 mt-6 bg-blue-500 text-white rounded-lg font-bold flex justify-center items-center hover:bg-blue-600 transition-all"
-              onClick={() => navigate(`/quiz/${getNextDate(date!)}`)}
+              onClick={handleNextQuiz}
             >
               Seuraavaan visaan <FaArrowRight className="ml-2" />
             </button>
           </div>
+          {nextQuizError && (
+            <p className="text-red-500 text-center mt-4">{nextQuizError}</p>
+          )}
         </div>
       )}
     </div>
