@@ -1,5 +1,10 @@
 import { useState, useEffect } from "react";
-import { FaArrowUp, FaArrowDown, FaArrowLeft } from "react-icons/fa";
+import {
+  FaArrowUp,
+  FaArrowDown,
+  FaArrowLeft,
+  FaArrowRight,
+} from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import useQuiz from "@/hooks/quizHooks";
 import { Question } from "@/types/questionTypes";
@@ -13,6 +18,12 @@ const formatDateToDDMMYYYY = (date: string) => {
   const month = d.getMonth() + 1;
   const year = d.getFullYear();
   return `${day}.${month}.${year}`;
+};
+
+const getNextDate = (date: string) => {
+  const d = new Date(date);
+  d.setDate(d.getDate() + 1);
+  return d.toISOString().split("T")[0];
 };
 
 const Quiz = () => {
@@ -274,12 +285,20 @@ const Quiz = () => {
               })}
             </div>
           )}
-          <button
-            className="w-1/2 p-3 mt-6 bg-blue-500 text-white rounded-lg font-bold flex justify-center items-center hover:bg-blue-600 transition-all"
-            onClick={() => navigate("/")}
-          >
-            <FaArrowLeft className="mr-2" /> Etusivulle
-          </button>
+          <div className="flex space-x-4">
+            <button
+              className="w-1/2 p-3 mt-6 bg-blue-500 text-white rounded-lg font-bold flex justify-center items-center hover:bg-blue-600 transition-all"
+              onClick={() => navigate("/")}
+            >
+              <FaArrowLeft className="mr-2" /> Etusivulle
+            </button>
+            <button
+              className="w-1/2 p-3 mt-6 bg-blue-500 text-white rounded-lg font-bold flex justify-center items-center hover:bg-blue-600 transition-all"
+              onClick={() => navigate(`/quiz/${getNextDate(date!)}`)}
+            >
+              Seuraavaan visaan <FaArrowRight className="ml-2" />
+            </button>
+          </div>
         </div>
       )}
     </div>

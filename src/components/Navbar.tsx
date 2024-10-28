@@ -90,7 +90,7 @@ const Navbar = () => {
         </svg>
       </div>
       <Link to={"/"} className="relative z-10">
-        <div className="text-2xl font-bold text-black dark:text-white transition duration-300 hover:text-gray-800 hover:scale-105 dark:hover:text-gray-200">
+        <div className="text-3xl font-bold text-black dark:text-white transition duration-300 hover:text-gray-800 hover:scale-105 dark:hover:text-gray-200">
           Kymppivisa
         </div>
       </Link>
