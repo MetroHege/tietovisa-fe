@@ -7,19 +7,16 @@ export interface Question {
 }
 
 export interface Answer {
-  _id: string;
+  _id?: string;
   text: string;
   isCorrect: boolean;
 }
-
 
 export interface NewQuestionData {
   questionText: string;
   date: string;
   answers: Answer[];
 }
-
-
 
 export interface SearchResponse {
   totalQuestions: number;

@@ -1,9 +1,7 @@
-type MessageResponse = {
+export type MessageResponse = {
   message: string;
-}
+};
 
-type ErrorResponse = MessageResponse & {
+export type ErrorResponse = MessageResponse & {
   stack?: string;
-}
-
-export {MessageResponse, ErrorResponse};
+};

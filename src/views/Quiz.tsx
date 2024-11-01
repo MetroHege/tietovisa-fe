@@ -1,16 +1,16 @@
-import { useState, useEffect } from "react";
+import {useState, useEffect} from 'react';
 import {
   FaArrowUp,
   FaArrowDown,
   FaArrowLeft,
   FaArrowRight,
-} from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
-import useQuiz from "@/hooks/quizHooks";
-import { Question } from "@/types/questionTypes";
-import { CompareQuizResponse, PopulatedQuiz } from "@/types/quizTypes";
-import { useParams } from "react-router-dom";
-import { MediumRectangleAd, MobileLeaderboardAd } from "@/components/Ads"; // Import ad components
+} from 'react-icons/fa';
+import {useNavigate} from 'react-router-dom';
+import useQuiz from '@/hooks/quizHooks';
+import {Question} from '@/types/questionTypes';
+import {CompareQuizResponse, PopulatedQuiz} from '@/types/quizTypes';
+import {useParams} from 'react-router-dom';
+import {MediumRectangleAd /*MobileLeaderboardAd*/} from '@/components/Ads'; // Import ad components
 
 const formatDateToDDMMYYYY = (date: string) => {
   const d = new Date(date);
@@ -23,17 +23,17 @@ const formatDateToDDMMYYYY = (date: string) => {
 const getNextDate = (date: string) => {
   const d = new Date(date);
   d.setDate(d.getDate() + 1);
-  return d.toISOString().split("T")[0];
+  return d.toISOString().split('T')[0];
 };
 
 const Quiz = () => {
   const [questions, setQuestions] = useState<Question[]>([]);
-  const [quizId, setQuizId] = useState<string>("");
-  const [quizState, setQuizState] = useState<"inProgress" | "completed">(
-    "inProgress"
+  const [quizId, setQuizId] = useState<string>('');
+  const [quizState, setQuizState] = useState<'inProgress' | 'completed'>(
+    'inProgress'
   );
   const [userAnswers, setUserAnswers] = useState<
-    { questionId: string; answerId: string }[]
+    {questionId: string; answerId: string}[]
   >([]);
   const [correctAnswers, setCorrectAnswers] = useState(0);
   const [loading, setLoading] = useState(true);
@@ -47,7 +47,7 @@ const Quiz = () => {
     compareQuizResult,
   } = useQuiz();
   const [showAnswers, setShowAnswers] = useState(false);
-  const { date } = useParams<{ date: string }>();
+  const {date} = useParams<{date: string}>();
   const [comparisonStats, setComparisonStats] =
     useState<CompareQuizResponse | null>(null);
   const navigate = useNavigate();
@@ -67,9 +67,9 @@ const Quiz = () => {
       }));
 
       setQuestions(questionsFromQuiz);
-      setQuizState("inProgress");
+      setQuizState('inProgress');
     } catch (error) {
-      console.error("Error fetching quiz:", error);
+      console.error('Error fetching quiz:', error);
     }
     setLoading(false);
   };
@@ -89,8 +89,9 @@ const Quiz = () => {
 
   const handleAnswer = (
     questionIndex: number,
-    selectedAnswer: { _id: string; text: string; isCorrect: boolean }
+    selectedAnswer: {_id?: string; text: string; isCorrect: boolean}
   ) => {
+    if (selectedAnswer._id === undefined) return;
     const newUserAnswers = [...userAnswers];
     newUserAnswers[questionIndex] = {
       questionId: questions[questionIndex]._id,
@@ -102,7 +103,7 @@ const Quiz = () => {
 
   const handleSubmit = async () => {
     if (userAnswers.length !== questions.length) {
-      setErrorMessage("Vastaatathan kaikkiin kysymyksiin!");
+      setErrorMessage('Vastaatathan kaikkiin kysymyksiin!');
       return;
     }
 
@@ -117,7 +118,7 @@ const Quiz = () => {
     });
 
     setCorrectAnswers(correctCount);
-    setQuizState("completed");
+    setQuizState('completed');
 
     try {
       const result = await submitQuizResult(quizId, userAnswers);
@@ -126,8 +127,8 @@ const Quiz = () => {
       const comparison = await compareQuizResult(quizId);
       setComparisonStats(comparison);
     } catch (error) {
-      setErrorMessage("Virhe vastausten lähettämisessä.");
-      console.error("Error submitting quiz results:", error);
+      setErrorMessage('Virhe vastausten lähettämisessä.');
+      console.error('Error submitting quiz results:', error);
     }
   };
 
@@ -137,7 +138,7 @@ const Quiz = () => {
     if (exists) {
       navigate(`/quiz/${nextDate}`);
     } else {
-      setNextQuizError("Seuraavaa visaa ei ole saatavilla.");
+      setNextQuizError('Seuraavaa visaa ei ole saatavilla.');
     }
   };
 
@@ -151,7 +152,7 @@ const Quiz = () => {
 
   return (
     <div className="relative p-4 max-w-3xl mx-auto">
-      {quizState === "inProgress" && (
+      {quizState === 'inProgress' && (
         <div className="question-section">
           <h2 className="text-2xl font-bold mb-4 text-center dark:text-white">
             Päivän {formatDateToDDMMYYYY(date!)} kysymyssarja
@@ -171,8 +172,8 @@ const Quiz = () => {
                         <button
                           className={`block w-full p-3 mt-3 rounded-lg transition-all ${
                             isSelected
-                              ? "bg-blue-700 text-white"
-                              : "bg-blue-500 text-white hover:bg-blue-600"
+                              ? 'bg-blue-700 text-white'
+                              : 'bg-blue-500 text-white hover:bg-blue-600'
                           }`}
                           onClick={() => handleAnswer(questionIndex, answer)}
                         >
@@ -204,28 +205,28 @@ const Quiz = () => {
         </div>
       )}
 
-      {quizState === "completed" && (
+      {quizState === 'completed' && (
         <div className="p-4">
           <h1 className="text-2xl font-bold mb-6 text-center dark:text-white">
             {correctAnswers === 0 &&
-              "Ou nou, nyt taisi olla mukana myös huonoa säkää! Ehkä ei kannata lotota tänään..."}
-            {correctAnswers === 1 && "Ai ai, eikun au au, nyt sattuu!"}
-            {correctAnswers === 2 && "Ai ai ai, aina ei mene hyvin!"}
+              'Ou nou, nyt taisi olla mukana myös huonoa säkää! Ehkä ei kannata lotota tänään...'}
+            {correctAnswers === 1 && 'Ai ai, eikun au au, nyt sattuu!'}
+            {correctAnswers === 2 && 'Ai ai ai, aina ei mene hyvin!'}
             {correctAnswers === 3 &&
-              "Seuraavassa visassa mietitään ehkä hieman kauemmin!"}
+              'Seuraavassa visassa mietitään ehkä hieman kauemmin!'}
             {correctAnswers === 4 &&
-              "Ehkä luetaan uutisia hieman enemmän ja tarkemmin jatkossa!"}
+              'Ehkä luetaan uutisia hieman enemmän ja tarkemmin jatkossa!'}
             {correctAnswers === 5 &&
-              "Ei huono tulos, kysymykset eivät ole helppoja!"}
+              'Ei huono tulos, kysymykset eivät ole helppoja!'}
             {correctAnswers === 6 &&
-              "Ei huono tulos, kysymykset eivät ole helppoja!"}
+              'Ei huono tulos, kysymykset eivät ole helppoja!'}
             {correctAnswers === 7 &&
-              "Ihan ok tulos, kysymykset eivät ole helppoja!"}
-            {correctAnswers === 8 && "Hyvä tulos, olet hyvin perillä asioista!"}
+              'Ihan ok tulos, kysymykset eivät ole helppoja!'}
+            {correctAnswers === 8 && 'Hyvä tulos, olet hyvin perillä asioista!'}
             {correctAnswers === 9 &&
-              "Hieno saavutus, olet hyvin perillä asioista!"}
+              'Hieno saavutus, olet hyvin perillä asioista!'}
             {correctAnswers === 10 &&
-              "Todella upeaa, olet erittäin hyvin perillä asioista!"}
+              'Todella upeaa, olet erittäin hyvin perillä asioista!'}
           </h1>
           <p className="text-4xl font-bold text-center mb-6 dark:text-white">
             {correctAnswers}/{questions.length}
@@ -248,8 +249,8 @@ const Quiz = () => {
             onClick={() => setShowAnswers(!showAnswers)}
           >
             {showAnswers
-              ? "Piilota oikeat vastaukset"
-              : "Näytä oikeat vastaukset"}{" "}
+              ? 'Piilota oikeat vastaukset'
+              : 'Näytä oikeat vastaukset'}{' '}
             <span className="ml-2">
               {showAnswers ? <FaArrowUp /> : <FaArrowDown />}
             </span>
@@ -267,8 +268,8 @@ const Quiz = () => {
                     key={index}
                     className={`mb-4 p-4 rounded-lg ${
                       correctAnswer && correctAnswer._id === userAnswer.answerId
-                        ? "bg-green-100 dark:bg-green-900 border border-green-500"
-                        : "bg-red-100 dark:bg-red-900 border border-red-500"
+                        ? 'bg-green-100 dark:bg-green-900 border border-green-500'
+                        : 'bg-red-100 dark:bg-red-900 border border-red-500'
                     }`}
                   >
                     <p className="sm:text-lg lg:text-xl font-bold dark:text-white">
@@ -279,10 +280,10 @@ const Quiz = () => {
                         const isCorrect = option.isCorrect;
                         const isSelected = option._id === userAnswer?.answerId;
                         const bgColor = isCorrect
-                          ? "bg-green-500 text-white dark:bg-green-700"
+                          ? 'bg-green-500 text-white dark:bg-green-700'
                           : isSelected
-                          ? "bg-red-500 text-white dark:bg-red-700"
-                          : "bg-gray-200 text-gray-800 dark:bg-gray-700 dark:text-gray-200";
+                          ? 'bg-red-500 text-white dark:bg-red-700'
+                          : 'bg-gray-200 text-gray-800 dark:bg-gray-700 dark:text-gray-200';
                         return (
                           <div
                             key={optionIndex}
@@ -308,7 +309,7 @@ const Quiz = () => {
           <div className="flex space-x-4">
             <button
               className="w-1/2 p-3 mt-6 bg-blue-500 text-white rounded-lg font-bold flex justify-center items-center hover:bg-blue-600 transition-all"
-              onClick={() => navigate("/")}
+              onClick={() => navigate('/')}
             >
               <FaArrowLeft className="mr-2" /> Etusivulle
             </button>

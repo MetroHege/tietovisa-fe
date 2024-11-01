@@ -1,27 +1,27 @@
-import { useEffect } from "react";
-import { Outlet, useLocation } from "react-router-dom";
-import { useUserContext } from "@/hooks/contextHooks";
-import { useTheme } from "@/contexts/ThemeContext";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
+import {useEffect} from 'react';
+import {Outlet, useLocation} from 'react-router-dom';
+import {useUserContext} from '@/hooks/contextHooks';
+import {useTheme} from '@/contexts/ThemeContext';
+import Navbar from '@/components/Navbar';
+import Footer from '@/components/Footer';
 import {
-  LeaderboardAd,
-  FullBannerAd,
-  MobileLeaderboardAd,
+  // LeaderboardAd,
+  // FullBannerAd,
+  // MobileLeaderboardAd,
   MediumRectangleAd,
   LargeRectangleAd,
-  SquareAd,
-  WideSkyscraperAd,
-  SkyscraperAd,
-  LargeMobileBannerAd,
-} from "@/components/Ads";
+  // SquareAd,
+  // WideSkyscraperAd,
+  // SkyscraperAd,
+  // LargeMobileBannerAd,
+} from '@/components/Ads';
 
 export default function Layout() {
-  const { handleAutoLogin, autoLoginLoading } = useUserContext();
-  const { theme } = useTheme();
+  const {handleAutoLogin, autoLoginLoading} = useUserContext();
+  const {theme} = useTheme();
   const location = useLocation();
 
-  const adminRoute = location.pathname.startsWith("/dashboard");
+  const adminRoute = location.pathname.startsWith('/dashboard');
 
   useEffect(() => {
     handleAutoLogin(); // Only runs once on mount
