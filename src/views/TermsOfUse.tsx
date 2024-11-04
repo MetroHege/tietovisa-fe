@@ -1,14 +1,12 @@
-import React from "react";
-
 const TermsOfUse = () => {
   return (
-    <div className="max-w-3xl mx-auto p-4">
+    <div className="max-w-3xl mx-auto p-4 text-left">
       <h1 className="text-2xl font-bold mb-4">Käyttöehdot</h1>
-      <p className="mb-4">
+      <h2 className="mb-4">
         Nämä ehdot tulevat voimaan 1.1.2024 ja ovat voimassa toistaiseksi.
-      </p>
-      <p className="mb-4">Soveltamiskohde</p>
-      <p className="mb-4">
+      </h2>
+      <h2 className="text-xl mb-2">Soveltamiskohde</h2>
+      <p className="mb-6">
         Näitä käyttöehtoja sovelletaan Kymppivisa.fi-sivuston (jäljempänä myös
         ”palveluntarjoaja” ja ”ylläpitäjä”) palveluihin (jäljempänä ”palvelut”)
         ja niiden käyttöön. Palvelujen käyttäjä (myöhemmin näissä ehdoissa
@@ -16,7 +14,7 @@ const TermsOfUse = () => {
         noudattamaan niitä. Käyttäjä sitoutuu noudattamaan myös muita
         palveluihin liittyviä rajoituksia, ehtoja ja ohjeita.
       </p>
-      <p className="mb-4">Palveluiden käyttö</p>
+      <h2 className="text-xl mb-2">Palveluiden käyttö</h2>
       <p className="mb-4">
         Käyttäjä saa palveluihin rajoitetun käyttöoikeuden ja käyttää niitä
         omalla vastuullaan. Käyttäjän pitää käyttää palveluita käyttöehtojen ja
@@ -47,13 +45,13 @@ const TermsOfUse = () => {
         koskee myös tietoturvariskejä kuten tietokoneviruksia ja
         tietovarkauksia.
       </p>
-      <p className="mb-4">
+      <p className="mb-6">
         Jos palveluissa on ominaisuuksia, jotka perustuvat kolmansien osapuolten
         (kuten mainostajat ja sosiaalisen median palvelut) tuottamaan aineistoon
         tai palveluihin, sovelletaan kyseisten ominaisuuksien osalta kyseisten
         osapuolten käyttöehtoja ja tietosuojalausekkeita.
       </p>
-      <p>Käyttäjätunnukset</p>
+      <h2 className="text-xl mb-2">Käyttäjätunnukset</h2>
       <p className="mb-4">
         Käyttäjällä voi olla väliaikainen tai pysyvästi rekisteröity
         käyttäjätunnus palveluiden käyttämiseen. Tunnuksen saa aloittamalla
@@ -65,12 +63,12 @@ const TermsOfUse = () => {
         poistaa niitä koskevat tiedot. Palveluntarjoaja tulkitsee, mikä on
         väärinkäyttöä.
       </p>
-      <p className="mb-4">
+      <p className="mb-6">
         Palveluita ei saa käyttää toiseen, tunnistettavaan henkilöön
         viittaavilla nimillä tai yhteystiedoilla. Loukkaavien nimien, tunnusten
         ja yhteystietojen käyttäminen on kielletty.
       </p>
-      <p>Palveluiden ylläpitäjän oikeudet</p>
+      <h2 className="text-xl mb-2">Palveluiden ylläpitäjän oikeudet</h2>
       <p className="mb-4">
         Palveluiden sisältö ja ulkoasu on suojattu tekijänoikeuksilla Suomen
         lakien ja säädösten sekä kansainvälisten sopimusten mukaan. Palveluiden
@@ -101,14 +99,14 @@ const TermsOfUse = () => {
         toimittama aineisto loukkaa kolmannen osapuolen oikeuksia,
         tekijänoikeuksia tai muita immateriaalioikeuksia.
       </p>
-      <p className="mb-4">
+      <p className="mb-6">
         Palveluiden ylläpitäjällä on oikeus tehdä näihin ehtoihin muutoksia
         vapaasti. Ylläpitäjä pyrkii ilmoittamaan muutoksista etukäteen. Jos
         muutokset johtuvat lainsäädännöstä tai viranomaistoimista, ne voivat
         tulla voimaan ilman eri ilmoitusta.
       </p>
-      <p>Linkittäminen</p>
-      <p className="mb-4">
+      <h2 className="text-xl mb-2">Linkittäminen</h2>
+      <p className="mb-6">
         Käyttäjä saa julkaista omilla nettisivuillaan tai sosiaalisessa mediassa
         linkin Kymppivisa.fi:n aloitussivulle, jos linkittäminen on hyvän tavan
         mukaista. Linkittäminen ei ole sallittua, jos se on loukkaavaa,
@@ -119,13 +117,13 @@ const TermsOfUse = () => {
         hyötymistarkoituksessa, jos siihen ei ole Kymppivisa.fi:n
         oikeudenomistajien lupaa ja kirjallista suostumusta.
       </p>
-      <p>Palveluiden ylläpitäjän vastuu</p>
+      <h2 className="text-xl mb-2">Palveluiden ylläpitäjän vastuu</h2>
       <p className="mb-4">
         Kymppivisa.fin ylläpitäjä vastaa palveluiden ja niiden sisällön
         lainmukaisuudesta ja oikeellisuudesta. Palveluiden sisällön käyttö
         tapahtuu käyttäjän omalla vastuulla ja riskillä.
       </p>
-      <p className="mb-4">
+      <p className="mb-6">
         Kymppivisa.fin ylläpitäjä ei ole vastuussa eikä korvausvelvollinen, jos
         palveluissa on virhe, puute, käyttökatko, virhetoiminto tai muu ongelma
         tai jos käyttäjän laitteisiin tai ohjelmiin tulee vikoja, häiriöitä tai
@@ -137,14 +135,14 @@ const TermsOfUse = () => {
         vaadittava kahden kuukauden kuluessa siitä, kun hän havaitsi tai hänen
         olisi pitänyt havaita väittämänsä vahingon korvausperuste.
       </p>
-      <p>Tietosuoja</p>
-      <p className="mb-4">
+      <h2 className="text-xl mb-2">Tietosuoja</h2>
+      <p className="mb-6">
         Kymppivisa.fin ylläpitäjä käsittelee käyttäjien henkilötietoja
         palveluiden tietosuojalausekkeen ja tietosuojaa koskevan lainsäädännön
         ja viranomaismääräysten mukaan. Palveluissa käytetään evästeitä
         palvelujen evästekäytännön mukaan.
       </p>
-      <p>Muut asiat</p>
+      <h2 className="text-xl mb-2">Muut asiat</h2>
       <p className="mb-4">
         Palveluihin ja niiden käyttöehtoihin sovelletaan Suomen lakia.
         Mahdolliset erimielisyydet käyttäjien tai kolmansien osapuolten kanssa
