@@ -19,6 +19,7 @@ import AdminQuestion from "./components/AdminQuestion";
 import AdminQuiz from "./components/AdminQuiz";
 import AllQuizzes from "./views/AllQuizzes";
 import Profile from "./views/Profile";
+import Contact from "./views/Contact";
 
 function App() {
   return (
@@ -33,6 +34,7 @@ function App() {
               <Route path="/quiz/:date" element={<Quiz />} />
               <Route path="/logout" element={<Logout />} />
               <Route path="/all-quizzes" element={<AllQuizzes />} />{" "}
+              <Route path="/contact" element={<Contact />} />
               <Route
                 path="/secret"
                 element={
