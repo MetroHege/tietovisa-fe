@@ -20,6 +20,9 @@ import AdminQuiz from "./components/AdminQuiz";
 import AllQuizzes from "./views/AllQuizzes";
 import Profile from "./views/Profile";
 import Contact from "./views/Contact";
+import TermsOfUse from "./views/TermsOfUse";
+import CookiePolicy from "./views/CookiePolicy";
+import PrivacyStatement from "./views/PrivacyStatement";
 
 function App() {
   return (
@@ -35,6 +38,9 @@ function App() {
               <Route path="/logout" element={<Logout />} />
               <Route path="/all-quizzes" element={<AllQuizzes />} />{" "}
               <Route path="/contact" element={<Contact />} />
+              <Route path="/terms-of-use" element={<TermsOfUse />} />
+              <Route path="/cookie-policy" element={<CookiePolicy />} />
+              <Route path="/privacy-statement" element={<PrivacyStatement />} />
               <Route
                 path="/secret"
                 element={

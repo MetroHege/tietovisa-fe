@@ -1,5 +1,12 @@
 import { Link } from "react-router-dom";
-import { FaHome, FaList, FaShieldAlt, FaEnvelope } from "react-icons/fa"; // Importing icons
+import {
+  FaHome,
+  FaList,
+  FaShieldAlt,
+  FaEnvelope,
+  FaCookieBite,
+  FaFileContract,
+} from "react-icons/fa"; // Importing icons
 
 const Footer = () => {
   return (
@@ -23,10 +30,22 @@ const Footer = () => {
             <FaList className="mr-2" /> Kaikki visat
           </Link>
           <Link
-            to="/privacy"
+            to="/privacy-statement"
             className="flex items-center text-sm text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-200 transition-colors duration-300"
           >
-            <FaShieldAlt className="mr-2" /> Tietosuojakäytäntö
+            <FaShieldAlt className="mr-2" /> Tietosuojalauseke
+          </Link>
+          <Link
+            to="/cookie-policy"
+            className="flex items-center text-sm text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-200 transition-colors duration-300"
+          >
+            <FaCookieBite className="mr-2" /> Evästekäytäntö
+          </Link>
+          <Link
+            to="/terms-of-use"
+            className="flex items-center text-sm text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-200 transition-colors duration-300"
+          >
+            <FaFileContract className="mr-2" /> Käyttöehdot
           </Link>
           <Link
             to="/contact"
