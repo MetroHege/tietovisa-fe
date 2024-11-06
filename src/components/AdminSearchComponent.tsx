@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from "react";
-import { Question } from "@/types/questionTypes";
-import { Link } from "react-router-dom";
-import { useQuestion } from "@/hooks/questionHooks";
+import React, {useState, useEffect} from 'react';
+import {Question} from '@/types/questionTypes';
+import {Link} from 'react-router-dom';
+import {useQuestion} from '@/hooks/questionHooks';
 
 const AdminSearchComponent: React.FC = () => {
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState('');
   const [page, setPage] = useState(1);
-  const { searchQuestions, searchLoading, searchError, searchData } = useQuestion();
+  const {searchQuestions, searchLoading, searchData} = useQuestion();
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
@@ -54,7 +54,9 @@ const AdminSearchComponent: React.FC = () => {
             <tbody>
               {searchData.questions.map((question: Question) => (
                 <tr key={question._id}>
-                  <td className="py-2 px-4 border-b">{question.questionText}</td>
+                  <td className="py-2 px-4 border-b">
+                    {question.questionText}
+                  </td>
                   <td className="py-2 px-4 border-b">
                     {new Date(question.date).toLocaleDateString()}
                   </td>
