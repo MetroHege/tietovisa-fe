@@ -16,11 +16,34 @@ export function RegisterForm({ onClose }: RegisterFormProps) {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false); // State for password visibility
   const [showConfirmPassword, setShowConfirmPassword] = useState(false); // State for confirm password visibility
+  const [validationError, setValidationError] = useState("");
+
+  const validatePassword = (password: string) => {
+    const minLength = 8;
+    const hasUpperCase = /[A-Z]/.test(password);
+    const hasNumber = /\d/.test(password);
+
+    if (password.length < minLength) {
+      return "Salasanan on oltava vähintään 8 merkkiä pitkä.";
+    }
+    if (!hasUpperCase) {
+      return "Salasanassa on oltava vähintään yksi iso kirjain.";
+    }
+    if (!hasNumber) {
+      return "Salasanassa on oltava vähintään yksi numero.";
+    }
+    return "";
+  };
 
   const onRegisterSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    const passwordError = validatePassword(password);
+    if (passwordError) {
+      setValidationError(passwordError);
+      return;
+    }
     if (password !== confirmPassword) {
-      alert("Salasanat eivät täsmää");
+      setValidationError("Salasanat eivät täsmää.");
       return;
     }
     if (email && password) {
@@ -96,6 +119,9 @@ export function RegisterForm({ onClose }: RegisterFormProps) {
           </div>
         </div>
       </div>
+      {validationError && (
+        <p className="text-red-500 mb-4">{validationError}</p>
+      )}
       <Button type="submit" className="w-full" disabled={authLoading}>
         {authLoading ? "Ladataan..." : "Rekisteröidy"}
       </Button>

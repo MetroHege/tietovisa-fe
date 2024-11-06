@@ -31,8 +31,31 @@ const ModifyUserModal = ({ isOpen, onClose }: ModifyUserModalProps) => {
     }
   }, [user]);
 
+  const validatePassword = (password: string) => {
+    const minLength = 8;
+    const hasUpperCase = /[A-Z]/.test(password);
+    const hasNumber = /\d/.test(password);
+
+    if (password.length < minLength) {
+      return "Salasanan on oltava vähintään 8 merkkiä pitkä.";
+    }
+    if (!hasUpperCase) {
+      return "Salasanassa on oltava vähintään yksi iso kirjain.";
+    }
+    if (!hasNumber) {
+      return "Salasanassa on oltava vähintään yksi numero.";
+    }
+    return "";
+  };
+
   const handleSave = async () => {
     if (!user) return;
+
+    const passwordError = validatePassword(password);
+    if (passwordError) {
+      setError(passwordError);
+      return;
+    }
 
     try {
       const updates = { username, email, password, role: user.role };
