@@ -1,9 +1,13 @@
 const PrivacyStatement = () => {
   return (
     <div className="max-w-3xl mx-auto p-4 text-left">
-      <h1 className="text-2xl font-bold mb-4">Tietosuojalauseke</h1>
-      <h2 className="mb-4">Arvostamme yksityisyyttäsi</h2>
-      <p className="mb-4">
+      <h1 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white">
+        Tietosuojalauseke
+      </h1>
+      <h2 className="mb-4 text-gray-900 dark:text-white">
+        Arvostamme yksityisyyttäsi
+      </h2>
+      <p className="mb-4 text-gray-900 dark:text-white">
         Kymppivisa.fi haluaa suojata palvelujensa käyttäjien yksityisyyttä ja
         noudattaa toiminnassaan tietosuojalainsäädäntöä ja hyviä
         tietosuojakäytäntöjä. Käytämme mahdollisimman vähän henkilötietoja.
@@ -11,12 +15,14 @@ const PrivacyStatement = () => {
         varten kysymme tunnistautumistietona minimissään vain vapaavalintaisen
         käyttäjätunnuksen ja sähköpostiosoitteen.
       </p>
-      <p className="mb-4">
+      <p className="mb-4 text-gray-900 dark:text-white">
         Keräämme henkilötietoja vain rekisteröitymisen, palvelujen käytön,
         kyselyjen tai käyttäjien yhteydenottojen yhteydessä.
       </p>
-      <h2 className="text-xl mb-2">1. Meille antamasi tiedot</h2>
-      <ul className="mb-6 list-disc list-inside">
+      <h2 className="text-xl mb-2 text-gray-900 dark:text-white">
+        1. Meille antamasi tiedot
+      </h2>
+      <ul className="mb-6 list-disc list-inside text-gray-900 dark:text-white">
         <li>
           Henkilön perustiedot ja tunnistautumiseen liittyvät tiedot, kuten
           nimimerkki, käyttäjätunnus tai muu yksilöivä tunniste ja
@@ -41,8 +47,10 @@ const PrivacyStatement = () => {
           vastaajia yksilöimättä ja tunnistamatta.
         </li>
       </ul>
-      <h2 className="text-xl mb-2">2. Palvelujen käytöstä johdetut tiedot</h2>
-      <ul className="mb-6 list-disc list-inside">
+      <h2 className="text-xl mb-2 text-gray-900 dark:text-white">
+        2. Palvelujen käytöstä johdetut tiedot
+      </h2>
+      <ul className="mb-6 list-disc list-inside text-gray-900 dark:text-white">
         <li>
           Käyttäjän nimimerkkiin, käyttäjätunnukseen tai muuhun yksilöivään
           tunnisteeseen liittyvät palveluiden käyttötiedot.
@@ -59,16 +67,16 @@ const PrivacyStatement = () => {
         </li>
         <li>Sijaintitiedot.</li>
       </ul>
-      <h2 className="text-xl mb-2">
+      <h2 className="text-xl mb-2 text-gray-900 dark:text-white">
         3. Luovutuksena muualta saadut henkilötiedot
       </h2>
-      <p className="mb-4">
+      <p className="mb-4 text-gray-900 dark:text-white">
         Saatamme saada palvelumme käyttöön liittyvää tilastotietoa
         yhteistyökumppaneiltamme. Näiden tietojen perusteella emme kykene
         tunnistamaan käyttäjän henkilöllisyyttä. Tiedot ovat tilastotietoja ja
         anonymisoituja.
       </p>
-      <p className="mb-6">
+      <p className="mb-6 text-gray-900 dark:text-white">
         Meillä on sosiaalisen median (some) palveluita, joista saamme tietoja
         palveluidemme käytöstä. Näitä tietoja käytetään some-kanavien
         hallinnointiin ja käyttöön sekä yhteydenottoihin vastaamiseen. Meillä on
@@ -86,8 +94,10 @@ const PrivacyStatement = () => {
         </a>
         .
       </p>
-      <h2 className="text-xl mb-2">4. Henkilötietojen käsittelyn tarkoitus</h2>
-      <ul className="mb-6 list-disc list-inside">
+      <h2 className="text-xl mb-2 text-gray-900 dark:text-white">
+        4. Henkilötietojen käsittelyn tarkoitus
+      </h2>
+      <ul className="mb-6 list-disc list-inside text-gray-900 dark:text-white">
         <li>
           Palvelujen tarjoaminen ja kehittäminen. Tässä tarkoituksessa
           käsittelemme henkilötietoja pääasiassa tilastotietoina.
@@ -97,8 +107,10 @@ const PrivacyStatement = () => {
         <li>Asiakaspalvelun toteuttaminen</li>
         <li>Tietoturvan varmistaminen ja kehittäminen</li>
       </ul>
-      <h2 className="text-xl mb-2">5. Henkilötietojen käsittelyn perusteet</h2>
-      <p className="mb-4">
+      <h2 className="text-xl mb-2 text-gray-900 dark:text-white">
+        5. Henkilötietojen käsittelyn perusteet
+      </h2>
+      <p className="mb-4 text-gray-900 dark:text-white">
         Käsittelemme henkilötietoja vain niissä tapauksissa, joissa siihen on
         oikeudellinen peruste. Kun käyttäjä käyttää palveluamme ja etenkin
         rekisteröityessään käyttäjäksi, hän hyväksyy käyttöehdot ja pyytämiemme
@@ -106,12 +118,12 @@ const PrivacyStatement = () => {
         henkilötietojen käsittelyyn. Käyttäjä antaa palveluamme käyttäessään
         myös suostumuksensa henkilötietojen käsittelyyn.
       </p>
-      <p className="mb-4">
+      <p className="mb-4 text-gray-900 dark:text-white">
         Saatamme käsitellä henkilötietoja myös palvelumme asianmukaisen tarpeen
         eli oikeutetun edun perusteella esimerkiksi kohdassa 4 mainituissa
         tarkoituksissa ja seuraavissa tarkoituksissa:
       </p>
-      <ul className="mb-6 list-disc list-inside">
+      <ul className="mb-6 list-disc list-inside text-gray-900 dark:text-white">
         <li>palveluistamme ja sisällöistämme viestimiseen ja markkinointiin</li>
         <li>palvelun käytön tilastointiin ja analysointiin</li>
         <li>palveluiden personointiin</li>
@@ -122,10 +134,10 @@ const PrivacyStatement = () => {
         <li>väärinkäytösten estämiseksi</li>
         <li>tekijänoikeuksiemme suojelemiseksi</li>
       </ul>
-      <h2 className="text-xl mb-2">
+      <h2 className="text-xl mb-2 text-gray-900 dark:text-white">
         6. Henkilötietojen luovuttaminen kolmansille osapuolille
       </h2>
-      <p className="mb-4">
+      <p className="mb-4 text-gray-900 dark:text-white">
         Voimme erikoistilanteissa joutua luovuttamaan henkilötietoja
         viranomaisille pakottavan lainsäädännön edellyttämällä tavalla. Tämä
         tapahtuu toimivaltaisen viranomaisen vaatimuksesta ja vain lakiin
@@ -133,15 +145,17 @@ const PrivacyStatement = () => {
         luovutamme tietoja, jos palveluumme tulee sosiaalisen median
         liitännäisiä.
       </p>
-      <p className="mb-6">
+      <p className="mb-6 text-gray-900 dark:text-white">
         Kolmannen osapuolet saattavat lisätä evästeitä käyttäjien selaimiin ja
         lukea niitä tai kerätä tietoja evästeiden ja muiden verkkojäljitteiden
         avulla. Esimerkkinä tästä ovat Googlen mainokset. Käyttäjät voivat lukea
         tästä lisää tästä linkistä: Miten Google käyttää palvelujamme
         käyttäviltä sivustoilta ja sovelluksista saatavia tietoja
       </p>
-      <h2 className="text-xl mb-2">7. Henkilötietojen käsittelijät</h2>
-      <p className="mb-6">
+      <h2 className="text-xl mb-2 text-gray-900 dark:text-white">
+        7. Henkilötietojen käsittelijät
+      </h2>
+      <p className="mb-6 text-gray-900 dark:text-white">
         Henkilötietoja käsittelevät ainoastaan ne henkilöt, joilla on tehtävänsä
         puolesta peruste siihen. Jos henkilötietoja käsittelee alihankkija tai
         palveluntarjoaja, he noudattavat tässä tietosuojalausekkeessa kerrottuja
@@ -153,10 +167,10 @@ const PrivacyStatement = () => {
         käyttöehdot tulevat käyttöön tämän tietosuojaselosteen lisäksi. Emme
         vastaa muiden toimijoiden tietosuojakäytännöistä tai käyttöehdoista.
       </p>
-      <h2 className="text-xl mb-2">
+      <h2 className="text-xl mb-2 text-gray-900 dark:text-white">
         8. Tietojen käsittely EU:n tai ETA:n ulkopuolella
       </h2>
-      <p className="mb-6">
+      <p className="mb-6 text-gray-900 dark:text-white">
         Palvelumme toteutetaan ja henkilötiedot käsitellään ensisijaisesti EU-
         tai ETA-maissa sijaitsevien toimijoiden ja palveluiden avulla. Emme itse
         lähetä tietoja EU:n tai ETA:n ulkopuolelle. Silti joissain tapauksissa
@@ -165,15 +179,19 @@ const PrivacyStatement = () => {
         ETA-maiden ulkopuolelle maihin, joissa lainsäädäntö henkilötietojen
         osalta eroaa Suomen laeista.
       </p>
-      <h2 className="text-xl mb-2">9. Henkilötietojen suojaaminen</h2>
-      <p className="mb-6">
+      <h2 className="text-xl mb-2 text-gray-900 dark:text-white">
+        9. Henkilötietojen suojaaminen
+      </h2>
+      <p className="mb-6 text-gray-900 dark:text-white">
         Palvelujen tuotannossa, ylläpidossa ja kehittämisessä kiinnitetään
         erityistä huomiota tietosuojaan ja tietoturvaan. Henkilötietoja
         suojataan fyysisesti, teknisesti ja hallinnollisesti. Yritämme ennakoita
         riskejä ja pitää palvelumme lainsäädännön edellyttämällä tasolla.
       </p>
-      <h2 className="text-xl mb-2">10. Tietojen säilyttäminen</h2>
-      <p className="mb-6">
+      <h2 className="text-xl mb-2 text-gray-900 dark:text-white">
+        10. Tietojen säilyttäminen
+      </h2>
+      <p className="mb-6 text-gray-900 dark:text-white">
         Säilytämme käyttäjien tietoja palvelun toteuttamiseksi, ylläpitämiseksi
         ja kehittämiseksi tarvittavan ajan. Tietoja säilytetään vain niin kauan,
         kuin on tarpeen tietosuojalausekkeessä kerrottuja tarkoituksia varten.
@@ -182,15 +200,21 @@ const PrivacyStatement = () => {
         arvonnan tai kilpailun päätyttyä lukuunottamatta voittajia ja erikseen
         huomioituja osallistujia, tosin nämäkin tiedot voidaan poistaa.
       </p>
-      <h2 className="text-xl mb-2">11. Oikeuksien käyttäminen</h2>
-      <p className="mb-6">
+      <h2 className="text-xl mb-2 text-gray-900 dark:text-white">
+        11. Oikeuksien käyttäminen
+      </h2>
+      <p className="mb-6 text-gray-900 dark:text-white">
         Palvelumme käyttäjillä on oikeus tarkastaa tietonsa ja saada tieto,
         miten niitä käsitellään. Käyttäjä voi pyytää virhetietojen oikaisua ja
         tietojen poistamista. Käyttäjällä on oikeus peruuttaa suostumuksensa
         henkilötietojen käsittelyyn.
       </p>
-      <h2 className="text-xl mb-2">12. Rekisterinpitäjä</h2>
-      <p>Henkilötietojesi rekisterinpitäjänä toimii Pressmen Finland Oy.</p>
+      <h2 className="text-xl mb-2 text-gray-900 dark:text-white">
+        12. Rekisterinpitäjä
+      </h2>
+      <p className="text-gray-900 dark:text-white">
+        Henkilötietojesi rekisterinpitäjänä toimii Pressmen Finland Oy.
+      </p>
     </div>
   );
 };
