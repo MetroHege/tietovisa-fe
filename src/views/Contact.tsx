@@ -50,8 +50,9 @@ export default function BasicForm() {
         Yhteydenottolomake
       </h1>
       <p className="text-gray-900 dark:text-white">
-        Huomasitko kirjoitusvirheen kysymyksessä? Vai onko jokin vastaus
-        mielestäsi virheellinen? Jätä meille viesti korjausta varten.
+        Epäiletkö virhettä tai huomasitko kirjoitusvirheen? Vai haluatko ottaa
+        yhteyttä muussa asiassa? Jätä meille viesti oheisella lomakkeella.
+        Yritämme vastata mahdollisimman pian.
       </p>
       <hr className="border-t-2 border-gray-300 w-full max-w-[calc(100% - 2rem)] mx-auto mb-4 mt-2" />
       {error && <p className="text-red-500 mb-4">{error}</p>}
