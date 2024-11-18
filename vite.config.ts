@@ -11,7 +11,4 @@ export default defineConfig({
     },
   },
   base: 'https://kymppivisa.fi/',
-  build: {
-    outDir: 'public-html',
-  },
 });
