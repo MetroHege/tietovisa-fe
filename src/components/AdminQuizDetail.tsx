@@ -1,13 +1,13 @@
-import useQuiz from "@/hooks/quizHooks";
-import { useParams } from "react-router-dom";
+// import useQuiz from "@/hooks/quizHooks";
+import {useParams} from 'react-router-dom';
 
 const AdminQuizDetail = () => {
-  const { quizId } = useParams();
-  const { getQuizById, quizLoading, quizError } = useQuiz()
+  const {quizId} = useParams();
+  // const { getQuizById, quizLoading, quizError } = useQuiz()
 
-  const getQuiz = async () => {
-    
-  }
+  // const getQuiz = async () => {
+
+  // }
 
   return (
     <div>
