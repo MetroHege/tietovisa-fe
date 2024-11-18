@@ -23,6 +23,7 @@ import Contact from "./views/Contact";
 import TermsOfUse from "./views/TermsOfUse";
 import CookiePolicy from "./views/CookiePolicy";
 import PrivacyStatement from "./views/PrivacyStatement";
+import AdminQuizDetail from "./components/AdminQuizDetail";
 
 function App() {
   return (
@@ -34,7 +35,7 @@ function App() {
               <Route path="/" element={<Home />} />
               <Route path="/profile" element={<Profile />} />
               <Route path="/quiz" element={<Quiz />} />
-              <Route path="/quiz/:date" element={<Quiz />} />
+              <Route path="/quiz/date/:date" element={<Quiz />} />
               <Route path="/logout" element={<Logout />} />
               <Route path="/all-quizzes" element={<AllQuizzes />} />{" "}
               <Route path="/contact" element={<Contact />} />
@@ -62,6 +63,7 @@ function App() {
 
                 {/* Additional admin routes */}
                 <Route path="quiz" element={<AdminQuiz />} />
+                <Route path="quiz/:quizId" element={<AdminQuizDetail />} />
                 <Route path="question" element={<AdminQuestion />} />
                 <Route path="upload-csv" element={<CsvUploadComponent />} />
                 <Route

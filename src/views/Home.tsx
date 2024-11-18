@@ -39,7 +39,7 @@ const Home = () => {
   }, []);
 
   const handleQuizSelection = (date: string) => {
-    navigate(`/quiz/${date}`);
+    navigate(`/quiz/date/${date}`);
   };
 
   const handleViewAllQuizzes = () => {

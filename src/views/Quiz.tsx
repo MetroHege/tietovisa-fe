@@ -136,7 +136,7 @@ const Quiz = () => {
     const nextDate = getNextDate(date!);
     const exists = await checkNextQuizExists(nextDate);
     if (exists) {
-      navigate(`/quiz/${nextDate}`);
+      navigate(`/quiz/date/${nextDate}`);
     } else {
       setNextQuizError("Seuraavaa visaa ei ole saatavilla.");
     }

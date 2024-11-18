@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import useQuiz from "@/hooks/quizHooks";
 
 const AdminQuiz = () => {
   const { getQuizzesByDateRange, quizzesData, quizzesLoading, quizzesError } = useQuiz();
+  const navigate = useNavigate();
 
   const [selectedMonth, setSelectedMonth] = useState(() => {
     const today = new Date();
@@ -105,7 +107,7 @@ const AdminQuiz = () => {
               </p>
               <button
                 className="mt-4 bg-blue-500 text-white py-2 px-4 rounded"
-                onClick={() => alert(`View quiz: ${quiz._id}`)}
+                onClick={() => navigate(`/dashboard/quiz/${quiz._id}`)}
               >
                 Tarkastele
               </button>
