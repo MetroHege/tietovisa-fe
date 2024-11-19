@@ -11,7 +11,13 @@ export default function BasicForm() {
     e.preventDefault();
     e.stopPropagation();
 
-    fetch("https://formcarry.com/s/Q-FYHETGcuj", {
+    const formcarryUrl = import.meta.env.VITE_FORMCARRY_URL;
+    if (!formcarryUrl) {
+      setError("Form submission URL is not defined.");
+      return;
+    }
+
+    fetch(formcarryUrl, {
       method: "POST",
       headers: {
         Accept: "application/json",

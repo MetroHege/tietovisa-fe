@@ -172,7 +172,7 @@ const Quiz = () => {
                         <button
                           className={`block w-full p-3 mt-3 rounded-lg transition-all ${
                             isSelected
-                              ? "bg-blue-700 text-white"
+                              ? "bg-blue-800 dark:bg-blue-900 text-white border-2 border-blue-900 dark:border-blue-700"
                               : "bg-blue-500 text-white hover:bg-blue-600"
                           }`}
                           onClick={() => handleAnswer(questionIndex, answer)}
