@@ -33,9 +33,14 @@ export interface CsvUploadResponse {
 export interface SubmitQuizResponse {
   correctAnswers: number;
   totalQuestions: number;
-  quizId: string;
-  userId: string;
-  completedAt: string;
+  points: number;
+  questionStats: QuestionStats[];
+}
+
+export interface QuestionStats {
+  questionId: string;
+  questionText: string;
+  correctPercentage: number;
 }
 
 export interface CompareQuizResponse {
@@ -44,4 +49,5 @@ export interface CompareQuizResponse {
   betterThanCount: number;
   totalUsers: number;
   percentage: number;
+  questionStats: QuestionStats[];
 }

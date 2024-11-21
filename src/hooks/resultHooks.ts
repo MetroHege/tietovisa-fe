@@ -23,40 +23,40 @@ const useResult = () => {
     error: allTimeTopError,
     data: allTimeTopData,
     handleApiRequest: handleAllTimeTopApiRequest,
-  } = useApiState<LeaderboardResponse>();
+  } = useApiState<LeaderboardResponse[]>();
 
   const {
     loading: dailyTopLoading,
     error: dailyTopError,
     data: dailyTopData,
     handleApiRequest: handleDailyTopApiRequest,
-  } = useApiState<LeaderboardResponse>();
+  } = useApiState<LeaderboardResponse[]>();
 
   const {
     loading: weeklyTopLoading,
     error: weeklyTopError,
     data: weeklyTopData,
     handleApiRequest: handleWeeklyTopApiRequest,
-  } = useApiState<LeaderboardResponse>();
+  } = useApiState<LeaderboardResponse[]>();
 
-  const getAllTimeTopUsers = (): Promise<LeaderboardResponse> => {
+  const getAllTimeTopUsers = (): Promise<LeaderboardResponse[]> => {
     return handleAllTimeTopApiRequest(async () => {
       const url = `${import.meta.env.VITE_TIETOVISA_API}/result/all-time-top`;
-      return await fetchData<LeaderboardResponse>(url);
+      return await fetchData<LeaderboardResponse[]>(url);
     });
   };
 
-  const getDailyTopUsers = (): Promise<LeaderboardResponse> => {
+  const getDailyTopUsers = (): Promise<LeaderboardResponse[]> => {
     return handleDailyTopApiRequest(async () => {
       const url = `${import.meta.env.VITE_TIETOVISA_API}/result/daily-top`;
-      return await fetchData<LeaderboardResponse>(url);
+      return await fetchData<LeaderboardResponse[]>(url);
     });
   };
 
-  const getWeeklyTopUsers = (): Promise<LeaderboardResponse> => {
+  const getWeeklyTopUsers = (): Promise<LeaderboardResponse[]> => {
     return handleWeeklyTopApiRequest(async () => {
       const url = `${import.meta.env.VITE_TIETOVISA_API}/result/weekly-top`;
-      return await fetchData<LeaderboardResponse>(url);
+      return await fetchData<LeaderboardResponse[]>(url);
     });
   };
 

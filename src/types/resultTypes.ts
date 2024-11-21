@@ -26,9 +26,7 @@ export interface AllResultsResponse {
 }
 
 export interface LeaderboardResponse {
-  leaderboard: {
-    userId: mongoose.Schema.Types.ObjectId;
-    username: string;
-    totalPoints: number;
-  }[];
+  _id: string;
+  username: string;
+  totalPoints: number;
 }

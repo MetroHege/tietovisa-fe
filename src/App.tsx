@@ -25,6 +25,7 @@ import TermsOfUse from "./views/TermsOfUse";
 import CookiePolicy from "./views/CookiePolicy";
 import PrivacyStatement from "./views/PrivacyStatement";
 import AdminQuizDetail from "./components/AdminQuizDetail";
+import Leaderboard from "./views/Leaderboard";
 
 function App() {
   useEffect(() => {
@@ -47,6 +48,7 @@ function App() {
               <Route path="/terms-of-use" element={<TermsOfUse />} />
               <Route path="/cookie-policy" element={<CookiePolicy />} />
               <Route path="/privacy-statement" element={<PrivacyStatement />} />
+              <Route path="/leaderboard" element={<Leaderboard/>} />
               <Route
                 path="/secret"
                 element={

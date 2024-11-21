@@ -8,7 +8,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import useQuiz from "@/hooks/quizHooks";
 import { Question } from "@/types/questionTypes";
-import { CompareQuizResponse, PopulatedQuiz } from "@/types/quizTypes";
+import { CompareQuizResponse, PopulatedQuiz, SubmitQuizResponse } from "@/types/quizTypes";
 import { useParams } from "react-router-dom";
 import { /*MediumRectangleAd*/ /*MobileLeaderboardAd*/ } from "@/components/Ads"; // Import ad components
 
@@ -121,16 +121,22 @@ const Quiz = () => {
     setQuizState("completed");
 
     try {
-      const result = await submitQuizResult(quizId, userAnswers);
+      const result: SubmitQuizResponse = await submitQuizResult(quizId, userAnswers);
       setCorrectAnswers(result.correctAnswers);
 
       const comparison = await compareQuizResult(quizId);
-      setComparisonStats(comparison);
+
+      // Combine comparison data and questionStats
+      setComparisonStats({
+        ...comparison,
+        questionStats: result.questionStats,
+      });
     } catch (error) {
       setErrorMessage("Virhe vastausten lähettämisessä.");
       console.error("Error submitting quiz results:", error);
     }
   };
+
 
   const handleNextQuiz = async () => {
     const nextDate = getNextDate(date!);
@@ -265,11 +271,19 @@ const Quiz = () => {
                   (answer) => answer.isCorrect
                 );
 
+                // Get questionStat from comparisonStats
+                const questionStat = comparisonStats?.questionStats?.find(
+                  (stat) => stat.questionId === question._id
+                );
+
+                const userGotCorrect =
+                  correctAnswer && correctAnswer._id === userAnswer?.answerId;
+
                 return (
                   <div
                     key={index}
                     className={`mb-4 p-4 rounded-lg ${
-                      correctAnswer && correctAnswer._id === userAnswer.answerId
+                      userGotCorrect
                         ? "bg-green-100 dark:bg-green-900 border border-green-500"
                         : "bg-red-100 dark:bg-red-900 border border-red-500"
                     }`}
@@ -296,6 +310,8 @@ const Quiz = () => {
                         );
                       })}
                     </div>
+
+                    {/* Show correct answer */}
                     {userAnswer &&
                       correctAnswer &&
                       correctAnswer._id !== userAnswer.answerId && (
@@ -303,11 +319,47 @@ const Quiz = () => {
                           Oikea vastaus: {correctAnswer.text}
                         </p>
                       )}
+
+                    {/* Show custom messages based on logic */}
+                    {questionStat && questionStat.correctPercentage === 0 && (
+                      userGotCorrect ? (
+                        <p className="mt-1 text-sm text-green-600 dark:text-green-400 font-bold">
+                          Olet ensimmäinen joka sai kysymyksen oikean!
+                        </p>
+                      ) : (
+                        <p className="mt-1 text-sm text-red-600 dark:text-red-400 font-bold">
+                          Kukaan ei ole vielä saanut tätä kysymystä oikean.
+                        </p>
+                      )
+                    )}
+                    {questionStat &&
+                      questionStat.correctPercentage === 100 &&
+                      !userGotCorrect && (
+                        <p className="mt-1 text-sm text-red-600 dark:text-red-400 font-bold">
+                          Kaikki muut osallistujat saivat tämän kysymyksen oikean.
+                        </p>
+                      )}
+                    {questionStat &&
+                      questionStat.correctPercentage === 100 &&
+                      userGotCorrect && (
+                        <p className="mt-1 text-sm text-green-600 dark:text-green-400 font-bold">
+                          Kaikki ovat saaneet tämän kysymyksen oikean.
+                        </p>
+                      )}
+                    {questionStat &&
+                      questionStat.correctPercentage > 0 &&
+                      questionStat.correctPercentage < 100 && (
+                        <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
+                          {questionStat.correctPercentage}% osallistujista vastasi tähän
+                          kysymykseen oikein.
+                        </p>
+                      )}
                   </div>
                 );
               })}
             </div>
           )}
+
           <div className="flex space-x-4">
             <button
               className="w-1/2 p-3 mt-6 bg-blue-500 text-white rounded-lg font-bold flex justify-center items-center hover:bg-blue-600 transition-all"
