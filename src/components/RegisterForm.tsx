@@ -11,6 +11,7 @@ interface RegisterFormProps {
 
 export function RegisterForm({ onClose }: RegisterFormProps) {
   const { handleRegister, authLoading, authError } = useUserContext();
+  const [username, setUsername] = useState("")
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -48,7 +49,7 @@ export function RegisterForm({ onClose }: RegisterFormProps) {
     }
     if (email && password) {
       await handleRegister({
-        username: email.split("@")[0], // Extracting username from email for simplicity
+        username: username, // Extracting username from email for simplicity
         email: email,
         password: password,
       });
@@ -59,6 +60,17 @@ export function RegisterForm({ onClose }: RegisterFormProps) {
   return (
     <form onSubmit={onRegisterSubmit}>
       <div className="grid gap-4 py-4">
+        <div className="grid gap-2">
+            <Label htmlFor="username-register">Käyttäjänimi</Label>
+            <Input
+              id="username-register"
+              type="username"
+              placeholder="tietäjä123"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              required
+            />
+        </div>
         <div className="grid gap-2">
           <Label htmlFor="email-register">Sähköposti</Label>
           <Input
