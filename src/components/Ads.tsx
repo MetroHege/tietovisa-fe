@@ -1,4 +1,5 @@
 // Ads.tsx
+/*
 export const LeaderboardAd = () => (
   <div className="w-full h-[90px] bg-gray-300 dark:bg-gray-700 flex items-center justify-center text-gray-700 dark:text-gray-300 border border-gray-400 dark:border-gray-500 relative overflow-hidden">
     <img
@@ -113,3 +114,5 @@ export const LargeMobileBannerAd = () => (
     </span>
   </div>
 );
+
+*/

@@ -10,7 +10,7 @@ import useQuiz from "@/hooks/quizHooks";
 import { Question } from "@/types/questionTypes";
 import { CompareQuizResponse, PopulatedQuiz } from "@/types/quizTypes";
 import { useParams } from "react-router-dom";
-import { MediumRectangleAd /*MobileLeaderboardAd*/ } from "@/components/Ads"; // Import ad components
+import { /*MediumRectangleAd*/ /*MobileLeaderboardAd*/ } from "@/components/Ads"; // Import ad components
 
 const formatDateToDDMMYYYY = (date: string) => {
   const d = new Date(date);
@@ -184,13 +184,13 @@ const Quiz = () => {
                   })}
                 </div>
               </div>
-              {/* Insert ad after every 3 questions */}
+             {/*  Insert ad after every 3 questions 
               {(questionIndex + 1) % 3 === 0 &&
                 questionIndex !== questions.length - 1 && (
                   <div className="my-6 flex justify-center">
-                    <MediumRectangleAd />
+                   <MediumRectangleAd />
                   </div>
-                )}
+                )}  */}
             </div>
           ))}
           {errorMessage && (

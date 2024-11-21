@@ -8,8 +8,10 @@ import {
   // LeaderboardAd,
   // FullBannerAd,
   // MobileLeaderboardAd,
+  /*
   MediumRectangleAd,
   LargeRectangleAd,
+  */
   // SquareAd,
   // WideSkyscraperAd,
   // SkyscraperAd,
@@ -42,9 +44,9 @@ export default function Layout() {
         <div className="flex-grow flex flex-col lg:flex-row bg-gray-100 dark:bg-gray-900">
           {!adminRoute && (
             <aside className="w-full lg:w-1/6 p-4">
-              <div className="h-full border-2 border-dashed border-gray-400 dark:border-gray-500 rounded-lg flex items-center justify-center bg-white dark:bg-gray-900">
-                <MediumRectangleAd />
-              </div>
+             {/*  <div className="h-full border-2 border-dashed border-gray-400 dark:border-gray-500 rounded-lg flex items-center justify-center bg-white dark:bg-gray-900">
+              <MediumRectangleAd /> 
+              </div>*/}
             </aside>
           )}
           <main className="flex-grow">
@@ -52,9 +54,9 @@ export default function Layout() {
           </main>
           {!adminRoute && (
             <aside className="w-full lg:w-1/6 p-4">
-              <div className="h-full border-2 border-dashed border-gray-400 dark:border-gray-500 rounded-lg flex items-center justify-center bg-white dark:bg-gray-900">
-                <LargeRectangleAd />
-              </div>
+             {/*  <div className="h-full border-2 border-dashed border-gray-400 dark:border-gray-500 rounded-lg flex items-center justify-center bg-white dark:bg-gray-900">
+               <LargeRectangleAd /> 
+              </div>*/}
             </aside>
           )}
         </div>
