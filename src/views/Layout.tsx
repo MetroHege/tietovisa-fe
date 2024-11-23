@@ -17,6 +17,7 @@ import {
   // SkyscraperAd,
   // LargeMobileBannerAd,
 } from '@/components/Ads';
+import Spinner from '@/components/Spinner';
 
 export default function Layout() {
   const {handleAutoLogin, autoLoginLoading} = useUserContext();
@@ -26,13 +27,13 @@ export default function Layout() {
   const adminRoute = location.pathname.startsWith('/dashboard');
 
   useEffect(() => {
-    handleAutoLogin(); // Only runs once on mount
+    handleAutoLogin();
   }, []);
 
   if (autoLoginLoading) {
     return (
-      <div className="text-center text-black p-4 bg-white">
-        Loading user data...
+      <div className={`min-h-screen flex items-center justify-center ${theme} bg-gray-100 dark:bg-gray-900`}>
+        <Spinner />
       </div>
     );
   }
@@ -45,7 +46,7 @@ export default function Layout() {
           {!adminRoute && (
             <aside className="w-full lg:w-1/6 p-4">
              {/*  <div className="h-full border-2 border-dashed border-gray-400 dark:border-gray-500 rounded-lg flex items-center justify-center bg-white dark:bg-gray-900">
-              <MediumRectangleAd /> 
+              <MediumRectangleAd />
               </div>*/}
             </aside>
           )}
@@ -55,7 +56,7 @@ export default function Layout() {
           {!adminRoute && (
             <aside className="w-full lg:w-1/6 p-4">
              {/*  <div className="h-full border-2 border-dashed border-gray-400 dark:border-gray-500 rounded-lg flex items-center justify-center bg-white dark:bg-gray-900">
-               <LargeRectangleAd /> 
+               <LargeRectangleAd />
               </div>*/}
             </aside>
           )}

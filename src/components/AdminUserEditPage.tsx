@@ -44,6 +44,15 @@ const AdminUserEditPage: React.FC = () => {
     }
   };
 
+  const handleDeleteUser = async (id: string) => {
+    try {
+      await deleteUser(id)
+      navigate("/dashboard/users");
+    } catch (error) {
+      console.error("Error deleting user ", error)
+    }
+  }
+
   // Handle form submission
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -129,7 +138,7 @@ const AdminUserEditPage: React.FC = () => {
             <div className="flex-1 flex justify-end">
               <button
                 type="button"
-                onClick={() => deleteUser(id)}
+                onClick={() => handleDeleteUser(id)}
                 className="py-2 px-4 bg-red-600 text-white rounded-md focus:outline-none ml-auto"
               >
                 Delete User

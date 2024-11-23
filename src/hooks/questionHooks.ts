@@ -89,6 +89,27 @@ const useQuestion = () => {
   };
 
   const {
+    loading: deleteLoading,
+    error: deleteError,
+    handleApiRequest: handleDeleteApiRequest,
+  } = useApiState<void>();
+
+  const deleteQuestion = (id: string): Promise<void> => {
+    return handleDeleteApiRequest(async () => {
+      const token = localStorage.getItem("token");
+      return await fetchData<void>(
+        `${import.meta.env.VITE_TIETOVISA_API}/questions/${id}`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+    });
+  };
+
+  const {
     loading: countLoading,
     error: countError,
     data: countData,
@@ -135,9 +156,6 @@ const useQuestion = () => {
     });
   };
 
-
-
-
   return {
     searchQuestions,
     searchLoading,
@@ -151,6 +169,9 @@ const useQuestion = () => {
     updateLoading,
     updateError,
     updateData,
+    deleteQuestion,
+    deleteLoading,
+    deleteError,
     getQuestionCount,
     countLoading,
     countError,

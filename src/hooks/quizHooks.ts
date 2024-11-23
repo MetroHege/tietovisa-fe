@@ -45,6 +45,13 @@ const useQuiz = () => {
     handleApiRequest: handleCompareApiRequest,
   } = useApiState<CompareQuizResponse>();
 
+  const {
+    loading: addQuestionLoading,
+    error: addQuestionError,
+    handleApiRequest: handleAddQuestionApiRequest,
+  } = useApiState<{ message: string }>();
+
+
   const getQuizzes = (): Promise<PopulatedQuiz[]> => {
     return handleQuizzesApiRequest(async () => {
       return await fetchData<PopulatedQuiz[]>(import.meta.env.VITE_TIETOVISA_API + '/quiz');
@@ -74,6 +81,25 @@ const useQuiz = () => {
     });
   };
 
+  const addQuestionToQuiz = (
+    quizId: string,
+    questionId: string
+  ): Promise<{ message: string }> => {
+    return handleAddQuestionApiRequest(async () => {
+      const token = localStorage.getItem("token");
+      const url = `${import.meta.env.VITE_TIETOVISA_API}/quiz/${quizId}/add-question`;
+      const options = {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ questionId }),
+      };
+      return await fetchData<{ message: string }>(url, options);
+    });
+  }
+
   const putQuiz = (id: string, quiz: Partial<Quiz>): Promise<PopulatedQuiz> => {
     return handleQuizApiRequest(async () => {
       const options = {
@@ -87,8 +113,12 @@ const useQuiz = () => {
 
   const deleteQuiz = (id: string): Promise<deleteQuizResponse> => {
     return handleDeleteApiRequest(async () => {
+      const token = localStorage.getItem("token")
       const options = {
         method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
       };
       return await fetchData<deleteQuizResponse>(
         import.meta.env.VITE_TIETOVISA_API + '/quiz/' + id,
@@ -183,6 +213,9 @@ const useQuiz = () => {
     compareQuizResult,
     submitData,
     compareData,
+    addQuestionLoading,
+    addQuestionError,
+    addQuestionToQuiz,
   };
 };
 
