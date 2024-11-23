@@ -76,7 +76,10 @@ const AdminQuizDetail = () => {
     });
     setEditingQuestion(null);
     setEditedQuestion(null);
-    getQuizById(quizId); // Refresh the quiz data
+    if (!quizId) {
+      return
+    }
+    getQuizById(quizId);
   };
 
   const handleDeleteQuestion = async (questionId: string) => {
@@ -85,7 +88,9 @@ const AdminQuizDetail = () => {
       try {
         await deleteQuestion(questionId);
         alert("Kysymys poistettu onnistuneesti.");
-        getQuizById(quizId); // Refresh quiz data after deletion
+        if (quizId) {
+          getQuizById(quizId); // Refresh quiz data after deletion
+        }
       } catch (error) {
         console.error("Kysymyksen poistaminen epäonnistui:", error);
       }
@@ -107,16 +112,20 @@ const AdminQuizDetail = () => {
   };
 
   const handleAddQuestionToQuiz = async (questionId: string) => {
-    if (!quizId) return;
+    if (!quizId) {
+      console.error("Quiz ID is undefined.");
+      return;
+    }
     try {
       await addQuestionToQuiz(quizId, questionId);
       alert("Kysymys lisätty tietovisaan.");
       setShowSearch(false);
-      getQuizById(quizId);
+      getQuizById(quizId); // Refresh quiz data
     } catch (error) {
       console.error("Kysymyksen lisääminen epäonnistui:", error);
     }
   };
+
 
   if (quizLoading || deleteLoading || updateLoading || deleteQuestionLoading) {
     return (
