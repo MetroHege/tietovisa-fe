@@ -30,7 +30,7 @@ const AdminEditQuestionPage: React.FC = () => {
     try {
       await updateQuestion(id!, updatedData);
       alert("Question updated successfully!");
-      navigate("/dashboard/search");
+      navigate("/dashboard/question");
     } catch (err) {
       console.error(err)
     }

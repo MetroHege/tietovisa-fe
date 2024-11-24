@@ -89,7 +89,7 @@ const AdminQuizDetail = () => {
         await deleteQuestion(questionId);
         alert("Kysymys poistettu onnistuneesti.");
         if (quizId) {
-          getQuizById(quizId); // Refresh quiz data after deletion
+          getQuizById(quizId);
         }
       } catch (error) {
         console.error("Kysymyksen poistaminen epäonnistui:", error);

@@ -1,19 +1,23 @@
 import React, { useState, useEffect } from "react";
 import { Question } from "@/types/questionTypes";
 import { useQuestion } from "@/hooks/questionHooks";
+import { useNavigate } from "react-router-dom";
 
 interface AdminSearchComponentProps {
-  onAction: (questionId: string) => void; // Action callback
-  actionLabel?: string; // Label for the action button
+  onAction: (questionId: string) => void;
+  actionLabel?: string;
+  isQuizContext?: boolean; // Indicates if it's used in a quiz modification view
 }
 
 const AdminSearchComponent: React.FC<AdminSearchComponentProps> = ({
   onAction,
-  actionLabel = "Edit", // Default to "Edit"
+  actionLabel = "Muokkaa",
+  isQuizContext = false,
 }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [page, setPage] = useState(1);
   const { searchQuestions, searchLoading, searchData } = useQuestion();
+  const navigate = useNavigate();
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
@@ -26,6 +30,16 @@ const AdminSearchComponent: React.FC<AdminSearchComponentProps> = ({
 
   const handlePageChange = (newPage: number) => {
     setPage(newPage);
+  };
+
+  const handleActionClick = (questionId: string) => {
+    if (isQuizContext) {
+      // Navigate to the question edit page in quiz context
+      navigate(`/dashboard/edit-question/${questionId}`);
+    } else {
+      // Call the provided action for other contexts
+      onAction(questionId);
+    }
   };
 
   return (
@@ -68,7 +82,7 @@ const AdminSearchComponent: React.FC<AdminSearchComponentProps> = ({
                   </td>
                   <td className="py-2 px-4 border-b">
                     <button
-                      onClick={() => onAction(question._id)}
+                      onClick={() => handleActionClick(question._id)}
                       className="text-blue-500 hover:underline"
                     >
                       {actionLabel}
