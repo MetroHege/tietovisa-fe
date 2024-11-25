@@ -46,8 +46,12 @@ const Home = () => {
     navigate("/all-quizzes");
   };
 
-  // Sort quizzes by date in descending order and take the latest seven
+  // Get today's date
+  const todayDate = getTodayDate();
+
+  // Filter out today's quiz and future quizzes, then sort quizzes by date in descending order
   const latestQuizzes = previousQuizzes
+    .filter((date) => date < todayDate)
     .sort((a, b) => new Date(b).getTime() - new Date(a).getTime())
     .slice(0, 7);
 
@@ -60,7 +64,7 @@ const Home = () => {
         <hr className="border-t-2 border-gray-300 w-full max-w-[calc(100% - 2rem)] mx-auto mb-4" />
         <button
           className="block w-full p-3 mt-4 bg-blue-500 text-white rounded font-bold text-lg hover:bg-blue-600 transition-all"
-          onClick={() => handleQuizSelection(getTodayDate())}
+          onClick={() => handleQuizSelection(todayDate)}
         >
           Aloita tästä!
         </button>
