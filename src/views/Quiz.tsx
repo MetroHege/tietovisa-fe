@@ -397,7 +397,7 @@ const Quiz = () => {
               className="w-1/3 p-3 mt-6 bg-blue-500 text-white rounded-lg font-bold flex justify-center items-center hover:bg-blue-600 transition-all"
               onClick={handlePreviousQuiz}
             >
-              <FaArrowLeft className="mr-2" /> Edellinen päivä
+              <FaArrowLeft className="mr-2" /> Aiempi päivä
             </button>
             <button
               className="w-1/3 p-3 mt-6 bg-blue-500 text-white rounded-lg font-bold flex justify-center items-center hover:bg-blue-600 transition-all"
