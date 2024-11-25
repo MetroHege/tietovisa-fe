@@ -8,9 +8,12 @@ import {
 import { useNavigate } from "react-router-dom";
 import useQuiz from "@/hooks/quizHooks";
 import { Question } from "@/types/questionTypes";
-import { CompareQuizResponse, PopulatedQuiz, SubmitQuizResponse } from "@/types/quizTypes";
+import {
+  CompareQuizResponse,
+  PopulatedQuiz,
+  SubmitQuizResponse,
+} from "@/types/quizTypes";
 import { useParams } from "react-router-dom";
-import { /*MediumRectangleAd*/ /*MobileLeaderboardAd*/ } from "@/components/Ads"; // Import ad components
 
 const formatDateToDDMMYYYY = (date: string) => {
   const d = new Date(date);
@@ -23,6 +26,12 @@ const formatDateToDDMMYYYY = (date: string) => {
 const getNextDate = (date: string) => {
   const d = new Date(date);
   d.setDate(d.getDate() + 1);
+  return d.toISOString().split("T")[0];
+};
+
+const getPreviousDate = (date: string) => {
+  const d = new Date(date);
+  d.setDate(d.getDate() - 1);
   return d.toISOString().split("T")[0];
 };
 
@@ -39,6 +48,9 @@ const Quiz = () => {
   const [loading, setLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [nextQuizError, setNextQuizError] = useState<string | null>(null); // State for next quiz error
+  const [previousQuizError, setPreviousQuizError] = useState<string | null>(
+    null
+  ); // State for previous quiz error
   const {
     getQuizzesByDate,
     submitQuizResult,
@@ -83,6 +95,15 @@ const Quiz = () => {
     }
   };
 
+  const checkPreviousQuizExists = async (previousDate: string) => {
+    try {
+      const previousQuiz: PopulatedQuiz = await getQuizzesByDate(previousDate);
+      return !!previousQuiz;
+    } catch (error) {
+      return false;
+    }
+  };
+
   useEffect(() => {
     fetchQuiz();
   }, [date]);
@@ -121,7 +142,10 @@ const Quiz = () => {
     setQuizState("completed");
 
     try {
-      const result: SubmitQuizResponse = await submitQuizResult(quizId, userAnswers);
+      const result: SubmitQuizResponse = await submitQuizResult(
+        quizId,
+        userAnswers
+      );
       setCorrectAnswers(result.correctAnswers);
 
       const comparison = await compareQuizResult(quizId);
@@ -137,7 +161,6 @@ const Quiz = () => {
     }
   };
 
-
   const handleNextQuiz = async () => {
     const nextDate = getNextDate(date!);
     const exists = await checkNextQuizExists(nextDate);
@@ -145,6 +168,16 @@ const Quiz = () => {
       navigate(`/quiz/date/${nextDate}`);
     } else {
       setNextQuizError("Seuraavaa visaa ei ole saatavilla.");
+    }
+  };
+
+  const handlePreviousQuiz = async () => {
+    const previousDate = getPreviousDate(date!);
+    const exists = await checkPreviousQuizExists(previousDate);
+    if (exists) {
+      navigate(`/quiz/date/${previousDate}`);
+    } else {
+      setPreviousQuizError("Edellistä visaa ei ole saatavilla.");
     }
   };
 
@@ -190,13 +223,11 @@ const Quiz = () => {
                   })}
                 </div>
               </div>
-             {/*  Insert ad after every 3 questions 
+              {/* Insert ad after every 3 questions */}
               {(questionIndex + 1) % 3 === 0 &&
                 questionIndex !== questions.length - 1 && (
-                  <div className="my-6 flex justify-center">
-                   <MediumRectangleAd />
-                  </div>
-                )}  */}
+                  <div className="my-6 flex justify-center"></div>
+                )}
             </div>
           ))}
           {errorMessage && (
@@ -241,7 +272,7 @@ const Quiz = () => {
           {comparisonStats && (
             <div className="mb-6 text-center dark:text-white">
               {comparisonStats.totalUsers === 1 ? (
-                <p>Olet ensimmäinen osallistuja tässä visassa!</p>
+                <p> </p>
               ) : (
                 <>
                   <p>{`Olet parempi kuin ${Math.round(
@@ -321,22 +352,23 @@ const Quiz = () => {
                       )}
 
                     {/* Show custom messages based on logic */}
-                    {questionStat && questionStat.correctPercentage === 0 && (
-                      userGotCorrect ? (
+                    {questionStat &&
+                      questionStat.correctPercentage === 0 &&
+                      (userGotCorrect ? (
                         <p className="mt-1 text-sm text-green-600 dark:text-green-400 font-bold">
-                          Olet ensimmäinen joka sai kysymyksen oikean!
+                          Olet ensimmäinen joka sai kysymyksen oikein!
                         </p>
                       ) : (
                         <p className="mt-1 text-sm text-red-600 dark:text-red-400 font-bold">
-                          Kukaan ei ole vielä saanut tätä kysymystä oikean.
+                          Kukaan ei ole vielä saanut tätä kysymystä oikein.
                         </p>
-                      )
-                    )}
+                      ))}
                     {questionStat &&
                       questionStat.correctPercentage === 100 &&
                       !userGotCorrect && (
                         <p className="mt-1 text-sm text-red-600 dark:text-red-400 font-bold">
-                          Kaikki muut osallistujat saivat tämän kysymyksen oikean.
+                          Kaikki muut osallistujat saivat tämän kysymyksen
+                          oikean.
                         </p>
                       )}
                     {questionStat &&
@@ -350,8 +382,8 @@ const Quiz = () => {
                       questionStat.correctPercentage > 0 &&
                       questionStat.correctPercentage < 100 && (
                         <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
-                          {questionStat.correctPercentage}% osallistujista vastasi tähän
-                          kysymykseen oikein.
+                          {questionStat.correctPercentage}% osallistujista
+                          vastasi tähän kysymykseen oikein.
                         </p>
                       )}
                   </div>
@@ -362,20 +394,29 @@ const Quiz = () => {
 
           <div className="flex space-x-4">
             <button
-              className="w-1/2 p-3 mt-6 bg-blue-500 text-white rounded-lg font-bold flex justify-center items-center hover:bg-blue-600 transition-all"
-              onClick={() => navigate("/")}
+              className="w-1/3 p-3 mt-6 bg-blue-500 text-white rounded-lg font-bold flex justify-center items-center hover:bg-blue-600 transition-all"
+              onClick={handlePreviousQuiz}
             >
-              <FaArrowLeft className="mr-2" /> Etusivulle
+              <FaArrowLeft className="mr-2" /> Edellinen päivä
             </button>
             <button
-              className="w-1/2 p-3 mt-6 bg-blue-500 text-white rounded-lg font-bold flex justify-center items-center hover:bg-blue-600 transition-all"
+              className="w-1/3 p-3 mt-6 bg-blue-500 text-white rounded-lg font-bold flex justify-center items-center hover:bg-blue-600 transition-all"
+              onClick={() => navigate("/")}
+            >
+              Etusivulle
+            </button>
+            <button
+              className="w-1/3 p-3 mt-6 bg-blue-500 text-white rounded-lg font-bold flex justify-center items-center hover:bg-blue-600 transition-all"
               onClick={handleNextQuiz}
             >
-              Seuraavaan visaan <FaArrowRight className="ml-2" />
+              Seuraava päivä <FaArrowRight className="ml-2" />
             </button>
           </div>
           {nextQuizError && (
             <p className="text-red-500 text-center mt-4">{nextQuizError}</p>
+          )}
+          {previousQuizError && (
+            <p className="text-red-500 text-center mt-4">{previousQuizError}</p>
           )}
         </div>
       )}
