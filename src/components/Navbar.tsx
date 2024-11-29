@@ -154,12 +154,14 @@ const Navbar = () => {
                   Kaikki visat
                 </Button>
               </Link>
+              {/*
               <Link className="w-full mt-auto" to="/leaderboard">
                 <Button size="lg" className="w-full">
                   <List className="mr-2 h-5 w-5" />
                   Toplistat
                 </Button>
               </Link>
+              */}
               {user && (
                 <Button
                   size="lg"

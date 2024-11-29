@@ -48,7 +48,7 @@ function App() {
               <Route path="/terms-of-use" element={<TermsOfUse />} />
               <Route path="/cookie-policy" element={<CookiePolicy />} />
               <Route path="/privacy-statement" element={<PrivacyStatement />} />
-              <Route path="/leaderboard" element={<Leaderboard/>} />
+              {/*<Route path="/leaderboard" element={<Leaderboard/>} /> */}
               <Route
                 path="/secret"
                 element={
