@@ -38,15 +38,25 @@ const AllQuizzes = () => {
   const [expandedMonth, setExpandedMonth] = useState<string | null>(null);
   const { getQuizzes } = useQuiz();
 
+  const getTodayDate = () => {
+    const today = new Date();
+    return today;
+  };
+
   const fetchQuizzes = async () => {
     const quizzes = await getQuizzes();
     const publishedDates = quizzes.map((quiz) => new Date(quiz.publishedAt));
 
-    publishedDates.sort((a, b) => b.getTime() - a.getTime());
+    const today = getTodayDate();
+
+    // Filter out future quizzes
+    const filteredDates = publishedDates.filter((date) => date < today);
+
+    filteredDates.sort((a, b) => b.getTime() - a.getTime());
 
     const groupedByMonth: { [key: string]: string[] } = {};
 
-    publishedDates.forEach((date) => {
+    filteredDates.forEach((date) => {
       const monthYear = formatMonthYear(date);
       if (!groupedByMonth[monthYear]) {
         groupedByMonth[monthYear] = [];

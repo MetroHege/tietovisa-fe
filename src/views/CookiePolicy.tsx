@@ -52,8 +52,16 @@ const CookiePolicy = () => {
         Kolmannet osapuolet saattavat lisätä evästeitä käyttäjien selaimiin ja
         lukea niitä tai kerätä tietoja evästeiden ja muiden verkkojäljitteiden
         avulla. Esimerkkinä tästä ovat Googlen mainokset. Käyttäjät voivat lukea
-        niistä lisää tästä linkistä: Miten Google käyttää palvelujamme
-        käyttäviltä sivustoilta ja sovelluksista saatavia tietoja
+        niistä lisää tästä linkistä:{" "}
+        <a
+          href="https://policies.google.com/technologies/partner-sites"
+          className=" text-blue-500 hover:underline"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Miten Google käyttää palvelujamme käyttäviltä sivustoilta ja
+          sovelluksista saatavia tietoja
+        </a>
       </p>
       <p className="mb-4 text-gray-900 dark:text-white">
         Palvelussamme oleviin kolmansien osapuolten palveluihin ja mainoksiin

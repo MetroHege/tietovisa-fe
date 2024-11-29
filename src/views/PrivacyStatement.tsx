@@ -149,8 +149,16 @@ const PrivacyStatement = () => {
         Kolmannen osapuolet saattavat lisätä evästeitä käyttäjien selaimiin ja
         lukea niitä tai kerätä tietoja evästeiden ja muiden verkkojäljitteiden
         avulla. Esimerkkinä tästä ovat Googlen mainokset. Käyttäjät voivat lukea
-        tästä lisää tästä linkistä: Miten Google käyttää palvelujamme
-        käyttäviltä sivustoilta ja sovelluksista saatavia tietoja
+        tästä lisää tästä linkistä:{" "}
+        <a
+          href="https://policies.google.com/technologies/partner-sites"
+          className="text-blue-500 hover:underline"
+          target="_blank"
+          rel="noopener noreferref"
+        >
+          Miten Google käyttää palvelujamme käyttäviltä sivustoilta ja
+          sovelluksista saatavia tietoja
+        </a>
       </p>
       <h2 className="text-xl mb-2 text-gray-900 dark:text-white">
         7. Henkilötietojen käsittelijät
