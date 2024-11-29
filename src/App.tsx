@@ -25,7 +25,6 @@ import TermsOfUse from "./views/TermsOfUse";
 import CookiePolicy from "./views/CookiePolicy";
 import PrivacyStatement from "./views/PrivacyStatement";
 import AdminQuizDetail from "./components/AdminQuizDetail";
-import Leaderboard from "./views/Leaderboard";
 
 function App() {
   useEffect(() => {
