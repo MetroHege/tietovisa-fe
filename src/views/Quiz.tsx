@@ -327,9 +327,9 @@ const Quiz = () => {
                         const isCorrect = option.isCorrect;
                         const isSelected = option._id === userAnswer?.answerId;
                         const bgColor = isCorrect
-                          ? "bg-green-600 text-white dark:bg-green-700 border border-black"
+                          ? "bg-green-600 text-white dark:bg-green-700 border border-green-400"
                           : isSelected
-                          ? "bg-red-600 text-white dark:bg-red-700 border border-black"
+                          ? "bg-red-600 text-white dark:bg-red-700 border border-red-400"
                           : "bg-gray-300 text-gray-900 dark:bg-gray-700 dark:text-gray-200";
                         return (
                           <div
