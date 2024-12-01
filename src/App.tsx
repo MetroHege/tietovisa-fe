@@ -1,5 +1,4 @@
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
-import { useEffect } from "react";
 import "./App.css";
 import { UserProvider } from "./contexts/UserContext";
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -27,9 +26,7 @@ import PrivacyStatement from "./views/PrivacyStatement";
 import AdminQuizDetail from "./components/AdminQuizDetail";
 
 function App() {
-  useEffect(() => {
-    document.documentElement.lang = "fi";
-  }, []);
+
 
   return (
     <ThemeProvider>

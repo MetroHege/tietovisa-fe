@@ -212,7 +212,7 @@ const Quiz = () => {
                           className={`block w-full p-3 mt-3 rounded-lg transition-all ${
                             isSelected
                               ? "bg-blue-800 dark:bg-blue-900 text-white border-2 border-blue-900 dark:border-blue-700"
-                              : "bg-blue-500 text-white hover:bg-blue-600"
+                              : "bg-blue-600 text-white hover:bg-blue-500"
                           }`}
                           onClick={() => handleAnswer(questionIndex, answer)}
                         >
@@ -234,7 +234,7 @@ const Quiz = () => {
             <p className="text-red-500 text-center mb-2">{errorMessage}</p>
           )}
           <button
-            className="block w-full p-3 mt-6 bg-green-500 text-white rounded-lg font-bold hover:bg-green-600 transition-all"
+            className="block w-full p-3 mt-6 bg-green-600 text-white rounded-lg font-bold hover:bg-green-500 transition-all"
             onClick={handleSubmit}
           >
             Jätä vastaukset
@@ -284,7 +284,7 @@ const Quiz = () => {
             </div>
           )}
           <button
-            className="w-full p-3 mt-3 bg-blue-500 text-white rounded-lg font-bold flex justify-center items-center hover:bg-blue-600 transition-all"
+            className="w-full p-3 mt-3 bg-blue-600 text-white rounded-lg font-bold flex justify-center items-center hover:bg-blue-500 transition-all"
             onClick={() => setShowAnswers(!showAnswers)}
           >
             {showAnswers
@@ -327,10 +327,10 @@ const Quiz = () => {
                         const isCorrect = option.isCorrect;
                         const isSelected = option._id === userAnswer?.answerId;
                         const bgColor = isCorrect
-                          ? "bg-green-500 text-white dark:bg-green-700"
+                          ? "bg-green-600 text-white dark:bg-green-700 border border-black"
                           : isSelected
-                          ? "bg-red-500 text-white dark:bg-red-700"
-                          : "bg-gray-200 text-gray-800 dark:bg-gray-700 dark:text-gray-200";
+                          ? "bg-red-600 text-white dark:bg-red-700 border border-black"
+                          : "bg-gray-300 text-gray-900 dark:bg-gray-700 dark:text-gray-200";
                         return (
                           <div
                             key={optionIndex}
@@ -359,23 +359,28 @@ const Quiz = () => {
                           Olet ensimmäinen joka sai kysymyksen oikein!
                         </p>
                       ) : (
+                        <>
+                        {/*
                         <p className="mt-1 text-sm text-red-600 dark:text-red-400 font-bold">
                           Kukaan ei ole vielä saanut tätä kysymystä oikein.
-                        </p>
-                      ))}
+                        </p>*/}
+                        </>
+                      )
+                      
+                      )}
                     {questionStat &&
                       questionStat.correctPercentage === 100 &&
                       !userGotCorrect && (
                         <p className="mt-1 text-sm text-red-600 dark:text-red-400 font-bold">
                           Kaikki muut osallistujat saivat tämän kysymyksen
-                          oikean.
+                          oikein.
                         </p>
                       )}
                     {questionStat &&
                       questionStat.correctPercentage === 100 &&
                       userGotCorrect && (
                         <p className="mt-1 text-sm text-green-600 dark:text-green-400 font-bold">
-                          Kaikki ovat saaneet tämän kysymyksen oikean.
+                          Kaikki ovat saaneet tämän kysymyksen oikein.
                         </p>
                       )}
                     {questionStat &&
@@ -394,19 +399,19 @@ const Quiz = () => {
 
           <div className="flex space-x-4">
             <button
-              className="w-1/3 p-3 mt-6 bg-blue-500 text-white rounded-lg font-bold flex justify-center items-center hover:bg-blue-600 transition-all"
+              className="w-1/3 p-3 mt-6 bg-blue-600 text-white rounded-lg font-bold flex justify-center items-center hover:bg-blue-500 transition-all"
               onClick={handlePreviousQuiz}
             >
               <FaArrowLeft className="mr-2" /> Aiempi päivä
             </button>
             <button
-              className="w-1/3 p-3 mt-6 bg-blue-500 text-white rounded-lg font-bold flex justify-center items-center hover:bg-blue-600 transition-all"
+              className="w-1/3 p-3 mt-6 bg-blue-600 text-white rounded-lg font-bold flex justify-center items-center hover:bg-blue-500 transition-all"
               onClick={() => navigate("/")}
             >
               Etusivulle
             </button>
             <button
-              className="w-1/3 p-3 mt-6 bg-blue-500 text-white rounded-lg font-bold flex justify-center items-center hover:bg-blue-600 transition-all"
+              className="w-1/3 p-3 mt-6 bg-blue-600 text-white rounded-lg font-bold flex justify-center items-center hover:bg-blue-500 transition-all"
               onClick={handleNextQuiz}
             >
               Seuraava päivä <FaArrowRight className="ml-2" />

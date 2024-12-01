@@ -96,7 +96,7 @@ const Navbar = () => {
       </Link>
       <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen}>
         <SheetTrigger asChild>
-          <Button variant="ghost" size="icon" className="relative z-10">
+          <Button aria-label="open navigation menu" variant="ghost" size="icon" className="relative z-10">
             <Menu className="h-8 w-8 text-black dark:text-white" />
           </Button>
         </SheetTrigger>

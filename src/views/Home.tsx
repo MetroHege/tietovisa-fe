@@ -63,7 +63,7 @@ const Home = () => {
         </h1>
         <hr className="border-t-2 border-gray-300 w-full max-w-[calc(100% - 2rem)] mx-auto mb-4" />
         <button
-          className="block w-full p-3 mt-4 bg-blue-500 text-white rounded font-bold text-lg hover:bg-blue-600 transition-all"
+          className="block w-full p-3 mt-4 bg-blue-600 text-white rounded font-bold text-lg hover:bg-blue-500 transition-all"
           onClick={() => handleQuizSelection(todayDate)}
         >
           Aloita tästä!
@@ -77,14 +77,14 @@ const Home = () => {
         {latestQuizzes.map((date) => (
           <button
             key={date}
-            className="block w-full p-3 mt-4 bg-blue-500 text-white rounded font-bold text-center text-lg hover:bg-blue-600 hover:shadow-xl transition duration-300"
+            className="block w-full p-3 mt-4 bg-blue-600 text-white rounded font-bold text-center text-lg hover:bg-blue-500 hover:shadow-xl transition duration-300"
             onClick={() => handleQuizSelection(date)}
           >
             {formatDateToDDMMYYYY(new Date(date))}
           </button>
         ))}
         <button
-          className="block w-full p-3 mt-4 bg-green-500 text-white rounded font-bold text-center text-lg hover:bg-green-600 hover:shadow-xl transition duration-300"
+          className="block w-full p-3 mt-4 bg-green-700 text-white rounded font-bold text-center text-lg hover:bg-green-600 hover:shadow-xl transition duration-300"
           onClick={handleViewAllQuizzes}
         >
           Lisää kysymyssarjoja
