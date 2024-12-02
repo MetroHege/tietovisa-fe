@@ -165,7 +165,7 @@ const Quiz = () => {
     const nextDate = getNextDate(date!);
     const today = new Date().toISOString().split("T")[0];
     if (nextDate > today) {
-      setNextQuizError("Et voi siirtyä tulevaisuuden visaan.");
+      setNextQuizError("Et voi siirtyä tulevaan visaan.");
       return;
     }
     const exists = await checkNextQuizExists(nextDate);
