@@ -4,19 +4,6 @@ import {useUserContext} from '@/hooks/contextHooks';
 import {useTheme} from '@/contexts/ThemeContext';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
-import {
-  // LeaderboardAd,
-  // FullBannerAd,
-  // MobileLeaderboardAd,
-  /*
-  MediumRectangleAd,
-  LargeRectangleAd,
-  */
-  // SquareAd,
-  // WideSkyscraperAd,
-  // SkyscraperAd,
-  // LargeMobileBannerAd,
-} from '@/components/Ads';
 import Spinner from '@/components/Spinner';
 
 export default function Layout() {
