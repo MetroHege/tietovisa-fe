@@ -1,4 +1,3 @@
-// src/contexts/UserContext.tsx
 import React, { createContext, useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "@/hooks/apiHooks";
@@ -21,7 +20,7 @@ const UserProvider = ({ children }: { children: React.ReactNode }) => {
     getUserByToken,
     tokenLoading,
     tokenError,
-    modifyUser, // Assuming modifyUser is a function in useUser hook
+    modifyUser,
   } = useUser();
 
   const navigate = useNavigate();
@@ -54,31 +53,32 @@ const UserProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const handleLogout = useCallback(() => {
-    try {
-      localStorage.removeItem("token");
-      setUser(null);
-      navigate("/");
-    } catch (e) {
-      console.log((e as Error).message);
-    }
+    localStorage.removeItem("token");
+    setUser(null);
+    navigate("/");
   }, [navigate]);
 
   const handleAutoLogin = async () => {
     setAutoLoginLoading(true);
     try {
       const token = localStorage.getItem("token");
-      if (token) {
-        const userResponse = await getUserByToken(token);
-        if (userResponse) {
-          setUser(userResponse);
-        } else {
-          console.log("Failed to fetch user data.");
+
+      if (!token) {
+        if (import.meta.env.REACT_APP_ENV === "development") {
+          console.warn("No token found for auto-login.");
         }
+        return;
+      }
+
+      const userResponse = await getUserByToken(token);
+      if (userResponse) {
+        setUser(userResponse);
       } else {
-        console.log("No token found in localStorage.");
+        console.warn("Auto-login failed: Unable to fetch user data.");
+        handleLogout();
       }
     } catch (e) {
-      console.error("Error during auto-login:", e);
+      console.error("Unexpected error during auto-login:", e);
     } finally {
       setAutoLoginLoading(false);
     }
@@ -86,7 +86,12 @@ const UserProvider = ({ children }: { children: React.ReactNode }) => {
 
   const handleModifyUser = async (
     userId: string,
-    updates: { username: string; email: string; password: string, role: string }
+    updates: {
+      username: string;
+      email: string;
+      password: string;
+      role: string;
+    },
   ) => {
     try {
       await modifyUser(userId, updates);

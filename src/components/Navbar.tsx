@@ -94,18 +94,33 @@ const Navbar = () => {
           Kymppivisa
         </div>
       </Link>
+
       <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen}>
         <SheetTrigger asChild>
-          <Button aria-label="open navigation menu" variant="ghost" size="icon" className="relative z-10">
+          <Button
+            aria-label="open navigation menu"
+            variant="ghost"
+            size="icon"
+            className="relative z-10"
+          >
             <Menu className="h-8 w-8 text-black dark:text-white" />
           </Button>
         </SheetTrigger>
         <SheetContent
           side="right"
-          className={`w-[250px] sm:w-[300px] ${
-            theme === "dark" ? "dark:bg-gray-900" : "bg-white"
-          }`}
+          className={`w-[250px] sm:w-[300px] ${theme === "dark" ? "dark:bg-gray-900" : "bg-white"
+            }`}
+          aria-labelledby="menu-title"
+          aria-describedby="menu-description"
         >
+          {/* Visually hidden accessible title and description */}
+          <h2 id="menu-title" className="sr-only">
+            Navigation Menu
+          </h2>
+          <p id="menu-description" className="sr-only">
+            This menu allows you to navigate through the application and manage
+            user settings.
+          </p>
           <div {...closeHandlers} style={swipeCloseMenuStyles}>
             <div className="flex flex-col space-y-4 mt-4">
               <Button variant="ghost" size="lg" onClick={toggleTheme}>
@@ -118,18 +133,16 @@ const Navbar = () => {
               </Button>
               {user ? (
                 <>
-                  <Link to={"/profile"}>
-                    <div className="bg-gray-100 dark:bg-gray-800 p-4 rounded-lg shadow-md">
-                      <div className="text-black dark:text-white">
-                        <p className="text-lg font-semibold">
-                          Käyttäjänimi: {user.username}
-                        </p>
-                        <p className="text-sm text-gray-600 dark:text-gray-400">
-                          Sähköposti: {user.email}
-                        </p>
-                      </div>
+                  <div className="bg-gray-100 dark:bg-gray-800 p-4 rounded-lg shadow-md">
+                    <div className="text-black dark:text-white">
+                      <p className="text-lg font-semibold">
+                        Käyttäjänimi: {user.username}
+                      </p>
+                      <p className="text-sm text-gray-600 dark:text-gray-400">
+                        Sähköposti: {user.email}
+                      </p>
                     </div>
-                  </Link>
+                  </div>
                   {user.role === "admin" && (
                     <Link className="w-full" to="/dashboard">
                       <Button size="lg" className="w-full">
@@ -154,14 +167,13 @@ const Navbar = () => {
                   Kaikki visat
                 </Button>
               </Link>
-              {/*
-              <Link className="w-full mt-auto" to="/leaderboard">
-                <Button size="lg" className="w-full">
-                  <List className="mr-2 h-5 w-5" />
-                  Toplistat
-                </Button>
-              </Link>
-              */}
+              {/* Uncomment to enable leaderboards */}
+              {/* <Link className="w-full mt-auto" to="/leaderboard">
+          <Button size="lg" className="w-full">
+            <List className="mr-2 h-5 w-5" />
+            Toplistat
+          </Button>
+        </Link> */}
               {user && (
                 <Button
                   size="lg"

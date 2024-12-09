@@ -35,11 +35,13 @@ const getPreviousDate = (date: string) => {
   return d.toISOString().split("T")[0];
 };
 
+const MIN_USER_THRESHOLD = 2;
+
 const Quiz = () => {
   const [questions, setQuestions] = useState<Question[]>([]);
   const [quizId, setQuizId] = useState<string>("");
   const [quizState, setQuizState] = useState<"inProgress" | "completed">(
-    "inProgress"
+    "inProgress",
   );
   const [userAnswers, setUserAnswers] = useState<
     { questionId: string; answerId: string }[]
@@ -49,7 +51,7 @@ const Quiz = () => {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [nextQuizError, setNextQuizError] = useState<string | null>(null); // State for next quiz error
   const [previousQuizError, setPreviousQuizError] = useState<string | null>(
-    null
+    null,
   ); // State for previous quiz error
   const {
     getQuizzesByDate,
@@ -110,7 +112,7 @@ const Quiz = () => {
 
   const handleAnswer = (
     questionIndex: number,
-    selectedAnswer: { _id?: string; text: string; isCorrect: boolean }
+    selectedAnswer: { _id?: string; text: string; isCorrect: boolean },
   ) => {
     if (selectedAnswer._id === undefined) return;
     const newUserAnswers = [...userAnswers];
@@ -124,27 +126,55 @@ const Quiz = () => {
 
   const handleSubmit = async () => {
     if (userAnswers.length !== questions.length) {
-      setErrorMessage("Vastaatathan kaikkiin kysymyksiin!");
+      setErrorMessage("Vastaatathan kaikkiin kysymyksiin!"); // "Please answer all the questions!"
       return;
     }
 
     let correctCount = 0;
 
+    // Calculate correct answers (no changes to this logic)
     userAnswers.forEach((userAnswer, index) => {
       const question = questions[index];
       const correctAnswer = question.answers.find((a) => a.isCorrect);
-      if (correctAnswer && correctAnswer._id === userAnswer.answerId) {
-        correctCount++;
+
+      // Ensure no error occurs if userAnswer is undefined or missing properties
+      if (userAnswer && userAnswer.answerId && correctAnswer) {
+        if (correctAnswer._id === userAnswer.answerId) {
+          correctCount++;
+        }
       }
     });
 
     setCorrectAnswers(correctCount);
     setQuizState("completed");
 
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      // Logic for guests (users without tokens)
+      setErrorMessage("Olet kirjautumaton. Tuloksiasi ei tallenneta."); // "You are not logged in. Your results won't be saved."
+
+      // Show results locally without backend calls
+      setComparisonStats({
+        correctAnswers: correctCount,
+        totalQuestions: questions.length,
+        betterThanCount: null,
+        totalUsers: null,
+        percentage: null,
+        questionStats: questions.map((question) => ({
+          questionId: question._id,
+          questionText: question.questionText,
+          correctPercentage: null,
+        })),
+      });
+      return; // Skip backend submission for guests
+    }
+
+    // Original logic for logged-in users (unchanged)
     try {
       const result: SubmitQuizResponse = await submitQuizResult(
         quizId,
-        userAnswers
+        userAnswers,
       );
       setCorrectAnswers(result.correctAnswers);
 
@@ -156,11 +186,10 @@ const Quiz = () => {
         questionStats: result.questionStats,
       });
     } catch (error) {
-      setErrorMessage("Virhe vastausten lähettämisessä.");
+      setErrorMessage("Virhe vastausten lähettämisessä."); // "Error submitting quiz results."
       console.error("Error submitting quiz results:", error);
     }
   };
-
   const handleNextQuiz = async () => {
     const nextDate = getNextDate(date!);
     const today = new Date().toISOString().split("T")[0];
@@ -214,11 +243,10 @@ const Quiz = () => {
                     return (
                       <div key={answerIndex}>
                         <button
-                          className={`block w-full p-3 mt-3 rounded-lg transition-all ${
-                            isSelected
+                          className={`block w-full p-3 mt-3 rounded-lg transition-all ${isSelected
                               ? "bg-blue-800 dark:bg-blue-900 text-white border-2 border-blue-900 dark:border-blue-700"
                               : "bg-blue-500 text-white hover:bg-blue-600"
-                          }`}
+                            }`}
                           onClick={() => handleAnswer(questionIndex, answer)}
                         >
                           {answer.text}
@@ -276,14 +304,24 @@ const Quiz = () => {
 
           {comparisonStats && (
             <div className="mb-6 text-center dark:text-white">
-              {comparisonStats.totalUsers === 1 ? (
-                <p>Olet ensimmäinen osallistuja tässä visassa!</p>
+              {comparisonStats.totalUsers === null ? (
+                <p>
+                  Kirjaudu sisään nähdäksesi, kuinka pärjäsit muihin
+                  osallistujiiin verrattuna!
+                </p> // "Log in to see how you compare to others!"
+              ) : comparisonStats.totalUsers === 1 ? (
+                <p>Olet ensimmäinen osallistuja tässä visassa!</p> // "You are the first participant in this quiz!"
+              ) : comparisonStats.totalUsers < MIN_USER_THRESHOLD ? (
+                <p>
+                  Vähintään {MIN_USER_THRESHOLD} osallistujaa tarvitaan
+                  tilastojen näyttämiseen.
+                </p> // "At least MIN_USER_THRESHOLD participants are needed to display stats."
               ) : (
                 <>
-                  <p>{`Olet parempi kuin ${Math.round(
-                    comparisonStats.percentage
-                  )}% muista osallistujista`}</p>
-                  <p>{`Osallistujia yhteensä: ${comparisonStats.totalUsers}`}</p>
+                  <p>{`Olet parempi kuin ${comparisonStats.percentage !== null
+                      ? Math.round(comparisonStats.percentage)
+                      : "N/A"
+                    }% muista osallistujista`}</p>
                 </>
               )}
             </div>
@@ -304,12 +342,12 @@ const Quiz = () => {
               {questions.map((question, index) => {
                 const userAnswer = userAnswers[index];
                 const correctAnswer = question.answers.find(
-                  (answer) => answer.isCorrect
+                  (answer) => answer.isCorrect,
                 );
 
                 // Get questionStat from comparisonStats
                 const questionStat = comparisonStats?.questionStats?.find(
-                  (stat) => stat.questionId === question._id
+                  (stat) => stat.questionId === question._id,
                 );
 
                 const userGotCorrect =
@@ -318,11 +356,10 @@ const Quiz = () => {
                 return (
                   <div
                     key={index}
-                    className={`mb-4 p-4 rounded-lg ${
-                      userGotCorrect
+                    className={`mb-4 p-4 rounded-lg ${userGotCorrect
                         ? "bg-green-100 dark:bg-green-900 border border-green-500"
                         : "bg-red-100 dark:bg-red-900 border border-red-500"
-                    }`}
+                      }`}
                   >
                     <p className="sm:text-lg lg:text-xl font-bold dark:text-white">
                       {index + 1}. {question.questionText}
@@ -334,8 +371,8 @@ const Quiz = () => {
                         const bgColor = isCorrect
                           ? "bg-green-500 text-white dark:bg-green-700"
                           : isSelected
-                          ? "bg-red-500 text-white dark:bg-red-700"
-                          : "bg-gray-200 text-gray-800 dark:bg-gray-700 dark:text-gray-200";
+                            ? "bg-red-500 text-white dark:bg-red-700"
+                            : "bg-gray-200 text-gray-800 dark:bg-gray-700 dark:text-gray-200";
                         return (
                           <div
                             key={optionIndex}
@@ -346,8 +383,6 @@ const Quiz = () => {
                         );
                       })}
                     </div>
-
-                    {/* Show correct answer */}
                     {userAnswer &&
                       correctAnswer &&
                       correctAnswer._id !== userAnswer.answerId && (
@@ -356,7 +391,9 @@ const Quiz = () => {
                         </p>
                       )}
 
-                    {/* Show custom messages based on logic */}
+                    {questionStat &&
+                      questionStat.correctPercentage === null && <></>}
+
                     {questionStat &&
                       questionStat.correctPercentage === 0 &&
                       (userGotCorrect ? (
@@ -368,22 +405,32 @@ const Quiz = () => {
                           Kukaan ei ole vielä saanut tätä kysymystä oikein.
                         </p>
                       ))}
+
                     {questionStat &&
                       questionStat.correctPercentage === 100 &&
+                      comparisonStats != null &&
+                      comparisonStats.totalUsers != null &&
+                      comparisonStats.totalUsers >= MIN_USER_THRESHOLD &&
                       !userGotCorrect && (
                         <p className="mt-1 text-sm text-red-600 dark:text-red-400 font-bold">
                           Kaikki muut osallistujat saivat tämän kysymyksen
                           oikein.
                         </p>
                       )}
+
                     {questionStat &&
                       questionStat.correctPercentage === 100 &&
+                      comparisonStats != null &&
+                      comparisonStats.totalUsers != null &&
+                      comparisonStats.totalUsers >= MIN_USER_THRESHOLD &&
                       userGotCorrect && (
                         <p className="mt-1 text-sm text-green-600 dark:text-green-400 font-bold">
                           Kaikki ovat saaneet tämän kysymyksen oikein.
                         </p>
                       )}
+
                     {questionStat &&
+                      questionStat.correctPercentage != null &&
                       questionStat.correctPercentage > 0 &&
                       questionStat.correctPercentage < 100 && (
                         <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">

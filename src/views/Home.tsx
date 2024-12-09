@@ -30,7 +30,6 @@ const Home = () => {
     const quizzes = await getQuizzes();
     const publishedDates = quizzes.map((quiz) => new Date(quiz.publishedAt));
     const formattedDates = publishedDates.map(formatDate);
-    console.log(formattedDates);
     setPreviousQuizzes(formattedDates);
   };
 

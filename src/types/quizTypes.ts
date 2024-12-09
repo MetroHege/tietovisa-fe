@@ -1,4 +1,4 @@
-import { Question } from './questionTypes';
+import { Question } from "./questionTypes";
 
 export interface Quiz {
   _id: string;
@@ -40,14 +40,14 @@ export interface SubmitQuizResponse {
 export interface QuestionStats {
   questionId: string;
   questionText: string;
-  correctPercentage: number;
+  correctPercentage: number | null;
 }
 
 export interface CompareQuizResponse {
   correctAnswers: number;
   totalQuestions: number;
-  betterThanCount: number;
-  totalUsers: number;
-  percentage: number;
+  betterThanCount: number | null;
+  totalUsers: number | null;
+  percentage: number | null;
   questionStats: QuestionStats[];
 }
