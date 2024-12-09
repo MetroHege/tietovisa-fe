@@ -88,7 +88,7 @@ const AllQuizzes = () => {
       {Object.keys(previousQuizzes).map((month) => (
         <div key={month} className="mb-4">
           <button
-            className="flex justify-between items-center w-full p-3 bg-blue-500 text-white rounded font-bold text-lg hover:bg-blue-600 transition-all"
+            className="flex justify-between items-center w-full p-3 bg-blue-600 text-white rounded font-bold text-lg hover:bg-blue-500 transition-all"
             onClick={() => toggleMonth(month)}
           >
             {month}
