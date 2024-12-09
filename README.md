@@ -18,6 +18,7 @@ Frontend tietovisa [Kymppivisalle](https://kymppivisa.fi/). Tämä on React-sove
    VITE_AUTH_API=
    VITE_TIETOVISA_API=
    VITE_FORMCARRY_URL=
+   REACT_APP_ENV=
    ```
 4. Käynnistä backend
 5. Käynnistä sovellus komennolla `npm run dev`
