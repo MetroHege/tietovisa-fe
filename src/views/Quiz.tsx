@@ -41,7 +41,7 @@ const Quiz = () => {
   const [questions, setQuestions] = useState<Question[]>([]);
   const [quizId, setQuizId] = useState<string>("");
   const [quizState, setQuizState] = useState<"inProgress" | "completed">(
-    "inProgress",
+    "inProgress"
   );
   const [userAnswers, setUserAnswers] = useState<
     { questionId: string; answerId: string }[]
@@ -51,7 +51,7 @@ const Quiz = () => {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [nextQuizError, setNextQuizError] = useState<string | null>(null); // State for next quiz error
   const [previousQuizError, setPreviousQuizError] = useState<string | null>(
-    null,
+    null
   ); // State for previous quiz error
   const {
     getQuizzesByDate,
@@ -112,7 +112,7 @@ const Quiz = () => {
 
   const handleAnswer = (
     questionIndex: number,
-    selectedAnswer: { _id?: string; text: string; isCorrect: boolean },
+    selectedAnswer: { _id?: string; text: string; isCorrect: boolean }
   ) => {
     if (selectedAnswer._id === undefined) return;
     const newUserAnswers = [...userAnswers];
@@ -174,7 +174,7 @@ const Quiz = () => {
     try {
       const result: SubmitQuizResponse = await submitQuizResult(
         quizId,
-        userAnswers,
+        userAnswers
       );
       setCorrectAnswers(result.correctAnswers);
 
@@ -243,10 +243,11 @@ const Quiz = () => {
                     return (
                       <div key={answerIndex}>
                         <button
-                          className={`block w-full p-3 mt-3 rounded-lg transition-all ${isSelected
+                          className={`block w-full p-3 mt-3 rounded-lg transition-all ${
+                            isSelected
                               ? "bg-blue-800 dark:bg-blue-900 text-white border-2 border-blue-900 dark:border-blue-700"
                               : "bg-blue-500 text-white hover:bg-blue-600"
-                            }`}
+                          }`}
                           onClick={() => handleAnswer(questionIndex, answer)}
                         >
                           {answer.text}
@@ -305,10 +306,7 @@ const Quiz = () => {
           {comparisonStats && (
             <div className="mb-6 text-center dark:text-white">
               {comparisonStats.totalUsers === null ? (
-                <p>
-                  Kirjaudu sisään nähdäksesi, kuinka pärjäsit muihin
-                  osallistujiiin verrattuna!
-                </p> // "Log in to see how you compare to others!"
+                <p></p> // "Log in to see how you compare to others!"
               ) : comparisonStats.totalUsers === 1 ? (
                 <p>Olet ensimmäinen osallistuja tässä visassa!</p> // "You are the first participant in this quiz!"
               ) : comparisonStats.totalUsers < MIN_USER_THRESHOLD ? (
@@ -318,10 +316,11 @@ const Quiz = () => {
                 </p> // "At least MIN_USER_THRESHOLD participants are needed to display stats."
               ) : (
                 <>
-                  <p>{`Olet parempi kuin ${comparisonStats.percentage !== null
+                  <p>{`Olet parempi kuin ${
+                    comparisonStats.percentage !== null
                       ? Math.round(comparisonStats.percentage)
                       : "N/A"
-                    }% muista osallistujista`}</p>
+                  }% muista osallistujista`}</p>
                 </>
               )}
             </div>
@@ -342,12 +341,12 @@ const Quiz = () => {
               {questions.map((question, index) => {
                 const userAnswer = userAnswers[index];
                 const correctAnswer = question.answers.find(
-                  (answer) => answer.isCorrect,
+                  (answer) => answer.isCorrect
                 );
 
                 // Get questionStat from comparisonStats
                 const questionStat = comparisonStats?.questionStats?.find(
-                  (stat) => stat.questionId === question._id,
+                  (stat) => stat.questionId === question._id
                 );
 
                 const userGotCorrect =
@@ -356,10 +355,11 @@ const Quiz = () => {
                 return (
                   <div
                     key={index}
-                    className={`mb-4 p-4 rounded-lg ${userGotCorrect
+                    className={`mb-4 p-4 rounded-lg ${
+                      userGotCorrect
                         ? "bg-green-100 dark:bg-green-900 border border-green-500"
                         : "bg-red-100 dark:bg-red-900 border border-red-500"
-                      }`}
+                    }`}
                   >
                     <p className="sm:text-lg lg:text-xl font-bold dark:text-white">
                       {index + 1}. {question.questionText}
@@ -371,8 +371,8 @@ const Quiz = () => {
                         const bgColor = isCorrect
                           ? "bg-green-500 text-white dark:bg-green-700"
                           : isSelected
-                            ? "bg-red-500 text-white dark:bg-red-700"
-                            : "bg-gray-200 text-gray-800 dark:bg-gray-700 dark:text-gray-200";
+                          ? "bg-red-500 text-white dark:bg-red-700"
+                          : "bg-gray-200 text-gray-800 dark:bg-gray-700 dark:text-gray-200";
                         return (
                           <div
                             key={optionIndex}
